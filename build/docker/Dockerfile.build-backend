@@ -1,0 +1,65 @@
+FROM local/build-amd64 AS build
+
+## proxy setup
+# USER root
+# WORKDIR /root
+# ADD ./ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+# ADD ./apt.conf /etc/apt/apt.conf
+# ADD ./dot.yarnrc /app/.yarnrc
+# ADD ./dot.npmrc /app/.npmrc
+
+## remove proxy setup
+# USER root
+# WORKDIR /root
+# RUN rm -rf /etc/ssl/certs/ca-certificates.crt
+# RUN rm -rf /etc/apt/apt.conf
+# RUN rm -rf /app/.yarnrc
+# RUN update-ca-certificates
+
+# Since we are building from backend-build we just need to move built frontend into server/public
+FROM local/anythingllm-frontend AS frontend-build
+ 
+FROM build AS production-build
+USER root
+WORKDIR /app/server
+COPY ./server /app/server/
+RUN yarn install  --production --network-timeout 1000000 && yarn cache clean
+
+# Compile Llama.cpp bindings for node-llama-cpp for this operating system.
+# Creates appropriate bindings for the OS
+RUN npx --no node-llama-cpp download
+WORKDIR /app
+
+#Building produciton image
+FROM production-build
+USER root
+WORKDIR /app
+COPY --chown=anythingllm:anythingllm --from=frontend-build /app/frontend/dist /app/server/public
+RUN chown -R anythingllm:anythingllm /app/server
+
+# Setup scripts, Copy docker helper scripts
+USER root
+WORKDIR /app/frontend
+COPY ./docker/docker-entrypoint-backend.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker/docker-healthcheck-backend.sh /usr/local/bin/docker-healthcheck.sh
+
+# Ensure the scripts are executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-healthcheck.sh
+
+# Setup the environment
+WORKDIR /app
+USER anythingllm
+ENV NODE_ENV=production
+ENV ANYTHING_LLM_RUNTIME=docker
+
+# Expose the server port
+EXPOSE 3001
+
+# Setup the healthcheck
+HEALTHCHECK --interval=1m --timeout=10s --start-period=1m \
+  CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
+
+# Run the server
+# CMD ["sh", "-c", "tail -f /dev/null"] # For development: keep container open
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/docker-entrypoint.sh"]

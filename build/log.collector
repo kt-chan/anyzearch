@@ -1,0 +1,8 @@
+
+> anything-llm@0.2.0 prod:collector
+> cd collector && yarn start
+
+yarn run v1.22.22
+$ NODE_ENV=production node index.js
+[36m[collector][0m [32minfo[39m: Collector hot directory and tmp storage wiped!
+[36m[collector][0m [32minfo[39m: Document processor app listening on port 8888

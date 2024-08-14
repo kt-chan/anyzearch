@@ -1,0 +1,15 @@
+!.env.example
+!**/.env.example
+v-env
+**/.vs/
+**/node_modules/
+**/*.crt
+**/*.env
+**/*.bak
+**/*.gz
+**/.env
+**/.env-fe
+**/.env-win
+.env
+.env-fe
+.env-win
