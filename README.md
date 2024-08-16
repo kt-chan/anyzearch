@@ -10,4 +10,4 @@ sudo chmod u+x ./*.sh
 
 cp -f ./run/.env.smaple ./.env
 
-./run/start-noproxy.sh
+./run/start-demo.sh
