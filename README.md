@@ -11,3 +11,8 @@ sudo chmod u+x ./*.sh
 cp -f ./run/.env.smaple ./.env
 
 ./run/start-demo.sh
+
+
+// you can now access your app. at [http:](http://[yourhost.local]/)
+
+// 你可以用浏览器登入应用 at [http:](http://[yourhost.local]/)
