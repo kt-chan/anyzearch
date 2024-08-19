@@ -1,0 +1,81 @@
+version: '3.7'
+
+networks:
+  net-anyzearch:
+    driver: bridge
+    
+services:
+  anyzearch:
+    image: ktchanhk/anyzearch:0.0.1
+    container_name: anyzearch  
+    restart: always
+    ports:
+      - "3001:3001"
+    cap_add:
+      - SYS_ADMIN
+    extra_hosts:
+      host.docker.internal: host-gateway
+    volumes:
+      - $HOME/anyzearch/data:/app/server/storage
+      - $HOME/anyzearch/run/.env:/app/server/.env
+      - $HOME/anyzearch/run/.env-fe:/app/frontend/.env
+      - $HOME/anyzearch/run/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
+    environment:
+      STORAGE_DIR: /app/server/storage
+      NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
+      NODE_OPTIONS: --use-openssl-ca
+      CURL_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
+      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "false"
+      CHROME_PATH: /usr/bin/google-chrome-stable
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+    deploy:
+      mode: replicated
+      replicas: 1
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/docker-healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - net-anyzearch
+  ollama:
+    image: ollama/ollama:0.3.6-rocm
+    container_name: ollama  
+    restart: always
+    ports:
+      - "11434:11434"
+    extra_hosts:
+      host.docker.internal: host-gateway
+    environment:
+      OLLAMA_HOST: 0.0.0.0
+    healthcheck:
+      test: "bash -c 'cat < /dev/null > /dev/tcp/localhost/11434'"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - net-anyzearch
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.3.13
+    container_name: open-webui  
+    restart: always
+    ports:
+      - "3002:8080"
+    cap_add:
+      - SYS_ADMIN
+    extra_hosts:
+      host.docker.internal: host-gateway     
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+    volumes:
+      - $HOME/ollama-webui:/app/backend/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - net-anyzearch
+    depends_on:
+          - ollama

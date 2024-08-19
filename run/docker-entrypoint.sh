@@ -8,4 +8,3 @@
 { node /app/collector/index.js; } &
 wait -n
 exit $?
-

@@ -1,5 +1,7 @@
 !.env.example
+!.env-fe.example
 !**/.env.example
+!**/.env-fe.example
 v-env
 **/.vs/
 **/node_modules/
