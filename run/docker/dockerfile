@@ -1,0 +1,26 @@
+FROM ktchanhk/anyzearch:0.0.1
+USER root
+WORKDIR /app
+
+RUN mkdir /app/server/storage
+COPY --chown=anythingllm:anythingllm ./sources.list /etc/apt/sources.list
+COPY --chown=anythingllm:anythingllm ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY --chown=anythingllm:anythingllm ./.env /app/server/.env
+COPY --chown=anythingllm:anythingllm ./.env-fe /app/frontend/.env
+
+
+# Environment Setup
+USER anythingllm
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV ANYTHING_LLM_RUNTIME=docker
+
+EXPOSE 3001
+
+# Setup the healthcheck
+HEALTHCHECK --interval=1m --timeout=10s --start-period=1m \
+  CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
+
+# Run the server
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/docker-entrypoint.sh"]
