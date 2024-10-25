@@ -1,26 +1,58 @@
-#### Build Guide #### 
+## Build Guide ##
+### Go to build directory
+```bash
 cd ./build/docker
+```
 
+### Set permission to execute
+```bash
 sudo chmod u+x ./*.sh
+```
 
+### Make Change on the .env file
+```bash
+vi ./build/docker/.env.example
+```
+
+### Build the image
+```bash
 ./build.sh
-
-#### Deploy Guide #### 
-// update ./run/.env.sample 刷新 ./run/.env.sample 参数
-
-// copy ./run/.env.smaple to ./.env 然后复制 ./run/.env.smaple 到 ./.env
-
-cp -f ./run/.env.smaple ./.env
-
-./run/start-demo.sh
+```
 
 
-// you can now access your app. at http://[yourhost.local]/
+***
 
-// 你可以用浏览器登入应用 at http://[yourhost.local]/
+## Deploy Guide ## 
+### Go to run directory
+```bash
+cd ./run
+```
+
+### update  ./.env.sample | 刷新 ./.env.sample 参数
+```bash
+vi /.env.sampl
+```
+
+###  copy ./.env.smaple to ./.env | 然后复制 ./.env.smaple 到 ./.env
+```bash
+copy -f ./.env.smaple ./.env 
+```
+
+###  run the program ./start-demo.sh | 执行程序 ./start-demo.sh
+```bash
+./start-demo.sh
+```
 
 
-### Feature ###
+### you can now access your app. at http://[yourhost.local]/
+### 你可以用浏览器登入应用 at http://[yourhost.local]/
+```bash
+http://[yourhost.local]
+```
+
+***
+
+## Feature ##
 
 AnyZearch Feature Specification
 
