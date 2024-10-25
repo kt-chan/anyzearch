@@ -49,7 +49,7 @@ RUN groupadd -g "$ARG_GID" anythingllm && \
 # Copy docker helper scripts
 ADD ./docker/docker-entrypoint-anyzearch.sh /usr/local/bin/docker-entrypoint.sh
 ADD ./docker/docker-healthcheck-anyzearch.sh /usr/local/bin/docker-healthcheck.sh
-ADD ./docker/dot.env /app/server/.env
+ADD ./docker/.env.example /app/server/.env
 RUN chown anythingllm:anythingllm -R /app/server/.env
 
 # Ensure the scripts are executable
