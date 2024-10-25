@@ -35,9 +35,8 @@ RUN curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn_1.2
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends && \
-	vim net-tools iputils-ping python3 python3-pip
+RUN DEBIAN_FRONTEND=noninteractive apt-get update 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends vim net-tools iputils-ping python3 python3-pip
 RUN echo alias python='python3' >> ~/.bashrc
 RUN pip install -U huggingface_hub
 
@@ -49,9 +48,25 @@ RUN groupadd -g "$ARG_GID" anythingllm && \
 # Copy docker helper scripts
 ADD ./docker/docker-entrypoint-anyzearch.sh /usr/local/bin/docker-entrypoint.sh
 ADD ./docker/docker-healthcheck-anyzearch.sh /usr/local/bin/docker-healthcheck.sh
-ADD ./docker/.env.example /app/server/.env
+ADD ./docker/dot.env /app/server/.env
 RUN chown anythingllm:anythingllm -R /app/server/.env
 
 # Ensure the scripts are executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-healthcheck.sh
+
+
+# Puppeteer does not ship with an ARM86 compatible build for Chromium
+# so web-scraping would be broken in arm docker containers unless we patch it
+# by manually installing a compatible chromedriver.
+RUN echo "Need to patch Puppeteer x Chromium support for ARM86 - installing dep!" 
+RUN curl https://playwright.azureedge.net/builds/chromium/1088/chromium-linux-arm64.zip -o chrome-linux.zip 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq zip
+RUN unzip chrome-linux.zip
+RUN rm -rf chrome-linux.zip
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV CHROME_PATH=/app/chrome-linux/chrome
+ENV PUPPETEER_EXECUTABLE_PATH=/app/chrome-linux/chrome
+
+RUN echo "Done running arm64 specific installation steps"

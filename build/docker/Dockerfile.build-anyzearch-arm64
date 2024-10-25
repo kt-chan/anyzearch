@@ -47,27 +47,23 @@ COPY ./docker/docker-healthcheck-anyzearch.sh /usr/local/bin/docker-healthcheck.
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-healthcheck.sh
 
-## Install extract dependencies if needed
-# RUN echo "Running common build flow of AnyZearch image for all architectures"
-# RUN npm install -g puppeteer
-# RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-#     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
-#     [Package Name]
-
 ################################################################################
 # Those library have to be installed in final image if run in a bundled package#
-################################################################################
-RUN echo "Running common build flow of AnyZearch image for all architectures"
-RUN npm install -g puppeteer
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
-    libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi-dev libxtst-dev libnss3 libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3-0 libgbm1 wget 
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt install -y ./google-chrome-stable_current_amd64.deb
-ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
-ENV CHROME_PATH="/usr/bin/google-chrome-stable"
-ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
+##################################################################################
+##RUN echo "Running common build flow of AnyZearch image for all architectures"
+##RUN npm install -g puppeteer
+##RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+##    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+##    libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi-dev libxtst-dev libnss3 \
+##    libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3-0 libgbm1 wget 
+##RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+##RUN apt install -y ./google-chrome-stable_current_amd64.deb
+##ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public 
+##ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
+##ENV CHROME_PATH="/usr/bin/google-chrome-stable"
+##ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
+
+RUN apt-get install -yq chromium-chromedriver
 
 
 

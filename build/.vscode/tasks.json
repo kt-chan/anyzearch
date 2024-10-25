@@ -1,0 +1,191 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/collector",
+        "statusbar": {
+          "color": "#ffea00",
+          "detail": "Runs the collector",
+          "label": "Collector: $(play) run",
+          "running": {
+            "color": "#ffea00",
+            "label": "Collector: $(gear~spin) running"
+          }
+        }
+      },
+      "command": "cd ${workspaceFolder}/collector/ && yarn dev",
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "label": "Collector: run"
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/server",
+        "statusbar": {
+          "color": "#ffea00",
+          "detail": "Runs the server",
+          "label": "Server: $(play) run",
+          "running": {
+            "color": "#ffea00",
+            "label": "Server: $(gear~spin) running"
+          }
+        }
+      },
+      "command": "cd ${workspaceFolder}/server/ && yarn dev",
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "label": "Server: run"
+    },
+    {
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend",
+        "statusbar": {
+          "color": "#ffea00",
+          "detail": "Runs the frontend",
+          "label": "Frontend: $(play) run",
+          "running": {
+            "color": "#ffea00",
+            "label": "Frontend: $(gear~spin) running"
+          }
+        }
+      },
+      "command": "cd ${workspaceFolder}/frontend/ && yarn dev",
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "label": "Frontend: run"
+    },
+    {
+      "label": "build-frontend",
+      "type": "shell",
+      "command": "cmd",
+      "args": ["/c", "npm run-script win-prod:frontend"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": "unset-proxy",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/"
+      }
+    },
+    {
+      "label": "build-frontend-clean",
+      "type": "shell",
+      "command": "cmd",
+      "args": ["/c", "npm run-script win-prod:frontend"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": "win-setup",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/"
+      }
+    },
+    {
+      "label": "win-setup",
+      "type": "shell",
+      "command": "cmd",
+      "args": ["/c", "npm run-script win-setup"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": "unset-proxy",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/"
+      }
+    },
+    {
+      "label": "unset-proxy",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c", "set http_proxy= && set https_proxy= && npm config delete proxy -f && npm config delete https-proxy -f && yarn config delete proxy -f && yarn config delete https-proxy -f"
+       ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": "clean",
+      "options": {
+        "cwd": "${workspaceFolder}/"
+      }
+    },
+    {
+      "label": "wait-for-server",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}\\wait-for-server.js" // Path to the script that waits for the server
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c", "${workspaceFolder}\\clean.bat" // Path to the script that waits for the server
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
