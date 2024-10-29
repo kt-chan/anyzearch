@@ -40,8 +40,8 @@ vi ./start-demo.sh
 ```
 add below ssh volume mount
 ```
--v $HOME/anyzearch/run/anyzearch.local.crt:/etc/ssl/certs/anyzearch.local.crt \
--v $HOME/anyzearch/run/anyzearch.local.key:/etc/ssl/certs/anyzearch.local.key \
+-v $ANYZEARCH_HOME/anyzearch.local.crt:/etc/ssl/certs/anyzearch.local.crt \
+-v $ANYZEARCH_HOME/anyzearch.local.key:/etc/ssl/certs/anyzearch.local.key \
 ```
 or just run start-demo-https.sh
 ```
