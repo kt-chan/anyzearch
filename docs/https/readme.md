@@ -9,6 +9,7 @@ Below command would generate three crt files,
 cd ~
 sudo chmod u+x makeca.sh
 sudo ./makeca.sh
+sudo chown 1000:1000 anyzearch.local.*
 ```
 
 ### copy ssh cert and keys to anyzearch execution directory
@@ -39,7 +40,6 @@ vi ./start-demo.sh
 ```
 add below ssh volume mount
 ```
--v $HOME/anyzearch/run/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt \
 -v $HOME/anyzearch/run/anyzearch.local.crt:/etc/ssl/certs/anyzearch.local.crt \
 -v $HOME/anyzearch/run/anyzearch.local.key:/etc/ssl/certs/anyzearch.local.key \
 ```
