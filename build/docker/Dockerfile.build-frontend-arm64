@@ -1,0 +1,42 @@
+FROM local/build-arm64 AS build
+
+# Since we are building from backend-build we just need to move built frontend into server/public
+FROM build AS production-build
+USER anythingllm
+WORKDIR /app/frontend
+COPY --chown=anythingllm:anythingllm ./frontend /app/frontend/
+RUN yarn install  --network-timeout 1000000 && yarn cache clean
+RUN yarn build 
+
+## Clean up directory
+# RUN cp -r dist /tmp/frontend-build && \
+#     rm -rf * && \
+#     cp -r /tmp/frontend-build dist && \
+#     rm -rf /tmp/frontend-build
+
+# Setup scripts, Copy docker helper scripts
+USER root
+WORKDIR /app/frontend
+COPY ./docker/docker-entrypoint-frontend.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker/docker-healthcheck-frontend.sh /usr/local/bin/docker-healthcheck.sh
+
+# Ensure the scripts are executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-healthcheck.sh
+
+# Setup the environment
+USER anythingllm
+WORKDIR /app/frontend
+ENV NODE_ENV=production
+ENV ANYTHING_LLM_RUNTIME=docker
+
+# Expose the server port
+EXPOSE 3001
+
+# Setup the healthcheck
+HEALTHCHECK --interval=1m --timeout=10s --start-period=1m \
+  CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
+
+# Run the server
+# CMD ["sh", "-c", "tail -f /dev/null"] # For development: keep container open
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/docker-entrypoint.sh"]

@@ -51,9 +51,14 @@ const {
   generateRecoveryCodes,
 } = require("../utils/PasswordRecovery");
 const { SlashCommandPresets } = require("../models/slashCommandsPresets");
+const { MetadataFactory } = require("../utils/sso/metadataFactory");
 
 function systemEndpoints(app) {
   if (!app) return;
+
+  app.get("/hello", (_, response) => {
+    response.status(200).send("<h>welcome to anyzearch</h>");
+  });
 
   app.get("/ping", (_, response) => {
     response.status(200).json({ online: true });
@@ -516,6 +521,7 @@ function systemEndpoints(app) {
     }
   });
 
+
   app.get("/system/logo", async function (_, response) {
     try {
       const defaultFilename = getDefaultFilename();
@@ -571,6 +577,32 @@ function systemEndpoints(app) {
       response.status(200).json({ supportEmail: supportEmail });
     } catch (error) {
       console.error("Error fetching support email:", error);
+      response.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  //@DEBUG @SSO - (C)ktchan for adfs sso
+  app.get("/system/isEnabledSSOMode", async (_, response) => {
+    try {
+      const enabledSSOMode =
+        (MetadataFactory.checkSSOEnabelFlagSetTrue() && ((
+          await SystemSettings.get({
+            label: "enabled_adfs_sso",
+          })
+        )?.value ?? false));
+      response.status(200).json({ enabledSSOMode: enabledSSOMode });
+    } catch (error) {
+      console.error("Error fetching sso mode settigns:", error);
+      response.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/system/checkSSOFlagSetTrue", async (_, response) => {
+    try {
+      let isSSOFlagSetTrue = MetadataFactory.checkSSOEnabelFlagSetTrue();
+      response.status(200).json({ isSSOFlagSetTrue: isSSOFlagSetTrue });
+    } catch (error) {
+      console.error("Error fetching sso mode settigns:", error);
       response.status(500).json({ message: "Internal server error" });
     }
   });

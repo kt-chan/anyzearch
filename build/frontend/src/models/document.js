@@ -33,6 +33,20 @@ const Document = {
         return { success: false, error: e.message };
       });
   },
+  downloadFolder: async (files) => {
+    if (files && files !== null) {
+      return await fetch(`${API_BASE}/document/download-files`, {
+        method: "POST",
+        headers: baseHeaders(),
+        body: JSON.stringify(files),
+      })
+        .then((res) => res.json())
+        .catch((e) => {
+          console.error(e);
+          return { success: false, error: e.message };
+        });
+    }
+  },
 };
 
 export default Document;

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: anyzearch-deployment
+  name: anyzearch
 spec:
   replicas: 1
   selector:
@@ -17,21 +17,7 @@ spec:
         image: ktchanhk/anyzearch:0.0.1
         ports:
         - containerPort: 3001
-        volumeMounts:
-        - name: storage-volume
-          mountPath: /app/server/storage
-        - name: sources-list
-          mountPath: /etc/apt/sources.list
-          subPath: sources.list
-        - name: env-server
-          mountPath: /app/server/.env
-          subPath: .env
-        - name: env-frontend
-          mountPath: /app/frontend/.env
-          subPath: .env-fe
-        - name: entrypoint-script
-          mountPath: /usr/local/bin/docker-entrypoint.sh
-          subPath: docker-entrypoint.sh
+          hostPort: 80
         env:
         - name: STORAGE_DIR
           value: "/app/server/storage"
@@ -49,25 +35,41 @@ spec:
           value: "/usr/bin/google-chrome-stable"
         - name: PUPPETEER_EXECUTABLE_PATH
           value: "/usr/bin/google-chrome-stable"
+        volumeMounts:
+        - name: data-storage
+          mountPath: /app/server/storage
+        - name: sources-list
+          mountPath: /etc/apt/sources.list
+        - name: env-server
+          mountPath: /app/server/.env
+        - name: env-frontend
+          mountPath: /app/frontend/.env
+        - name: docker-entrypoint
+          mountPath: /usr/local/bin/docker-entrypoint.sh
         securityContext:
           capabilities:
             add: ["SYS_ADMIN"]
       volumes:
-      - name: storage-volume
+      - name: data-storage
         hostPath:
-          path: ${STORAGE_LOCATION}
+          path: /home/demo/data
+          type: Directory
       - name: sources-list
         hostPath:
-          path: $HOME/anyzearch/run
+          path: /home/demo/sources.list
+          type: File
       - name: env-server
         hostPath:
-          path: $HOME/anyzearch/run
+          path: /home/demo/.env
+          type: File
       - name: env-frontend
         hostPath:
-          path: $HOME/anyzearch/run
-      - name: entrypoint-script
+          path: /home/demo/.env-fe
+          type: File
+      - name: docker-entrypoint
         hostPath:
-          path: $HOME/anyzearch/run
+          path: /home/demo/docker-entrypoint.sh
+          type: File
 
 ---
 

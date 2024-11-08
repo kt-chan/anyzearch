@@ -1,5 +1,5 @@
 const { Document } = require("../models/documents");
-const { normalizePath, documentsPath, isWithin } = require("../utils/files");
+const { normalizePath, findDocumentInDocuments, documentsPath, isWithin } = require("../utils/files");
 const { reqBody } = require("../utils/http");
 const {
   flexUserRoleValid,
@@ -40,6 +40,32 @@ function documentEndpoints(app) {
       }
     }
   );
+
+
+
+  app.post(
+    "/document/download-files",
+    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    async (request, response) => {
+      let documents = [];
+      try {
+        const files = JSON.parse(request.body);
+        for (const item of files) {
+          const document = await findDocumentInDocuments(item["name"]);
+          if (!document) {
+            response.sendStatus(404).end();
+            return;
+          }
+          documents.push(document);
+        }
+      } catch (e) {
+        console.error(e.message, e);
+        response.sendStatus(500).end();
+      }
+      response.status(200).json({ success: true, message: documents });
+    }
+  );
+
 
   app.post(
     "/document/move-files",

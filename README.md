@@ -1,141 +1,57 @@
-## Build Guide ##
-### Go to build directory
-```bash
-cd ./build/docker
-```
+# Welcome to AnySearch: The Next-Generation Knowledge Discovery Solution by iteasoft 
+https://www.iteasoft.com
 
-### Set permission to execute
-```bash
-sudo chmod u+x ./*.sh
-```
+## Introduction
 
-### Make Change on the .env file
-```bash
-vi ./build/docker/.env.example
-```
+In the dynamic realm of data management, iteasoft introduces AnySearch, a cutting-edge knowledge discovery solution that redefines the way we interact with information. Designed to empower businesses and individuals, AnySearch is the gateway to a future where knowledge is effortlessly accessible and insights are at your fingertips.
 
-### Build the image
-```bash
-./build.sh
-```
+## Our Vision
 
+At iteasoft, we are committed to pioneering a world where knowledge discovery is intuitive, efficient, and transformative. AnySearch, our flagship product, embodies this vision, leveraging the power of a state-of-the-art large language model to turn data into a dynamic, interactive resource.
 
-***
+## Our Innovation: AnySearch
 
-## Deploy Guide ## 
-### Go to run directory
-```bash
-cd ./run
-```
+### Advanced AI Algorithm
 
-### update  ./.env.sample | 刷新 ./.env.sample 参数
-```bash
-vi /.env.sampl
-```
+AnySearch is powered by an advanced AI algorithm that transcends traditional search boundaries. It interprets complex queries with remarkable precision, delivering contextually rich and relevant results.
 
-###  copy ./.env.smaple to ./.env | 然后复制 ./.env.smaple 到 ./.env
-```bash
-copy -f ./.env.smaple ./.env 
-```
+### Dynamic Tagging System
 
-###  run the program ./start-demo.sh | 执行程序 ./start-demo.sh
-```bash
-./start-demo.sh
-```
+Our innovative tagging system automatically generates best-matched tags for any dataset, ensuring that your data is not only meticulously organized but also contextually enhanced for deeper understanding and faster retrieval.
 
+### Universal Applicability
 
-### you can now access your app. at http://[yourhost.local]/
-### 你可以用浏览器登入应用 at http://[yourhost.local]/
-```bash
-http://[yourhost.local]
-```
+AnySearch is designed to adapt to the diverse needs of our users, from enterprises with vast business intelligence to researchers with extensive academic data. It integrates seamlessly with existing databases, amplifying the discoverability of information.
 
-***
+### Key Features
 
-## Feature ##
+- **Scalability**: Our solution scales effortlessly with your needs, accommodating everything from small datasets to large-scale data warehouses.
+- **User-Friendly Interface**: AnySearch features an intuitive interface that democratizes the power of AI, making it accessible to users of all technical backgrounds.
+- **Customizability**: Customize AnySearch to align with your organization's unique requirements, offering a tailored knowledge search experience.
+- **Security**: We prioritize data security with robust protocols, safeguarding your information at all times.
 
-AnyZearch Feature Specification
+## Why Choose AnySearch by iteasoft?
 
+### Unleashing the Power of Knowledge
 
+AnySearch empowers you to unlock insights hidden within your data, fostering a culture of data-driven decision-making and strategic innovation.
 
-1.1	Large Language Model Features Specification:
+### Enhancing Operational Efficiency
 
-i.	Support local hosted of LLM providers for chatting and document analysis.
+Our AI-driven tagging system significantly boosts the efficiency of your data management processes, saving valuable time and resources while ensuring data remains organized and easily accessible.
 
-ii.	Support remote LLM providers for chatting and document analysis;
+### Future-Proofing Your Data Strategy
 
+By choosing AnySearch, you're investing in a solution that evolves with the ever-expanding world of data, ensuring you remain at the vanguard of knowledge management.
 
+## Get Started with AnySearch
 
-1.2	Retrieval Augmented Generation Features Specification:
+Ready to experience the future of knowledge management? Visit our website at [www.iteasoft.com](https://www.iteasoft.com) to learn more about AnySearch and how it can transform your data into a powerful asset.
 
-1.2.1	Vector Database 
+### Join the iteasoft Community
 
-i.	Support Multiple Vector Databases Providers, including LanceDB, Chroma, and Milvus; 
+We invite you to join our community of visionaries and organizations that are shaping the future of knowledge management. Together, let's unlock the full potential of your data.
 
-ii.	Support local embedded deployment and remote connection to vector database;
+AnySearch by iteasoft: Illuminating Insight, Empowering Discovery
 
-1.2.2	Embedding models
-
-i.	Support Multiple Embedding models, including models from huggingface, ollama and local deployed, 
-
-ii. Support embedding models that turn text into vectors, which can be stored and searched in a vector database - which is the foundation of RAG.
-
-1.2.3	Content Management
-
-i.	Support Content Upload which permits upload various type of documents including pdf, text, word, html. And then above to load selected content items into vector database for vector search;
-
-ii.	Support Web Crawler which permits user specify a webpage and with parameters on depth which is the number of child-links that the worker should follow and the pages which is the maximum number of links to scrape.
-
-iii.	Support Content Pinning which permits the whole document to be included in the reference content for llm, therefore you will get full-text comprehension and far better answers at the expense of speed and cost.
-
-
-
-1.3	System Features Specification:
-
-i.	Support multi user usage with role based (System Admin, Workspace Admin, General User) access control
-
-ii.	Support user activity logging, including login, chat event;
-
-
-### 功能 ###
-
-AnyZearch 功能规格说明
-
-
-1.1 大型语言模型功能规格说明：
-
-i. 支持本地托管的大型语言模型提供商，用于聊天和文档分析。
-
-ii. 支持远程大型语言模型提供商，用于聊天和文档分析；
-
-
-1.2 检索增强生成功能规格说明：
-
-1.2.1 向量数据库
-
-i. 支持多个向量数据库提供商，包括 LanceDB、Chroma 和 Milvus；
-
-ii. 支持本地嵌入式部署和远程连接到向量数据库；
-
-1.2.2 嵌入模型
-
-i. 支持多个嵌入模型，包括来自 huggingface、ollama 和本地部署的模型;
-
-ii. 这些模型将文本转换为向量，可以存储在向量数据库中进行向量搜索 - 这是 RAG 的基础。
-
-1.2.3 内容管理
-
-i. 支持内容上传，允许上传包括 pdf、文本、word、html 在内的各种类型的文档。然后选择内容项加载到向量数据库进行向量搜索；
-
-ii. 支持网页爬虫，允许用户指定网页，并设置深度参数，即工作者应跟踪的子链接数量，以及页面参数，即要抓取的最大链接数。
-
-iii. 支持内容固定，允许整个文档被包含在 llm 的参考内容中，因此你将获得全文理解，并且以牺牲速度和成本为代价获得更好的答案。
-
-
-1.3 系统功能规格说明：
-
-i. 支持多用户使用，具有基于角色的（系统管理员、工作区管理员、普通用户）访问控制
-
-ii. 支持用户活动记录，包括登录、聊天事件；
-
-
+Discover AnySearch Today [www.iteasoft.com](https://www.iteasoft.com)

@@ -1,0 +1,98 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Collector debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/collector",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "runtimeArgs": [
+        "index.js"
+      ],
+      // not using yarn/nodemon because it doesn't work with breakpoints
+      // "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "type": "node",
+      "name": "Server debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/Server",
+      "envFile": "${workspaceFolder}/server/.env",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "--nolazy",
+        "--trace-warnings",
+        "index.js"
+      ],"env": {
+        "NODE_ENV": "development",
+      },
+      // not using yarn/nodemon because it doesn't work with breakpoints
+      // "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+      // , "preLaunchTask": "setup-database" 
+    },
+    {
+      "name": "Frontend debug",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/frontend",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "vite",
+        "--debug",
+        "--host=0.0.0.0",
+        "--port=443"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+      },
+      // "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      // "preLaunchTask":"build-frontend", // comment out this if build frontend is not requried.
+      "type": "node"
+    },
+    {
+      "name": "Launch Edge",
+      "request": "launch",
+      "type": "msedge",
+      "url": "https://win10.local:443",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome",
+      "url": "https://win10.local:443",
+      "webRoot": "${workspaceFolder}/frontend",
+      "sourceMapPathOverrides": {
+        "file:///*": "${workspaceFolder}/*"
+        // ... other overrides as needed
+      },
+      "preLaunchTask": "wait-for-server" // This task will run before launching Chrome
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack Debug",
+      "configurations": [
+        "Frontend debug",
+        "Server debug",
+        "Collector debug",
+        "Launch Chrome"
+      ],
+      "stopAll": true
+    }
+  ]
+}

@@ -5,13 +5,27 @@ import react from "@vitejs/plugin-react"
 import dns from "dns"
 import { visualizer } from "rollup-plugin-visualizer"
 
+import fs from 'fs';
+import path from 'path';
+
+// 指定你的证书和私钥文件的路径
+const certPath = path.resolve(__dirname, process.env.NODE_ENV === "development"
+  ? '../certs/win10.local.crt' : '/etc/ssl/certs/anyzearch.local.crt');
+const keyPath = path.resolve(__dirname, process.env.NODE_ENV === "development"
+  ? '../certs/win10.local.key' : '/etc/ssl/certs/anyzearch.local.key');
+
 dns.setDefaultResultOrder("verbatim")
 
+//@SSH
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     port: 3000,
     host: "localhost"
+    , https: {
+      cert: fs.readFileSync(certPath),
+      key: fs.readFileSync(keyPath)
+    }
   },
   define: {
     "process.env": process.env

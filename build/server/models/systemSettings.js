@@ -18,6 +18,11 @@ const SystemSettings = {
   supportedFields: [
     "limit_user_messages",
     "message_limit",
+    "enabled_adfs_sso",
+    "adfs_sso_url",
+    "adfs_sso_callback",
+    "adfs_sso_issuer",
+    "adfs_sso_state",
     "logo_filename",
     "telemetry_id",
     "footer_data",
