@@ -9,5 +9,9 @@ v-env
 **/*.env
 **/*.bak
 **/*.gz
+**/*.env
+**/*.env-fe
+**/.env
+**/.env-fe
 .env
 .env-fe
