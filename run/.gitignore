@@ -6,6 +6,8 @@ v-env
 **/.vs/
 **/node_modules/
 **/*.crt
+**/*.key
+**/*.pfx
 **/*.env
 **/*.bak
 **/*.gz
