@@ -176,12 +176,22 @@ export default function MultiUserAuth() {
   const [showRecoveryForm, setShowRecoveryForm] = useState(false);
   const [showResetPasswordForm, setShowResetPasswordForm] = useState(false);
   const [customAppName, setCustomAppName] = useState(null);
+  const [isSSOModeEnabled, setIsSSOModeEnabled] = useState(false);
 
   const {
     isOpen: isRecoveryCodeModalOpen,
     openModal: openRecoveryCodeModal,
     closeModal: closeRecoveryCodeModal,
   } = useModal();
+
+  //@DEBUG @SSO - （C）ktchan - ADFS SSO
+  const handleRedirect = async (e) => {
+    setError(null);
+    setLoading(true);
+    e.preventDefault();
+    await System.requestLoginADFSSSO();
+    setLoading(false);
+  }
 
   const handleLogin = async (e) => {
     setError(null);
@@ -258,14 +268,50 @@ export default function MultiUserAuth() {
     }
   }, [downloadComplete, user, token]);
 
+
+  const renderSSOLoginForm = () => {
+
+      return (
+        <form onSubmit={handleRedirect}>
+          <div className="flex items-center md:p-6 px-5 mt-6 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8 pt-2 pb-2" style={{ borderColor: 'white', borderWidth: '1px' }} >
+            <div className="w-full px-4 md:px-12 pt-6 pb-6 ">
+              <div className="flex items-center flex-col gap-y-4 md:w-[300px]">
+                <p className="text-sm text-white/90 text-center ">
+                  Signin with SSO
+                </p>
+                <button
+                  disabled={loading}
+                  type="submit"
+                  className="md:text-primary-button md:bg-transparent text-dark-text text-sm font-bold focus:ring-4 focus:outline-none rounded-md border-[1.5px] border-primary-button md:h-[34px] h-[48px] md:hover:text-white md:hover:bg-primary-button bg-primary-button focus:z-10 w-full"
+                >
+                  Redirect to ADFS
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      )
+  }
+
+
   useEffect(() => {
+    setLoading(false);
+
     const fetchCustomAppName = async () => {
       const { appName } = await System.fetchCustomAppName();
       setCustomAppName(appName || "");
-      setLoading(false);
     };
+
+    const fetchEnabledSSOMode = async () => {
+      const { ssoMode } = await System.fetchIsEnabledSSOMode();
+      setIsSSOModeEnabled(ssoMode);
+    };
+
     fetchCustomAppName();
+    fetchEnabledSSOMode();
+    setLoading(false);
   }, []);
+
 
   if (showRecoveryForm) {
     return (
@@ -280,50 +326,59 @@ export default function MultiUserAuth() {
     return <ResetPasswordForm onSubmit={handleResetSubmit} />;
   return (
     <>
-      <form onSubmit={handleLogin}>
-        <div className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-12 py-12 -mt-4 md:mt-0">
-          <div className="flex items-start justify-between pt-11 pb-9 rounded-t">
-            <div className="flex items-center flex-col gap-y-4">
-              <div className="flex gap-x-1">
-                <h3 className="text-md md:text-2xl font-bold text-white text-center white-space-nowrap hidden md:block">
-                  {t("login.multi-user.welcome")}
-                </h3>
-                <p className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent">
-                  {customAppName || "AnyZearch"}
-                </p>
-              </div>
-              <p className="text-sm text-white/90 text-center">
-                {t("login.sign-in.start")} {customAppName || "AnyZearch"}{" "}
-                {t("login.sign-in.end")}
+
+
+      <div className="flex flex-col justify-center items-center relative rounded-2xl md:bg-login-gradient md:shadow-[0_4px_14px_rgba(0,0,0,0.25)] md:px-10 py-10 -mt-4 md:mt-0">
+        <div className="flex items-start justify-between pt-10 pb-8 rounded-t">
+          <div className="flex items-center flex-col gap-y-4">
+            <div className="flex gap-x-1">
+              <h3 className="text-md md:text-2xl font-bold text-white text-center white-space-nowrap hidden md:block">
+                {t("login.multi-user.welcome")}
+              </h3>
+              <p className="text-4xl md:text-2xl font-bold bg-gradient-to-r from-[#75D6FF] via-[#FFFFFF] to-[#FFFFFF] bg-clip-text text-transparent">
+                {customAppName || "AnyZearch"}
               </p>
             </div>
+            <p className="text-sm text-white/90 text-center">
+              {t("login.sign-in.start")} {customAppName || "AnyZearch"}{" "}
+              {t("login.sign-in.end")}
+            </p>
           </div>
-          <div className="w-full px-4 md:px-12">
-            <div className="w-full flex flex-col gap-y-4">
-              <div className="w-screen md:w-full md:px-0 px-6">
-                <input
-                  name="username"
-                  type="text"
-                  placeholder={t("login.multi-user.placeholder-username")}
-                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  required={true}
-                  autoComplete="off"
-                />
+        </div>
+
+        {isSSOModeEnabled && renderSSOLoginForm()}
+
+        <form onSubmit={handleLogin}>
+          <div className="flex items-center md:p-6 px-5 mt-6 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8 pt-6 pb-6" style={{ borderColor: 'white', borderWidth: '1px' }} >
+            <div className="w-full px-4 md:px-12">
+              <div className="w-full flex flex-col gap-y-4">
+                <p className="text-sm text-white/90 text-center">
+                  Signin with local account
+                </p>
+                <div className="w-screen md:w-full md:px-0 px-6">
+                  <input
+                    name="username"
+                    type="text"
+                    placeholder={t("login.multi-user.placeholder-username")}
+                    className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
+                    required={true}
+                    autoComplete="off"
+                  />
+                </div>
+                <div className="w-screen md:w-full md:px-0 px-6">
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder={t("login.multi-user.placeholder-password")}
+                    className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
+                    required={true}
+                    autoComplete="off"
+                  />
+                </div>
+                {error && <p className="text-red-400 text-sm">Error: {error}</p>}
               </div>
-              <div className="w-screen md:w-full md:px-0 px-6">
-                <input
-                  name="password"
-                  type="password"
-                  placeholder={t("login.multi-user.placeholder-password")}
-                  className="bg-zinc-900 text-white placeholder-white/20 text-sm rounded-md p-2.5 w-full h-[48px] md:w-[300px] md:h-[34px]"
-                  required={true}
-                  autoComplete="off"
-                />
-              </div>
-              {error && <p className="text-red-400 text-sm">Error: {error}</p>}
             </div>
-          </div>
-          <div className="flex items-center md:p-12 px-10 mt-12 md:mt-0 space-x-2 border-gray-600 w-full flex-col gap-y-8">
+
             <button
               disabled={loading}
               type="submit"
@@ -342,8 +397,8 @@ export default function MultiUserAuth() {
               <b>{t("login.multi-user.reset")}</b>
             </button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
 
       <ModalWrapper isOpen={isRecoveryCodeModalOpen} noPortal={true}>
         <RecoveryCodeModal

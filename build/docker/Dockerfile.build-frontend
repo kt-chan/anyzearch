@@ -24,6 +24,8 @@ WORKDIR /app/frontend
 COPY --chown=anythingllm:anythingllm ./frontend /app/frontend/
 RUN yarn install  --network-timeout 1000000 && yarn cache clean
 RUN yarn build 
+
+## Clean up directory
 # RUN cp -r dist /tmp/frontend-build && \
 #     rm -rf * && \
 #     cp -r /tmp/frontend-build dist && \

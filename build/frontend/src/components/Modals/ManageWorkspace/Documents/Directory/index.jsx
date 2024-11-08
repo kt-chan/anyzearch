@@ -8,6 +8,7 @@ import Document from "@/models/document";
 import showToast from "@/utils/toast";
 import FolderSelectionPopup from "./FolderSelectionPopup";
 import MoveToFolderIcon from "./MoveToFolderIcon";
+import DownloadFolderIcon from "./DownloadFolderIcon";
 import { useModal } from "@/hooks/useModal";
 import NewFolderModal from "./NewFolderModal";
 import debounce from "lodash.debounce";
@@ -166,6 +167,41 @@ function Directory({
     setLoading(false);
   };
 
+  const downloadFolder = async (folder) => {
+    const toDownload = [];
+    for (const itemId of Object.keys(selectedItems)) {
+      for (const currentFolder of files.items) {
+        const foundItem = currentFolder.items.find(
+          (file) => file.id === itemId
+        );
+        if (foundItem) {
+          toDownload.push({ ...foundItem, folderName: currentFolder.name });
+          break;
+        }
+      }
+    }
+    setLoading(true);
+    setLoadingMessage(`Downloading ${toDownload.length} documents. Please wait.`);
+    
+    //@DEBUG @FILES_DOWNLOAD Change to download binaries
+    const { success, message } = await Document.downloadFolder(toDownload);
+    if (!success) {
+      showToast(`Error moving files: ${message}`, "error");
+      setLoading(false);
+      return;
+    }
+
+    if (success && message) {
+      // show info if some files were not moved due to being embedded
+      showToast("Files Downloaded", "info");
+    } else {
+      showToast(`Successfully moved ${toDownload.length} documents.`, "success");
+    }
+    await fetchKeys(true);
+    setSelectedItems({});
+    setLoading(false);
+  };
+
   const handleSearch = debounce((e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
@@ -270,6 +306,14 @@ function Directory({
                         onClose={() => setShowFolderSelection(false)}
                       />
                     )}
+                  </div>
+                  <div className="relative">
+                    <button
+                      onClick={downloadFolder}
+                      className="border-none text-sm font-semibold bg-white h-[32px] w-[32px] rounded-lg text-dark-text hover:bg-neutral-800/80 flex justify-center items-center group"
+                    >
+                      <DownloadFolderIcon className="text-dark-text group-hover:text-white" />
+                    </button>
                   </div>
                   <button
                     onClick={deleteFiles}

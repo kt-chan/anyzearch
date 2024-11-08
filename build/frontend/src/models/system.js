@@ -8,6 +8,10 @@ const System = {
     footerIcons: "anythingllm_footer_links",
     supportEmail: "anythingllm_support_email",
     customAppName: "anythingllm_custom_app_name",
+    enabledSSOMode: false,
+  },
+  init: async function () {
+    window.location.href = `${API_BASE}/init`;
   },
   ping: async function () {
     return await fetch(`${API_BASE}/ping`)
@@ -64,6 +68,9 @@ const System = {
 
     window.localStorage.setItem(AUTH_TIMESTAMP, Number(new Date()));
     return valid;
+  },
+  requestLoginADFSSSO: async function (body) {
+    window.location.href =`${API_BASE.replace("/api", "")}/adfs/login-adfs-sso`
   },
   requestToken: async function (body) {
     return await fetch(`${API_BASE}/request-token`, {
@@ -307,6 +314,43 @@ const System = {
     );
     return { email: supportEmail, error: null };
   },
+
+  fetchIsEnabledSSOMode: async function () {
+    const { enabledSSOMode, error } = await fetch(
+      `${API_BASE}/system/isEnabledSSOMode`,
+      {
+        method: "GET",
+        cache: "no-cache",
+        headers: baseHeaders(),
+      }
+    )
+      .then((res) => res.json())
+      .catch((e) => {
+        console.log(e);
+        return { enabledSSOMode: false, error: e.message };
+      });
+
+    return { ssoMode: (enabledSSOMode === "true"), error: null };
+  },
+
+  checkSSOFlagSetTrue: async function () {
+    const { isSSOFlagSetTrue, error } = await fetch(
+      `${API_BASE}/system/checkSSOFlagSetTrue`,
+      {
+        method: "GET",
+        cache: "no-cache",
+        headers: baseHeaders(),
+      }
+    )
+      .then((res) => res.json())
+      .catch((e) => {
+        console.log(e);
+        return { isSSOFlagSetTrue: false, error: e.message };
+      });
+
+    return { ssoModeFlag: (isSSOFlagSetTrue), error: null };
+  },
+  
 
   fetchCustomAppName: async function () {
     const cache = window.localStorage.getItem(this.cacheKeys.customAppName);

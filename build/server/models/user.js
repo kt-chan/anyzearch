@@ -48,12 +48,14 @@ const User = {
     return { ...rest };
   },
 
-  create: async function ({ username, password, role = "default" }) {
-    const passwordCheck = this.checkPasswordComplexity(password);
-    if (!passwordCheck.checkedOK) {
-      return { user: null, error: passwordCheck.error };
+  create: async function ({ username, password, role = "default", skipPasswordCheck = false }) {
+    // const passwordCheck = skipPasswordCheck ? true : this.checkPasswordComplexity(password);
+    if (!skipPasswordCheck) {
+      const passwordCheck = this.checkPasswordComplexity(password);
+      if (!passwordCheck.checkedOK) {
+        return { user: null, error: passwordCheck.error };
+      }
     }
-
     try {
       const bcrypt = require("bcrypt");
       const hashedPassword = bcrypt.hashSync(password, 10);

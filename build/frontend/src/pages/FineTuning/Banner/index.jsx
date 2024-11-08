@@ -28,7 +28,11 @@ export function FineTuningAlert() {
     )
       return;
     FineTuning.checkEligibility()
-      .then((eligible) => setIsEligible(eligible))
+      .then((eligible) => { 
+        //@DEBUG @DISABLE_TRAINING
+        // setIsEligible(eligible) 
+        setIsEligible(false);
+      })
       .catch(() => null);
   }, [user]);
 

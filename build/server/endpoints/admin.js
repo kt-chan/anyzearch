@@ -24,6 +24,7 @@ const {
   ROLES,
 } = require("../utils/middleware/multiUserProtected");
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
+const { MetadataFactory } = require("../utils/sso/metadataFactory");
 
 function adminEndpoints(app) {
   if (!app) return;
@@ -326,6 +327,18 @@ function adminEndpoints(app) {
             Number(
               (await SystemSettings.get({ label: "message_limit" }))?.value
             ) || 10,
+          enabled_adfs_sso:
+            (await SystemSettings.get({ label: "enabled_adfs_sso" }))
+              ?.value === "true",
+          adfs_sso_url:
+            (await SystemSettings.get({ label: "adfs_sso_url" }))?.value || process.env.SAML_ENTRY_POINT,
+          adfs_sso_callback:
+            (await SystemSettings.get({ label: "adfs_sso_callback" }))?.value || process.env.SAML_CALLBACK_HOST,
+          adfs_sso_issuer:
+            (await SystemSettings.get({ label: "adfs_sso_issuer" }))?.value || process.env.SAML_ISSUER,
+          adfs_sso_state:
+            (await SystemSettings.get({ label: "adfs_sso_state" }))?.value ||
+            JSON.stringify([]),
           footer_data:
             (await SystemSettings.get({ label: "footer_data" }))?.value ||
             JSON.stringify([]),
@@ -387,6 +400,101 @@ function adminEndpoints(app) {
       }
     }
   );
+
+  app.post(
+    "/admin/system-preferences-sso",
+    [validatedRequest, flexUserRoleValid([ROLES.admin])],
+    async (request, response) => {
+      try {
+        const user = await userFromSession(request, response);
+        const currentTimestamp = new Date().toISOString();
+        const updates = reqBody(request);
+        const enabledSSOMode = updates['enabled_adfs_sso'];
+        if (enabledSSOMode) {
+          let customData = null;
+          switch (updates['adfs_sso_state']) {
+            // Generate ADFS SSO Configuration File
+            case 1:
+              const adfsConfig = await MetadataFactory.validateADFSSettings(updates);
+              customData = {
+                success: true,
+                error: null,
+                data: {
+                  // Include only the properties you want to send back
+                  adfsSettings: adfsConfig,
+                  // Add any additional data you want to include
+                  timestamp: `${currentTimestamp}`,
+                },
+              };
+              break;
+            case 2:
+              //@DEBUG @SSO - (C)ktchan - for adfs sso
+              try {
+                const adfs_cert = await MetadataFactory.getADFSCertificate(updates);
+                customData = {
+                  success: true,
+                  error: null,
+                };
+              } catch (error) {
+                // 如果有错误，那么Promise就是被拒绝的
+                console.error('ADFS certificate is rejected:', error);
+                function safeStringifyError(error) {
+                  const { name, message, stack } = error;
+                  return JSON.stringify({ name, message, stack }, null, 2);
+                }
+                customData = {
+                  success: false,
+                  error: safeStringifyError(error),
+                };
+              }
+              break;
+            case 3:
+              // Convert to ADFS SSO
+              await SystemSettings.updateSettings(updates);
+              customData = {
+                success: true,
+                error: null,
+              };
+              await Telemetry.sendTelemetry("updated_sso_mode",  { SSOMode: false, createdBy: user?.username });
+              await EventLogs.logEvent("updated_sso_mode", { SSOMode: true, createdBy: user?.username }, user?.id);
+              break;
+            default:
+              customData = {
+                success: false,
+                error: 'Internal Server Error: adfs sso state is not defined.',
+              };
+          };
+          response.status(200).json(customData);
+        }
+        else {
+          let customData = null;
+          switch (updates['adfs_sso_state']) {
+            // Generate ADFS SSO Configuration File
+            case -1:
+              // Convert to ADFS SSO
+              await SystemSettings.updateSettings(updates);
+              customData = {
+                success: true,
+                error: null,
+              };
+              await Telemetry.sendTelemetry("updated_sso_mode",  { SSOMode: false, createdBy: user?.username });
+              await EventLogs.logEvent("updated_sso_mode", { SSOMode: false, createdBy: user?.username }, user?.id);
+              break;
+            default:
+              customData = {
+                success: false,
+                error: 'Internal Server Error: adfs sso state is not defined.',
+              };
+          }
+          response.status(200).json(customData);
+        }
+      } catch (e) {
+        console.error(e);
+        response.status(500).json({ success: false, error: 'Internal Server Error', data: null });
+      }
+    }
+  );
+
 
   app.get(
     "/admin/api-keys",

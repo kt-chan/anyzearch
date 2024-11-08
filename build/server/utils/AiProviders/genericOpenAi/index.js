@@ -18,7 +18,7 @@ class GenericOpenAiLLM {
     this.basePath = process.env.GENERIC_OPEN_AI_BASE_PATH;
     let httpsAgent;
 
-    //@DEBUG
+    //@DEBUG @PROXY - (C)ktchan - Setup HttpPorxy for firewall
     console.log('@Debug GenericOpenAiLLM .... 1 / basePath: ' + this.basePath);
     let http_proxy = process.env.HTTP_PROXY || process.env.http_proxy;
 

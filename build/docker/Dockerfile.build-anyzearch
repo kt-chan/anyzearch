@@ -53,6 +53,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
 # RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 #     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
 #     [Package Name]
+
 ################################################################################
 # Those library have to be installed in final image if run in a bundled package#
 ################################################################################
@@ -69,6 +70,9 @@ ENV CHROME_PATH="/usr/bin/google-chrome-stable"
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
 
 
+## Setup Python for running adfs sso scripts
+# Install python3 and update-alternatives
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 # Environment Setup
 USER anythingllm

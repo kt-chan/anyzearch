@@ -179,6 +179,37 @@ const Admin = {
         return { success: false, error: e.message };
       });
   },
+  validateSystemPreferencesSSO: async (updates = {}) => {
+    try {
+      // Make a POST request to the server
+      const response = await fetch(`${API_BASE}/admin/system-preferences-sso`, {
+        method: "POST",
+        headers: baseHeaders(),
+        body: JSON.stringify(updates),
+      });
+  
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      // Parse the JSON response body
+      const jsonResponse = await response.json();
+  
+      // Handle the successful response
+      if (jsonResponse.success) {
+        console.log('Validation successful:', jsonResponse.success);
+        return jsonResponse;
+      } else {
+        console.error('Validation failed:', jsonResponse.error);
+        // throw new Error(res.statusText || "Error validating adfs sso.");
+        return jsonResponse;
+      }
+    } catch (error) {
+      console.error('Error validating system preferences:', error);
+      throw new Error(error.message || "Error validating adfs sso.");
+    }
+  },
 
   // API Keys
   getApiKeys: async function () {

@@ -1,0 +1,85 @@
+FROM local/anythingllm-frontend AS frontend-build
+USER anythingllm
+WORKDIR /app/frontend
+COPY --chown=anythingllm:anythingllm ./frontend /app/frontend/
+RUN yarn build && \
+    cp -r dist /tmp/frontend-build && \
+    rm -rf * && \
+    cp -r /tmp/frontend-build dist && \
+    rm -rf /tmp/frontend-build
+WORKDIR /app
+
+
+# Build backend layer, install if needed
+FROM local/anythingllm-backend AS backend-build
+USER root
+WORKDIR /app/server
+COPY ./server /app/server/
+# RUN yarn install --verbose --production --network-timeout 1000000 && yarn cache clean
+# WORKDIR /app
+
+# Build collector layer, Build collector dependencies if needed
+FROM local/anythingllm-collector AS collector-build
+USER anythingllm
+WORKDIR /app/collector
+COPY ./collector/ /app/collector
+USER root
+WORKDIR /app/collector
+ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public 
+RUN yarn install --production --network-timeout 1000000 && yarn cache clean
+
+# Production Build
+FROM backend-build AS production-build
+USER root
+WORKDIR /app
+COPY --chown=anythingllm:anythingllm --from=frontend-build /app/frontend/dist /app/server/public
+COPY --chown=anythingllm:anythingllm --from=collector-build /app/collector /app/collector
+RUN chown -R anythingllm:anythingllm /app/server && \
+    chown -R anythingllm:anythingllm /app/collector
+
+# Setup scripts, Copy docker helper scripts
+USER root
+WORKDIR /app/frontend
+COPY ./docker/docker-entrypoint-anyzearch.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./docker/docker-healthcheck-anyzearch.sh /usr/local/bin/docker-healthcheck.sh
+
+# Ensure the scripts are executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-healthcheck.sh
+
+################################################################################
+# Those library have to be installed in final image if run in a bundled package#
+##################################################################################
+##RUN echo "Running common build flow of AnyZearch image for all architectures"
+##RUN npm install -g puppeteer
+##RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+##    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+##    libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi-dev libxtst-dev libnss3 \
+##    libcups2 libxss1 libxrandr2 libasound2 libatk1.0-0 libatk-bridge2.0-0 libpangocairo-1.0-0 libgtk-3-0 libgbm1 wget 
+##RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+##RUN apt install -y ./google-chrome-stable_current_amd64.deb
+##ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public 
+##ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false
+##ENV CHROME_PATH="/usr/bin/google-chrome-stable"
+##ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable"
+
+RUN apt-get install -yq chromium-chromedriver
+
+
+
+# Environment Setup
+USER anythingllm
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV ANYTHING_LLM_RUNTIME=docker
+
+EXPOSE 3001
+
+# Setup the healthcheck
+HEALTHCHECK --interval=1m --timeout=10s --start-period=1m \
+  CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
+
+# Run the server
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/docker-entrypoint.sh"]
+

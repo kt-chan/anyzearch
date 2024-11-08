@@ -1,0 +1,86 @@
+# Setup base image
+FROM ubuntu:jammy-20240627.1 AS base
+
+# Build arguments
+ARG ARG_UID=1000
+ARG ARG_GID=1000
+USER root
+WORKDIR /app
+RUN echo "Preparing build of AnythingLLM image for non-ARM (AMD64)architecture"
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Install system dependencies
+# hadolint ignore=DL3008,DL3013
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y  curl netcat vim net-tools iputils-ping
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        gnupg libgfortran5 libgbm1 tzdata \
+        libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 \
+        libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libx11-6 libx11-xcb1 libxcb1 \
+        libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 \
+        libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release \
+        xdg-utils git build-essential ffmpeg
+RUN mkdir -p /etc/apt/keyrings
+
+
+
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg 
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list 
+RUN apt-get update 
+RUN apt-get install -yq --no-install-recommends nodejs 
+
+
+RUN curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn_1.22.19_all.deb \
+        && dpkg -i yarn_1.22.19_all.deb \
+        && rm yarn_1.22.19_all.deb && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends vim net-tools iputils-ping python3 python3-pip
+RUN echo alias python='python3' >> ~/.bashrc
+RUN pip install -U huggingface_hub
+
+# Create a group and user with specific UID and GID
+RUN groupadd -g "$ARG_GID" anythingllm && \
+    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g anythingllm anythingllm && \
+    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R anythingllm:anythingllm /app
+
+## since we need to enable https setup, we need to update ssl certificate
+RUN mkdir -p ./certs
+COPY ./certs/openssl.cnf ./certs/openssl.cnf
+RUN cd ./certs/
+RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
+  -nodes -keyout anyzearch.local.key -out anyzearch.local.crt -subj "/CN=anyzearch.local" \
+  -config ./certs/openssl.cnf
+RUN openssl pkcs12 -export -out anyzearch.local.pfx -inkey  anyzearch.local.key -in anyzearch.local.crt -passout pass:${PFX_PASSWORD}
+RUN mv ./anyzearch.local* /etc/ssl/certs/.
+RUN chown anythingllm:anythingllm /etc/ssl/certs/anyzearch.local.*
+
+
+# Copy docker helper scripts
+ADD ./docker/docker-entrypoint-anyzearch.sh /usr/local/bin/docker-entrypoint.sh
+ADD ./docker/docker-healthcheck-anyzearch.sh /usr/local/bin/docker-healthcheck.sh
+ADD ./docker/dot.env /app/server/.env
+RUN chown anythingllm:anythingllm -R /app/server/.env
+
+# Ensure the scripts are executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/docker-healthcheck.sh
+
+
+# Puppeteer does not ship with an ARM86 compatible build for Chromium
+# so web-scraping would be broken in arm docker containers unless we patch it
+# by manually installing a compatible chromedriver.
+RUN echo "Need to patch Puppeteer x Chromium support for ARM86 - installing dep!" 
+RUN curl https://playwright.azureedge.net/builds/chromium/1088/chromium-linux-arm64.zip -o chrome-linux.zip 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq zip
+RUN unzip chrome-linux.zip
+RUN rm -rf chrome-linux.zip
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV CHROME_PATH=/app/chrome-linux/chrome
+ENV PUPPETEER_EXECUTABLE_PATH=/app/chrome-linux/chrome
+
+RUN echo "Done running arm64 specific installation steps"
