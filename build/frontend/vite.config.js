@@ -14,6 +14,16 @@ const certPath = path.resolve(__dirname, process.env.NODE_ENV === "development"
 const keyPath = path.resolve(__dirname, process.env.NODE_ENV === "development"
   ? '../certs/win10.local.key' : '/etc/ssl/certs/anyzearch.local.key');
 
+// SSH KeyPath for Windows
+// const certPath = path.resolve(__dirname,  '../certs/win10.local.crt');
+// const keyPath = path.resolve(__dirname, '../certs/win10.local.key');
+
+// SSH KeyPath for Linux
+// const certPath = path.resolve(__dirname,   '/etc/ssl/certs/anyzearch.local.crt');
+// const keyPath = path.resolve(__dirname, '/etc/ssl/certs/anyzearch.local.key');
+
+
+    
 dns.setDefaultResultOrder("verbatim")
 
 //@SSH

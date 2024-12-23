@@ -23,3 +23,6 @@ __pycache__
 anyzearch.local.key
 anyzearch.local.pfx
 anyzearch.tar.gz
+/build/certs
+/build/certs
+*.key

@@ -1,6 +1,7 @@
 v-env
 !.env.example
 .vs/
+./certs
 node_modules
 __pycache__
 v-env
