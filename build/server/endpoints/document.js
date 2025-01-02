@@ -8,9 +8,37 @@ const {
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
 const fs = require("fs");
 const path = require("path");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
 function documentEndpoints(app) {
   if (!app) return;
+
+  const s3Client = new S3Client({
+    endpoint: "http://localhost:9000", // 替换为您的 MinIO 服务 endpoint
+    region: "default",
+    credentials: {
+      accessKeyId: "qG4IWW6zBcOfr29zSrj0", // 替换为您的 MinIO access key
+      secretAccessKey: "VmLLAFLWarwfdiNBrcEWK0KBWHf6pWWzy9KFCfc4", // 替换为您的 MinIO secret key
+    },
+    s3ForcePathStyle: true, // MinIO 需要设置为 true
+    forcePathStyle: true, // 同上，确保路径风格访问
+  });
+
+  async function getObject(bucketName, objectKey) {
+    const getObjectCommand = new GetObjectCommand({
+      Bucket: bucketName, // The name of the bucket
+      Key: objectKey, // The key of the object
+    });
+
+    try {
+      const data = await s3Client.send(getObjectCommand);
+      console.log("Object retrieved successfully.", data);
+      return data;
+    } catch (err) {
+      console.error("Error retrieving object:", err);
+    }
+  }
+
   app.post(
     "/document/create-folder",
     [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
@@ -42,7 +70,10 @@ function documentEndpoints(app) {
   );
 
 
-
+  //@DEBUG @ktchan @S3A @TODO @(2)
+  // 1. fix the s3a persistent, Update to Put file into S3A storage
+  // 2. update this server endpoint to get object from s3a
+  // 3. Change to download files from server
   app.post(
     "/document/download-files",
     [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
@@ -62,6 +93,17 @@ function documentEndpoints(app) {
         console.error(e.message, e);
         response.sendStatus(500).end();
       }
+
+      let objKey = documents[0];
+      getObject("default", objKey.name)
+        .then(data => {
+          if (data) {
+            console.log(data.Body.toString()); // Convert the buffer to a string
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
       response.status(200).json({ success: true, message: documents });
     }
   );

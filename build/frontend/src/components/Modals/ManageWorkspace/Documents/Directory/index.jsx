@@ -182,8 +182,11 @@ function Directory({
     }
     setLoading(true);
     setLoadingMessage(`Downloading ${toDownload.length} documents. Please wait.`);
-    
-    //@DEBUG @FILES_DOWNLOAD Change to download binaries
+
+    //@DEBUG @ktchan @S3A @TODO @(3)
+    // 1. fix the s3a persistent, Update to Put file into S3A storage
+    // 2. update this server endpoint to get object from s3a
+    // 3. Change to download files from server
     const { success, message } = await Document.downloadFolder(toDownload);
     if (!success) {
       showToast(`Error moving files: ${message}`, "error");

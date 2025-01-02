@@ -34,6 +34,7 @@ function FileUploadProgressComponent({
     });
   };
 
+  //@DEBUG @ktchan @S3A File Persisrtent
   useEffect(() => {
     async function uploadFile() {
       setLoading(true);

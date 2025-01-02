@@ -40,7 +40,9 @@ const Document = {
         headers: baseHeaders(),
         body: JSON.stringify(files),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          res.json()
+        })
         .catch((e) => {
           console.error(e);
           return { success: false, error: e.message };

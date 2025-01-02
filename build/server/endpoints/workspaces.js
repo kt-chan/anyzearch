@@ -105,6 +105,7 @@ function workspaceEndpoints(app) {
     }
   );
 
+  //@DEBUG @ktchan @S3a fileupload on server side, call Collector.processDocument(originalname);
   app.post(
     "/workspace/:slug/upload",
     [

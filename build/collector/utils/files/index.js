@@ -17,6 +17,7 @@ function isTextType(filepath) {
   }
 }
 
+
 function trashFile(filepath) {
   if (!fs.existsSync(filepath)) return;
 
@@ -41,6 +42,32 @@ function createdDate(filepath) {
   }
 }
 
+//@DEBUG @ktchan @S3A @TODO @(1)
+// 1. fix the s3a persistent, Update to Put file into S3A storage
+// 2. update this server endpoint to get object from s3a
+// 3. Change to download files from server
+function writeToS3Documents(
+  data = {},
+  filename
+) {
+
+  if (!fs.existsSync(destination))
+    fs.mkdirSync(destination, { recursive: true });
+  const destinationFilePath = path.resolve(destination, filename) + ".json";
+
+  fs.writeFileSync(destinationFilePath, JSON.stringify(data, null, 4), {
+    encoding: "utf-8",
+  });
+
+  return {
+    ...data,
+    // relative location string that can be passed into the /update-embeddings api
+    // that will work since we know the location exists and since we only allow
+    // 1-level deep folders this will always work. This still works for integrations like GitHub and YouTube.
+    location: destinationFilePath.split("/").slice(-2).join("/"),
+  };
+}
+
 function writeToServerDocuments(
   data = {},
   filename,
@@ -49,9 +76,9 @@ function writeToServerDocuments(
   const destination = destinationOverride
     ? path.resolve(destinationOverride)
     : path.resolve(
-        __dirname,
-        "../../../server/storage/documents/custom-documents"
-      );
+      __dirname,
+      "../../../server/storage/documents/custom-documents"
+    );
   if (!fs.existsSync(destination))
     fs.mkdirSync(destination, { recursive: true });
   const destinationFilePath = path.resolve(destination, filename) + ".json";
@@ -82,7 +109,7 @@ async function wipeCollectorStorage() {
         if (file === "__HOTDIR__.md") continue;
         try {
           fs.rmSync(path.join(directory, file));
-        } catch {}
+        } catch { }
       }
       resolve();
     });
@@ -97,7 +124,7 @@ async function wipeCollectorStorage() {
         if (file === ".placeholder") continue;
         try {
           fs.rmSync(path.join(directory, file));
-        } catch {}
+        } catch { }
       }
       resolve();
     });
