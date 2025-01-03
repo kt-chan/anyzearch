@@ -35,18 +35,44 @@ const Document = {
   },
   downloadFolder: async (files) => {
     if (files && files !== null) {
-      return await fetch(`${API_BASE}/document/download-files`, {
-        method: "POST",
-        headers: baseHeaders(),
-        body: JSON.stringify(files),
-      })
-        .then((res) => {
-          res.json()
-        })
-        .catch((e) => {
-          console.error(e);
-          return { success: false, error: e.message };
+
+      try {
+        const response = await fetch(`${API_BASE}/document/download-files`, {
+          method: "POST",
+          headers: baseHeaders(),
+          body: JSON.stringify(files),
         });
+
+        // Check if the response is ok (status in the range 200-299)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Handle the response as a blob
+        const blob = await response.blob();
+        
+        // Create a URL to the blob
+        const fileURL = window.URL.createObjectURL(blob);
+
+        // Create a link element to download the file
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.setAttribute('download', 'anyzearch-filedownload.zip'); // Set the file name and extension
+
+        // Append the link to the body to trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up and remove the link from the body
+        link.parentNode.removeChild(link);
+
+        // Return a success response
+        return { success: true };
+      } catch (e) {
+        console.error(e);
+        return { success: false, error: e.message };
+      }
+
     }
   },
 };

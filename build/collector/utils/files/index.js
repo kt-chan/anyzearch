@@ -1,6 +1,63 @@
 const fs = require("fs");
 const path = require("path");
 const { MimeDetector } = require("./mime");
+const { S3Client, GetObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
+
+
+function splitFilePath(filePath) {
+  // Normalize the path to handle differences between Windows and Linux
+  const normalizedPath = path.normalize(filePath);
+
+  // Split the path into components
+  const parts = normalizedPath.split(path.sep);
+
+  return parts;
+}
+// Create a function to initialize the S3 client
+const s3Client = (function () {
+  return new S3Client({
+    endpoint: "http://localhost:9000", // Replace with your MinIO service endpoint
+    region: "default", // You can remove this if not needed
+    credentials: {
+      accessKeyId: "qG4IWW6zBcOfr29zSrj0", // Replace with your MinIO access key
+      secretAccessKey: "VmLLAFLWarwfdiNBrcEWK0KBWHf6pWWzy9KFCfc4", // Replace with your MinIO secret key
+    },
+    s3ForcePathStyle: true, // MinIO requires this to be true
+    forcePathStyle: true, // Ensures path-style addressing is used
+  });
+})();
+
+
+// Function to upload a file to S3
+function putObject(bucketName, objectKey, filePath) {
+  try {
+    // Create a Readable Stream for the file
+    const fileStream = fs.readFileSync(filePath);
+
+    // Create the PutObjectCommand
+    const putObjectCommand = new PutObjectCommand({
+      Bucket: bucketName,
+      Key: objectKey,
+      Body: fileStream,
+    });
+
+    // Send the command to upload the object
+    s3Client.send(putObjectCommand);
+    console.log(`Object ${objectKey} uploaded successfully to ${bucketName}.`);
+  } catch (err) {
+    console.error("Error uploading object:", err);
+  }
+}
+
+function copyFile(sourceFilePath, destinationFilePath) {
+  try {
+    const data = fs.readFileSync(sourceFilePath);
+    fs.writeFileSync(destinationFilePath, data);
+    console.log('File copied successfully');
+  } catch (err) {
+    console.error('Error copying the file:', err);
+  }
+}
 
 function isTextType(filepath) {
   try {
@@ -12,32 +69,33 @@ function isTextType(filepath) {
     const type = mime.split("/")[0];
     if (mimeLib.nonTextTypes.includes(type)) return false;
     return true;
-  } catch {
+  } catch (err) {
+    console.error('Error checking file exist:', err);
     return false;
   }
 }
-
 
 function trashFile(filepath) {
   if (!fs.existsSync(filepath)) return;
 
   try {
-    const isDir = fs.lstatSync(filepath).isDirectory();
-    if (isDir) return;
-  } catch {
+    const stats = fs.lstatSync(filepath);
+    if (stats.isDirectory()) return;
+  } catch (err) {
+    console.error('Error checking filetype symbolic link lstatSync & isDirectory:', err);
     return;
   }
 
   fs.rmSync(filepath);
-  return;
 }
 
 function createdDate(filepath) {
   try {
-    const { birthtimeMs, birthtime } = fs.statSync(filepath);
-    if (birthtimeMs === 0) throw new Error("Invalid stat for file!");
-    return birthtime.toLocaleString();
-  } catch {
+    const stats = fs.statSync(filepath);
+    if (stats.birthtimeMs === 0) throw new Error("Invalid stat for file!");
+    return stats.birthtime.toLocaleString();
+  } catch (err) {
+    console.error('Error checking filetype statSync:', err);
     return "unknown";
   }
 }
@@ -46,33 +104,36 @@ function createdDate(filepath) {
 // 1. fix the s3a persistent, Update to Put file into S3A storage
 // 2. update this server endpoint to get object from s3a
 // 3. Change to download files from server
-function writeToS3Documents(
-  data = {},
-  filename
-) {
+function writeToS3Documents(data = {}, filename, fileExtension = null, destinationOverride = null) {
+  const destination = destinationOverride
+    ? path.resolve(destinationOverride)
+    : path.resolve(
+      __dirname,
+      "../../../server/storage/objects/custom-documents"
+    );
 
-  if (!fs.existsSync(destination))
-    fs.mkdirSync(destination, { recursive: true });
-  const destinationFilePath = path.resolve(destination, filename) + ".json";
+  // Convert file URL to local path
+  let sourceFilePath;
+  if (data.url.startsWith('file://')) {
+    // Remove the 'file://' prefix and decode the URI
+    sourceFilePath = decodeURIComponent(data.url.substring(7));
+  } else {
+    // If it's not a file URL, use the provided path directly
+    sourceFilePath = data.url;
+  }
 
-  fs.writeFileSync(destinationFilePath, JSON.stringify(data, null, 4), {
-    encoding: "utf-8",
-  });
+  const objectPath = splitFilePath(path.resolve(destination, filename) + fileExtension);
+  const objectKey = path.join(objectPath[(objectPath.length - 2)], objectPath[(objectPath.length - 1)]).replace("\\", "/");
+
+  putObject("default", objectKey, sourceFilePath);
 
   return {
     ...data,
-    // relative location string that can be passed into the /update-embeddings api
-    // that will work since we know the location exists and since we only allow
-    // 1-level deep folders this will always work. This still works for integrations like GitHub and YouTube.
-    location: destinationFilePath.split("/").slice(-2).join("/"),
+    objectKey: objectKey,
   };
 }
 
-function writeToServerDocuments(
-  data = {},
-  filename,
-  destinationOverride = null
-) {
+function writeToServerDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
     ? path.resolve(destinationOverride)
     : path.resolve(
@@ -81,6 +142,7 @@ function writeToServerDocuments(
     );
   if (!fs.existsSync(destination))
     fs.mkdirSync(destination, { recursive: true });
+
   const destinationFilePath = path.resolve(destination, filename) + ".json";
 
   fs.writeFileSync(destinationFilePath, JSON.stringify(data, null, 4), {
@@ -89,58 +151,42 @@ function writeToServerDocuments(
 
   return {
     ...data,
-    // relative location string that can be passed into the /update-embeddings api
-    // that will work since we know the location exists and since we only allow
-    // 1-level deep folders this will always work. This still works for integrations like GitHub and YouTube.
     location: destinationFilePath.split("/").slice(-2).join("/"),
   };
 }
 
-// When required we can wipe the entire collector hotdir and tmp storage in case
-// there were some large file failures that we unable to be removed a reboot will
-// force remove them.
-async function wipeCollectorStorage() {
-  const cleanHotDir = new Promise((resolve) => {
+function wipeCollectorStorage() {
+  const cleanHotDir = () => {
     const directory = path.resolve(__dirname, "../../hotdir");
-    fs.readdir(directory, (err, files) => {
-      if (err) resolve();
-
+    try {
+      const files = fs.readdirSync(directory);
       for (const file of files) {
         if (file === "__HOTDIR__.md") continue;
-        try {
-          fs.rmSync(path.join(directory, file));
-        } catch { }
+        fs.rmSync(path.join(directory, file));
       }
-      resolve();
-    });
-  });
+    } catch (err) {
+      console.error('Error cleaning hot directory:', err);
+    }
+  };
 
-  const cleanTmpDir = new Promise((resolve) => {
+  const cleanTmpDir = () => {
     const directory = path.resolve(__dirname, "../../storage/tmp");
-    fs.readdir(directory, (err, files) => {
-      if (err) resolve();
-
+    try {
+      const files = fs.readdirSync(directory);
       for (const file of files) {
         if (file === ".placeholder") continue;
-        try {
-          fs.rmSync(path.join(directory, file));
-        } catch { }
+        fs.rmSync(path.join(directory, file));
       }
-      resolve();
-    });
-  });
+    } catch (err) {
+      console.error('Error cleaning tmp directory:', err);
+    }
+  };
 
-  await Promise.all([cleanHotDir, cleanTmpDir]);
+  cleanHotDir();
+  cleanTmpDir();
   console.log(`Collector hot directory and tmp storage wiped!`);
-  return;
 }
 
-/**
- * Checks if a given path is within another path.
- * @param {string} outer - The outer path (should be resolved).
- * @param {string} inner - The inner path (should be resolved).
- * @returns {boolean} - Returns true if the inner path is within the outer path, false otherwise.
- */
 function isWithin(outer, inner) {
   if (outer === inner) return false;
   const rel = path.relative(outer, inner);
@@ -166,6 +212,7 @@ module.exports = {
   isTextType,
   createdDate,
   writeToServerDocuments,
+  writeToS3Documents,
   wipeCollectorStorage,
   normalizePath,
   isWithin,

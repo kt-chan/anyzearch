@@ -9,6 +9,7 @@ const { validatedRequest } = require("../utils/middleware/validatedRequest");
 const fs = require("fs");
 const path = require("path");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+const archiver = require('archiver');
 
 function documentEndpoints(app) {
   if (!app) return;
@@ -23,21 +24,6 @@ function documentEndpoints(app) {
     s3ForcePathStyle: true, // MinIO 需要设置为 true
     forcePathStyle: true, // 同上，确保路径风格访问
   });
-
-  async function getObject(bucketName, objectKey) {
-    const getObjectCommand = new GetObjectCommand({
-      Bucket: bucketName, // The name of the bucket
-      Key: objectKey, // The key of the object
-    });
-
-    try {
-      const data = await s3Client.send(getObjectCommand);
-      console.log("Object retrieved successfully.", data);
-      return data;
-    } catch (err) {
-      console.error("Error retrieving object:", err);
-    }
-  }
 
   app.post(
     "/document/create-folder",
@@ -94,19 +80,49 @@ function documentEndpoints(app) {
         response.sendStatus(500).end();
       }
 
-      let objKey = documents[0];
-      getObject("default", objKey.name)
-        .then(data => {
-          if (data) {
-            console.log(data.Body.toString()); // Convert the buffer to a string
-          }
-        })
-        .catch(err => {
-          console.error(err);
+      // Create a ZIP stream
+      const zip = archiver('zip', { zlib: { level: 9 } }); // Set the compression level
+      response.setHeader('Content-Type', 'application/zip');
+      const contentDisposition = `attachment; filename="downloaded-files.zip"`;
+      response.setHeader('Content-Disposition', contentDisposition);
+
+      // Listen for the 'error' event on the zip stream
+      zip.on('error', (err) => {
+        console.error('Zip stream error:', err);
+        response.status(500).end();
+      });
+
+      // Pipe the archive data to the response
+      zip.pipe(response);
+
+      // Add each file to the ZIP archive
+      for (const document of documents) {
+        const getObjectCommand = new GetObjectCommand({
+          Bucket: "default",
+          Key: document.objectKey,
         });
-      response.status(200).json({ success: true, message: documents });
-    }
-  );
+
+        try {
+          const result = await s3Client.send(getObjectCommand);
+          const stream = result.Body;
+          // Make sure to handle the stream error
+          stream.on('error', (err) => {
+            console.error('Stream error:', err);
+            zip.abort(); // Abort the zip process on error
+          });
+          zip.append(stream, { name: document.objectKey });
+        } catch (e) {
+          console.error(e.message, e);
+          zip.abort(); // Abort the zip process on error
+          response.status(500).end();
+          return; // Make sure to return after sending the error response
+        }
+      }
+
+      // Finalize the ZIP archive when all files have been added
+      zip.finalize();
+    });
+
 
 
   app.post(

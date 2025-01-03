@@ -122,6 +122,8 @@ async function storeVectorResult(vectorData = [], filename = null) {
   return;
 }
 
+// @DEBUG @s3a @ktchan @TODO @(4)
+// Remove data from s3a
 // Purges a file from the documents/ folder.
 async function purgeSourceDocument(filename = null) {
   if (!filename) return;

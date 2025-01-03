@@ -26,7 +26,7 @@ app.use(
   })
 );
 
-//@DEBUG @ktchan @s3a, Collector Process Document API
+//@DEBUG @ktchan @s3a Collector Process Document API
 app.post(
   "/process",
   [verifyPayloadIntegrity],
