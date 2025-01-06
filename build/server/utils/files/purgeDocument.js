@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const {
   purgeVectorCache,
+  purgeS3Document,
   purgeSourceDocument,
   normalizePath,
   isWithin,
@@ -14,6 +15,7 @@ async function purgeDocument(filename = null) {
   if (!filename || !normalizePath(filename)) return;
 
   await purgeVectorCache(filename);
+  await purgeS3Document(filename);
   await purgeSourceDocument(filename);
   const workspaces = await Workspace.where();
   for (const workspace of workspaces) {

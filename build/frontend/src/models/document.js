@@ -33,6 +33,13 @@ const Document = {
         return { success: false, error: e.message };
       });
   },
+
+  //@DEBUG @ktchan @S3A @TODO @(3)
+  // 1. fix the s3a persistent, Update to Put file into S3A storage
+  // 2. update this server endpoint to get object from s3a
+  // 3. Change to download files from server
+  // 4. Remove data from s3a
+  // 5. Move file in s3
   downloadFolder: async (files) => {
     if (files && files !== null) {
 
@@ -50,7 +57,7 @@ const Document = {
 
         // Handle the response as a blob
         const blob = await response.blob();
-        
+
         // Create a URL to the blob
         const fileURL = window.URL.createObjectURL(blob);
 

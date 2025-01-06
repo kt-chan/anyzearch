@@ -11,6 +11,19 @@ const vectorCachePath =
   process.env.NODE_ENV === "development"
     ? path.resolve(__dirname, `../../storage/vector-cache`)
     : path.resolve(process.env.STORAGE_DIR, `vector-cache`);
+const { S3Client, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const archiver = require('archiver');
+
+const s3Client = new S3Client({
+  endpoint: "http://localhost:9000", // 替换为您的 MinIO 服务 endpoint
+  region: "default",
+  credentials: {
+    accessKeyId: "qG4IWW6zBcOfr29zSrj0", // 替换为您的 MinIO access key
+    secretAccessKey: "VmLLAFLWarwfdiNBrcEWK0KBWHf6pWWzy9KFCfc4", // 替换为您的 MinIO secret key
+  },
+  s3ForcePathStyle: true, // MinIO 需要设置为 true
+  forcePathStyle: true, // 同上，确保路径风格访问
+});
 
 // Should take in a folder that is a subfolder of documents
 // eg: youtube-subject/video-123.json
@@ -57,9 +70,9 @@ async function viewLocalFiles() {
         });
         const watchedInWorkspaces = liveSyncAvailable
           ? await Document.getOnlyWorkspaceIds({
-              docpath: cachefilename,
-              watched: true,
-            })
+            docpath: cachefilename,
+            watched: true,
+          })
           : [];
 
         subdocs.items.push({
@@ -122,9 +135,102 @@ async function storeVectorResult(vectorData = [], filename = null) {
   return;
 }
 
-// @DEBUG @s3a @ktchan @TODO @(4)
-// Remove data from s3a
-// Purges a file from the documents/ folder.
+async function getS3Document(objectKey = null) {
+  if (!objectKey) return;
+
+  const getObjectCommand = new GetObjectCommand({
+    Bucket: "default",
+    Key: objectKey,
+  });
+
+  try {
+    const response = await s3Client.send(getObjectCommand);
+    const stream = response.Body;
+    // Make sure to handle the stream error
+    stream.on('error', (err) => {
+      console.error('Error reading s3 object:', err);
+      throw new Error("Invalid s3 getObjectCommand.");
+    });
+    return stream
+  } catch (e) {
+    console.error(e.message, e);
+    throw new Error("Invalid s3 getObjectCommand.");
+  }
+}
+
+
+async function moveS3Document(fromObjectKey = null, toObjectKey = null) {
+  if (!fromObjectKey || !toObjectKey) return;
+
+  const copyObjectCommand = new CopyObjectCommand({
+    Bucket: "default",
+    CopySource: `default/${fromObjectKey}`,
+    Key: toObjectKey,
+  });
+
+  const deleteObjectCommand = new DeleteObjectCommand({
+    Bucket: "default",
+    Key: fromObjectKey,
+  });
+
+  try {
+    await s3Client.send(copyObjectCommand);
+    await s3Client.send(deleteObjectCommand);
+    console.log("completed object copy");
+    return;
+    // 复制成功，可以继续后续操作
+  } catch (error) {
+    console.error("Error copying object:", error);
+    throw new Error("Invalid s3 copyObjectCommand.");
+  }
+}
+
+//@DEBUG @ktchan @S3A @TODO @(4)
+// 1. fix the s3a persistent, Update to Put file into S3A storage
+// 2. update this server endpoint to get object from s3a
+// 3. Change to download files from server
+// 4. Remove data from s3a
+// 5. Move file in s3
+async function purgeS3Document(filename = null) {
+  if (!filename) return;
+  const filePath = path.resolve(documentsPath, normalizePath(filename));
+
+  if (
+    !fs.existsSync(filePath) ||
+    !isWithin(documentsPath, filePath) ||
+    !fs.lstatSync(filePath).isFile()
+  ) return;
+
+  //Read object to get objectkey
+  fs.readFile(filePath, 'utf8', async (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      throw new Error("Invalid path: metadata json file is not exist.");
+    }
+
+    try {
+      // 将 JSON 字符串解析为 JavaScript 对象
+      const metaData = JSON.parse(data);
+
+      // 根据键获取数据
+      const id = metaData.id;
+      const objectKey = metaData.objectKey;
+
+      const deleteObjectCommand = new DeleteObjectCommand({
+        Bucket: "default",
+        Key: objectKey,
+      });
+
+      const response = await s3Client.send(deleteObjectCommand);
+      console.log(response);
+    } catch (error) {
+      console.error('Error in deleting object from s3:', error);
+    }
+  });
+
+  return;
+}
+
 async function purgeSourceDocument(filename = null) {
   if (!filename) return;
   const filePath = path.resolve(documentsPath, normalizePath(filename));
@@ -216,7 +322,7 @@ function hasVectorCachedFiles() {
       fs.readdirSync(vectorCachePath)?.filter((name) => name.endsWith(".json"))
         .length !== 0
     );
-  } catch {}
+  } catch { }
   return false;
 }
 
@@ -224,6 +330,9 @@ module.exports = {
   findDocumentInDocuments,
   cachedVectorInformation,
   viewLocalFiles,
+  getS3Document,
+  moveS3Document,
+  purgeS3Document,
   purgeSourceDocument,
   purgeVectorCache,
   storeVectorResult,

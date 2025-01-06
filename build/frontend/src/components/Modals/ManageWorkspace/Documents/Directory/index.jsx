@@ -86,8 +86,10 @@ function Directory({
 
       await fetchKeys(true);
       setSelectedItems({});
+      showToast(`Successfully deleted files and folders`, "success");
     } catch (error) {
       console.error("Failed to delete files and folders:", error);
+      showToast(`Failed to delete files and folders`, "error");
     } finally {
       setLoading(false);
       setSelectedItems({});
@@ -183,10 +185,6 @@ function Directory({
     setLoading(true);
     setLoadingMessage(`Downloading ${toDownload.length} documents. Please wait.`);
 
-    //@DEBUG @ktchan @S3A @TODO @(3)
-    // 1. fix the s3a persistent, Update to Put file into S3A storage
-    // 2. update this server endpoint to get object from s3a
-    // 3. Change to download files from server
     const { success, message } = await Document.downloadFolder(toDownload);
     if (!success) {
       showToast(`Error moving files: ${message}`, "error");
