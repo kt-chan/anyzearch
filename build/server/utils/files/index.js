@@ -1,20 +1,13 @@
 const fs = require("fs");
 const path = require("path");
+const archiver = require('archiver');
 const { v5: uuidv5 } = require("uuid");
 const { Document } = require("../../models/documents");
 const { DocumentSyncQueue } = require("../../models/documentSyncQueue");
-const documentsPath =
-  process.env.NODE_ENV === "development"
-    ? path.resolve(__dirname, `../../storage/documents`)
-    : path.resolve(process.env.STORAGE_DIR, `documents`);
-const vectorCachePath =
-  process.env.NODE_ENV === "development"
-    ? path.resolve(__dirname, `../../storage/vector-cache`)
-    : path.resolve(process.env.STORAGE_DIR, `vector-cache`);
 const { S3Client, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
-const archiver = require('archiver');
 
-const s3Client = new S3Client({
+const S3Enabled = true;
+const s3Client = S3Enabled ? new S3Client({
   endpoint: "http://localhost:9000", // 替换为您的 MinIO 服务 endpoint
   region: "default",
   credentials: {
@@ -23,7 +16,21 @@ const s3Client = new S3Client({
   },
   s3ForcePathStyle: true, // MinIO 需要设置为 true
   forcePathStyle: true, // 同上，确保路径风格访问
-});
+}) : null;
+
+const documentsPath =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(__dirname, `../../storage/documents`)
+    : path.resolve(process.env.STORAGE_DIR, `documents`);
+const sourcePath =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(__dirname, `../../storage/objects`)
+    : path.resolve(process.env.STORAGE_DIR, `objects`);
+const vectorCachePath =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(__dirname, `../../storage/vector-cache`)
+    : path.resolve(process.env.STORAGE_DIR, `vector-cache`);
+
 
 // Should take in a folder that is a subfolder of documents
 // eg: youtube-subject/video-123.json
@@ -135,8 +142,38 @@ async function storeVectorResult(vectorData = [], filename = null) {
   return;
 }
 
-async function getS3Document(objectKey = null) {
-  if (!objectKey) return;
+async function getSourceDocument(document = null) {
+  if (!document) return;
+
+  if (S3Enabled) {
+    return getS3Document(document);
+  }
+  else {
+    return getLocalFSDocument(document);
+  }
+
+}
+
+async function getLocalFSDocument(document = null) {
+  if (!document || !document.location) return;
+
+  const location = document.location;
+  try {
+    // Create a readable stream
+    const stream = fs.createReadStream(location, {
+      encoding: 'utf8', // Specify the encoding (optional)
+      highWaterMark: 64 * 1024 // Specify the buffer size (optional, default is 64KB)
+    });
+    return stream;
+  } catch (error) {
+    console.error("read local fs error:", error);
+  }
+}
+
+async function getS3Document(document = null) {
+  if (!document || !document.location) return;
+
+  const objectKey = document.location;
 
   const getObjectCommand = new GetObjectCommand({
     Bucket: "default",
@@ -146,11 +183,6 @@ async function getS3Document(objectKey = null) {
   try {
     const response = await s3Client.send(getObjectCommand);
     const stream = response.Body;
-    // Make sure to handle the stream error
-    stream.on('error', (err) => {
-      console.error('Error reading s3 object:', err);
-      throw new Error("Invalid s3 getObjectCommand.");
-    });
     return stream
   } catch (e) {
     console.error(e.message, e);
@@ -158,6 +190,68 @@ async function getS3Document(objectKey = null) {
   }
 }
 
+async function moveSourceDocument(from, to) {
+  if (!from || !to) return;
+
+  const fromMetaFilePath = path.join(documentsPath, normalizePath(from));
+  const toMetaFilePath = path.join(documentsPath, normalizePath(to));
+
+  const fromSourceFilePath = path.join(sourcePath, normalizePath(from));
+  const toSourceFilePath = path.join(sourcePath, normalizePath(to));
+
+  // Read metadata json file, update objectkey
+  if (
+    !fs.existsSync(fromMetaFilePath) ||
+    !fs.lstatSync(fromMetaFilePath).isFile()
+  ) return;
+
+  try {
+    const metadataFile = fs.readFileSync(fromMetaFilePath, 'utf8');
+    const metaData = JSON.parse(metadataFile);
+
+    if (S3Enabled) {
+      let fromObjectKey = metaData.location;
+      let destinationObjectKey = path.join(path.dirname(to), path.basename(fromObjectKey)).replaceAll("\\", "/");
+      metaData.location = destinationObjectKey;
+      // Update metadata json file
+      const updatedData = JSON.stringify(metaData, null, 2); // Pretty print with 2 spaces
+      fs.writeFileSync(toMetaFilePath, updatedData, 'utf8');
+      // Update source file
+      moveS3Document(fromObjectKey, destinationObjectKey);
+    } else {
+      let fromLocation = metaData.location;
+      let destinationFilePath = path.join(path.dirname(toSourceFilePath), path.basename(fromLocation));
+      metaData.location = destinationFilePath;
+      // Update metadata json file
+      const updatedData = JSON.stringify(metaData, null, 2); // Pretty print with 2 spaces
+      fs.writeFileSync(toMetaFilePath, updatedData, 'utf8');
+      // Update Source file
+      movelocalFSDocument(fromLocation, destinationFilePath)
+    }
+    // Remove old metadata file
+    fs.rmSync(fromMetaFilePath);
+  } catch (error) {
+    console.error('Error in moving files:', error);
+    //remove temp file in case of error
+    if (
+      fs.existsSync(toMetaFilePath) &&
+      fs.lstatSync(toMetaFilePath).isFile()
+    ) fs.rmSync(toMetaFilePath);
+  }
+}
+
+async function movelocalFSDocument(fromLocation = null, toLocation = null) {
+  if (!fromLocation || !toLocation) return;
+  try {
+    fs.mkdirSync(path.dirname(toLocation), { recursive: true });;
+    fs.renameSync(fromLocation, toLocation);
+    console.log("completed move file");
+    return;
+  } catch (error) {
+    console.error("Error rename object:", error);
+    throw new Error("Invalid fs rename operation.");
+  }
+}
 
 async function moveS3Document(fromObjectKey = null, toObjectKey = null) {
   if (!fromObjectKey || !toObjectKey) return;
@@ -186,11 +280,41 @@ async function moveS3Document(fromObjectKey = null, toObjectKey = null) {
 }
 
 //@DEBUG @ktchan @S3A @TODO @(4)
-// 1. fix the s3a persistent, Update to Put file into S3A storage
-// 2. update this server endpoint to get object from s3a
+// 1. Put file into S3A storage
+// 2. Get object from s3a
 // 3. Change to download files from server
 // 4. Remove data from s3a
 // 5. Move file in s3
+async function purgeSourceDocument(filename = null) {
+  if (!filename) return;
+  if (S3Enabled) {
+    return purgeS3Document(filename);
+  }
+  else {
+    return purgeLocalFSDocument(filename);
+  }
+}
+
+async function purgeLocalFSDocument(filename = null) {
+  if (!filename) return;
+
+  const metaFilePath = path.resolve(documentsPath, normalizePath(filename));
+  const data = fs.readFileSync(metaFilePath);
+  let srcFilePath;
+  try {
+    // 将 JSON 字符串解析为 JavaScript 对象
+    const metaData = JSON.parse(data);
+    srcFilePath = metaData.location;
+  } catch (error) {
+    console.error("fail to read metadata file", error)
+  }
+
+  console.log(`Purging source document of ${srcFilePath}.`);
+  fs.rmSync(srcFilePath);
+  return;
+
+}
+
 async function purgeS3Document(filename = null) {
   if (!filename) return;
   const filePath = path.resolve(documentsPath, normalizePath(filename));
@@ -214,7 +338,7 @@ async function purgeS3Document(filename = null) {
 
       // 根据键获取数据
       const id = metaData.id;
-      const objectKey = metaData.objectKey;
+      const objectKey = metaData.location;
 
       const deleteObjectCommand = new DeleteObjectCommand({
         Bucket: "default",
@@ -231,7 +355,7 @@ async function purgeS3Document(filename = null) {
   return;
 }
 
-async function purgeSourceDocument(filename = null) {
+async function purgeServerDocument(filename = null) {
   if (!filename) return;
   const filePath = path.resolve(documentsPath, normalizePath(filename));
 
@@ -242,7 +366,7 @@ async function purgeSourceDocument(filename = null) {
   )
     return;
 
-  console.log(`Purging source document of ${filename}.`);
+  console.log(`Purging document metadata of ${filename}.`);
   fs.rmSync(filePath);
   return;
 }
@@ -330,10 +454,11 @@ module.exports = {
   findDocumentInDocuments,
   cachedVectorInformation,
   viewLocalFiles,
-  getS3Document,
-  moveS3Document,
+  getSourceDocument,
+  moveSourceDocument,
   purgeS3Document,
   purgeSourceDocument,
+  purgeServerDocument,
   purgeVectorCache,
   storeVectorResult,
   fileData,

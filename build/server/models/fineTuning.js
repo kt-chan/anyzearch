@@ -81,7 +81,7 @@ const FineTuning = {
     const tmpFilepath = path.resolve(tmpStorage, `${uuidv4()}.json`);
     if (!fs.existsSync(tmpStorage))
       fs.mkdirSync(tmpStorage, { recursive: true });
-    fs.writeFileSync(tmpFilepath, JSON.stringify(data, null, 4));
+    fs.writeFileSync(tmpFilepath, JSON.stringify(data, null, 2));
     return tmpFilepath;
   },
 

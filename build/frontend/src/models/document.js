@@ -35,8 +35,8 @@ const Document = {
   },
 
   //@DEBUG @ktchan @S3A @TODO @(3)
-  // 1. fix the s3a persistent, Update to Put file into S3A storage
-  // 2. update this server endpoint to get object from s3a
+  // 1. Put file into S3A storage
+  // 2. Get object from s3a
   // 3. Change to download files from server
   // 4. Remove data from s3a
   // 5. Move file in s3

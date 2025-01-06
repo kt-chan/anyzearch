@@ -5,8 +5,8 @@ const { tokenizeString } = require("../../utils/tokenizer");
 const {
   createdDate,
   trashFile,
+  writeToSourceDocuments,
   writeToServerDocuments,
-  writeToS3Documents,
 } = require("../../utils/files");
 const { default: slugify } = require("slugify");
 
@@ -48,7 +48,7 @@ async function asTxt({ fullFilePath = "", filename = "" }) {
   let document;
   const fileExtension = path.extname(filename);
   try {
-    document = writeToS3Documents(
+    document = writeToSourceDocuments(
       data,
       `${slugify(filename)}-${data.id}`,
       fileExtension

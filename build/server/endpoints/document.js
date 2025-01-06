@@ -1,5 +1,6 @@
 const { Document } = require("../models/documents");
-const { normalizePath, findDocumentInDocuments, documentsPath, isWithin, moveS3Document: moveS3Document } = require("../utils/files");
+const { normalizePath, findDocumentInDocuments, documentsPath, isWithin,
+  getSourceDocument, moveSourceDocument } = require("../utils/files");
 const { reqBody } = require("../utils/http");
 const {
   flexUserRoleValid,
@@ -8,7 +9,6 @@ const {
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
 const fs = require("fs");
 const path = require("path");
-const { getS3Document } = require("../utils/files");
 const archiver = require('archiver');
 
 function documentEndpoints(app) {
@@ -46,8 +46,8 @@ function documentEndpoints(app) {
 
 
   //@DEBUG @ktchan @S3A @TODO @(2)
-  // 1. fix the s3a persistent, Update to Put file into S3A storage
-  // 2. update this server endpoint to get object from s3a
+  // 1. Put file into S3A storage
+  // 2. Get object from s3a
   // 3. Change to download files from server
   // 4. Remove data from s3a
   // 5. Move file in s3
@@ -90,14 +90,15 @@ function documentEndpoints(app) {
       for (const document of documents) {
 
         try {
-          const stream = await getS3Document(document.objectKey);
+          const stream = await getSourceDocument(document);
           // Make sure to handle the stream error
           stream.on('error', (err) => {
             console.error('Stream error:', err);
             zip.abort(); // Abort the zip process on error
             response.status(500).end(); // Ensure the response is ended
           });
-          zip.append(stream, { name: document.objectKey });
+          zip.append(stream, { name: path.join(path.basename(path.dirname(document.location)), path.basename(document.location)) });
+          // zip.append(stream, { name: document.location });
         } catch (e) {
           console.error(e.message, e);
           zip.abort(); // Abort the zip process on error
@@ -110,8 +111,8 @@ function documentEndpoints(app) {
     });
 
   //@DEBUG @ktchan @S3A @TODO @(5)
-  // 1. fix the s3a persistent, Update to Put file into S3A storage
-  // 2. update this server endpoint to get object from s3a
+  // 1. Put file into S3A storage
+  // 2. Get object from s3a
   // 3. Change to download files from server
   // 4. Remove data from s3a
   // 5. Move file in s3
@@ -130,56 +131,16 @@ function documentEndpoints(app) {
         );
 
         const movePromises = moveableFiles.map(({ from, to }) => {
-          const sourcePath = path.join(documentsPath, normalizePath(from));
-          const destinationPath = path.join(documentsPath, normalizePath(to));
 
           return new Promise((resolve, reject) => {
-
-            // Read metadata json file, update objectkey
-
-            if (
-              !fs.existsSync(sourcePath) ||
-              !fs.lstatSync(sourcePath).isFile()
-            ) return;
-
-            let sourceObjectKey;
-            let destinationObjectKey;
-
-            //Read object to get objectkey
-            const data = fs.readFileSync(sourcePath, 'utf8');
-
             try {
-              const metaData = JSON.parse(data);
-              sourceObjectKey = metaData.objectKey;
-
-              // replace path forward-slash to s3 backward-slash standard
-              destinationObjectKey = path.join(path.dirname(to), path.basename(metaData.objectKey)).replaceAll("\\", "/");
-              metaData.objectKey = destinationObjectKey;
-
-              // Convert the updated object back to a JSON string
-              const updatedData = JSON.stringify(metaData, null, 2); // Pretty print with 2 spaces
-
-              // Write the updated JSON back to the file
-              fs.writeFileSync(destinationPath, updatedData, 'utf8');
-
               //Handle Move in s3
-              moveS3Document(sourceObjectKey, destinationObjectKey);
-
+              moveSourceDocument(from, to);
             } catch (error) {
               console.error('Error parsing JSON:', error);
-              //remove temp file in case of error
-              if (
-                fs.existsSync(destinationPath) &&
-                fs.lstatSync(destinationPath).isFile()
-              ) fs.rmSync(destinationPath);
-              
               reject(writeErr);
             }
-
-            //Final resolve
-            fs.rmSync(sourcePath);
             resolve();
-
           });
         });
 

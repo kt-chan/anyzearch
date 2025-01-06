@@ -1,20 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const { MimeDetector } = require("./mime");
-const { S3Client, GetObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
-
-
-function splitFilePath(filePath) {
-  // Normalize the path to handle differences between Windows and Linux
-  const normalizedPath = path.normalize(filePath);
-
-  // Split the path into components
-  const parts = normalizedPath.split(path.sep);
-
-  return parts;
-}
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const S3Enabled = true;
 // Create a function to initialize the S3 client
-const s3Client = (function () {
+const s3Client = S3Enabled ? (function () {
   return new S3Client({
     endpoint: "http://localhost:9000", // Replace with your MinIO service endpoint
     region: "default", // You can remove this if not needed
@@ -25,8 +15,17 @@ const s3Client = (function () {
     s3ForcePathStyle: true, // MinIO requires this to be true
     forcePathStyle: true, // Ensures path-style addressing is used
   });
-})();
+})() : null;
 
+function splitFilePath(filePath) {
+  // Normalize the path to handle differences between Windows and Linux
+  const normalizedPath = path.normalize(filePath);
+
+  // Split the path into components
+  const parts = normalizedPath.split(path.sep);
+
+  return parts;
+}
 
 // Function to upload a file to S3
 function putObject(bucketName, objectKey, filePath) {
@@ -101,11 +100,54 @@ function createdDate(filepath) {
 }
 
 //@DEBUG @ktchan @S3A @TODO @(1)
-// 1. fix the s3a persistent, Update to Put file into S3A storage
-// 2. update this server endpoint to get object from s3a
+// 1. Put file into S3A storage
+// 2. Get object from s3a
 // 3. Change to download files from server
 // 4. Remove data from s3a
 // 5. Move file in s3
+function writeToSourceDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
+  if (S3Enabled) {
+    return writeToS3Documents(data, filename, fileExtension, destinationOverride);
+  }
+  else {
+    return writeToLocalFSDocuments(data, filename, fileExtension, destinationOverride);
+  }
+}
+
+function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
+  const destination = destinationOverride
+    ? path.resolve(destinationOverride)
+    : path.resolve(
+      __dirname,
+      "../../../server/storage/objects/custom-documents"
+    );
+  if (!fs.existsSync(destination))
+    fs.mkdirSync(destination, { recursive: true });
+
+  let sourceFilePath;
+  if (data.url.startsWith('file://')) {
+    // Remove the 'file://' prefix and decode the URI
+    sourceFilePath = decodeURIComponent(data.url.substring(7));
+  } else {
+    // If it's not a file URL, use the provided path directly
+    sourceFilePath = data.url;
+  }
+
+  const destinationFilePath = path.resolve(destination, filename) + fileExtension;
+
+  try {
+    fs.copyFileSync(sourceFilePath, destinationFilePath);
+    console.log('File copied successfully');
+  } catch (err) {
+    console.error('Error copying file:', err);
+  }
+  
+  return {
+    ...data,
+    location: destinationFilePath.split("/").slice(-2).join("/"),
+  };
+}
+
 function writeToS3Documents(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
     ? path.resolve(destinationOverride)
@@ -131,7 +173,7 @@ function writeToS3Documents(data = {}, filename, fileExtension = null, destinati
 
   return {
     ...data,
-    objectKey: objectKey,
+    location: objectKey,
   };
 }
 
@@ -147,7 +189,7 @@ function writeToServerDocuments(data = {}, filename, fileExtension = null, desti
 
   const destinationFilePath = path.resolve(destination, filename) + ".json";
 
-  fs.writeFileSync(destinationFilePath, JSON.stringify(data, null, 4), {
+  fs.writeFileSync(destinationFilePath, JSON.stringify(data, null, 2), {
     encoding: "utf-8",
   });
 
@@ -213,8 +255,8 @@ module.exports = {
   trashFile,
   isTextType,
   createdDate,
+  writeToSourceDocuments,
   writeToServerDocuments,
-  writeToS3Documents,
   wipeCollectorStorage,
   normalizePath,
   isWithin,
