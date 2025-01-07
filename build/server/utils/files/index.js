@@ -279,7 +279,7 @@ async function moveS3Document(fromObjectKey = null, toObjectKey = null) {
   }
 }
 
-//@DEBUG @ktchan @S3A @TODO @(4)
+//@DEBUG @ktchan @S3A @TODO @(4) Delete
 // 1. Put file into S3A storage
 // 2. Get object from s3a
 // 3. Change to download files from server

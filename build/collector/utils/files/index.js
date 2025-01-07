@@ -103,7 +103,7 @@ function createdDate(filepath) {
   }
 }
 
-//@DEBUG @ktchan @S3A @TODO @(1)
+//@DEBUG @ktchan @S3A @TODO @(1) upload
 // 1. Put file into S3A storage
 // 2. Get object from s3a
 // 3. Change to download files from server

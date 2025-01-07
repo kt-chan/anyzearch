@@ -45,12 +45,66 @@ function documentEndpoints(app) {
   );
 
 
-  //@DEBUG @ktchan @S3A @TODO @(2)
+  //@DEBUG @ktchan @S3A @TODO @(2) Download
   // 1. Put file into S3A storage
   // 2. Get object from s3a
   // 3. Change to download files from server
   // 4. Remove data from s3a
   // 5. Move file in s3
+
+  app.post(
+    "/document/download-file",
+    [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
+    async (request, response) => {
+      let documents = [];
+      try {
+        const file = JSON.parse(request.body);
+        documents.push(file);
+
+
+        // Create a ZIP stream
+        const zip = archiver('zip', { zlib: { level: 9 } }); // Set the compression level
+        const contentDisposition = `attachment; filename="downloaded-files.zip"`;
+        response.setHeader('Content-Type', 'application/zip');
+        response.setHeader('Content-Disposition', contentDisposition);
+
+        // Listen for the 'error' event on the zip stream
+        zip.on('error', (err) => {
+          console.error('Zip stream error:', err);
+          response.status(500).end();
+        });
+
+        // Pipe the archive data to the response
+        zip.pipe(response);
+
+        // Add each file to the ZIP archive
+        for (const document of documents) {
+
+          try {
+            const stream = await getSourceDocument(document);
+            // Make sure to handle the stream error
+            stream.on('error', (err) => {
+              console.error('Stream error:', err);
+              zip.abort(); // Abort the zip process on error
+              response.status(500).end(); // Ensure the response is ended
+            });
+            zip.append(stream, { name: path.join(path.basename(path.dirname(document.rawLocation)), path.basename(document.rawLocation)) });
+            // zip.append(stream, { name: document.rawLocation });
+          } catch (e) {
+            console.error(e.message, e);
+            zip.abort(); // Abort the zip process on error
+            response.status(500).end();
+            return; // Make sure to return after sending the error response
+          }
+        }
+        // Finalize the ZIP archive when all files have been added
+        zip.finalize();
+      } catch (e) {
+        console.error(e.message, e);
+        response.sendStatus(500).end();
+      }
+    });
+
   app.post(
     "/document/download-files",
     [validatedRequest, flexUserRoleValid([ROLES.admin, ROLES.manager])],
@@ -66,51 +120,50 @@ function documentEndpoints(app) {
           }
           documents.push(document);
         }
+
+        // Create a ZIP stream
+        const zip = archiver('zip', { zlib: { level: 9 } }); // Set the compression level
+        const contentDisposition = `attachment; filename="downloaded-files.zip"`;
+        response.setHeader('Content-Type', 'application/zip');
+        response.setHeader('Content-Disposition', contentDisposition);
+
+        // Listen for the 'error' event on the zip stream
+        zip.on('error', (err) => {
+          console.error('Zip stream error:', err);
+          response.status(500).end();
+        });
+
+        // Pipe the archive data to the response
+        zip.pipe(response);
+
+        // Add each file to the ZIP archive
+        for (const document of documents) {
+
+          try {
+            const stream = await getSourceDocument(document);
+            // Make sure to handle the stream error
+            stream.on('error', (err) => {
+              console.error('Stream error:', err);
+              zip.abort(); // Abort the zip process on error
+              response.status(500).end(); // Ensure the response is ended
+            });
+            zip.append(stream, { name: path.join(path.basename(path.dirname(document.rawLocation)), path.basename(document.rawLocation)) });
+            // zip.append(stream, { name: document.rawLocation });
+          } catch (e) {
+            console.error(e.message, e);
+            zip.abort(); // Abort the zip process on error
+            throw new Error("download files failed");
+          }
+        }
+        // Finalize the ZIP archive when all files have been added
+        zip.finalize();
       } catch (e) {
         console.error(e.message, e);
         response.sendStatus(500).end();
       }
-
-      // Create a ZIP stream
-      const zip = archiver('zip', { zlib: { level: 9 } }); // Set the compression level
-      const contentDisposition = `attachment; filename="downloaded-files.zip"`;
-      response.setHeader('Content-Type', 'application/zip');
-      response.setHeader('Content-Disposition', contentDisposition);
-
-      // Listen for the 'error' event on the zip stream
-      zip.on('error', (err) => {
-        console.error('Zip stream error:', err);
-        response.status(500).end();
-      });
-
-      // Pipe the archive data to the response
-      zip.pipe(response);
-
-      // Add each file to the ZIP archive
-      for (const document of documents) {
-
-        try {
-          const stream = await getSourceDocument(document);
-          // Make sure to handle the stream error
-          stream.on('error', (err) => {
-            console.error('Stream error:', err);
-            zip.abort(); // Abort the zip process on error
-            response.status(500).end(); // Ensure the response is ended
-          });
-          zip.append(stream, { name: path.join(path.basename(path.dirname(document.rawLocation)), path.basename(document.rawLocation)) });
-          // zip.append(stream, { name: document.rawLocation });
-        } catch (e) {
-          console.error(e.message, e);
-          zip.abort(); // Abort the zip process on error
-          response.status(500).end();
-          return; // Make sure to return after sending the error response
-        }
-      }
-      // Finalize the ZIP archive when all files have been added
-      zip.finalize();
     });
 
-  //@DEBUG @ktchan @S3A @TODO @(5)
+  //@DEBUG @ktchan @S3A @TODO @(5) Move
   // 1. Put file into S3A storage
   // 2. Get object from s3a
   // 3. Change to download files from server

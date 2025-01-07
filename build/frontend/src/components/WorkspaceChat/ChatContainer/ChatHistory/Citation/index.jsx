@@ -17,19 +17,31 @@ import {
 import ConfluenceLogo from "@/media/dataConnectors/confluence.png";
 import { Tooltip } from "react-tooltip";
 import { toPercentString } from "@/utils/numbers";
+import Document from "@/models/document";
+
+//@DEBUG @KTCHAN @s3a @(6) @TODO citations download
+function downloadLink(source) {
+  console.log("downloading source file:", source)
+  // files.push(source);
+  Document.downloadFile(source);
+ }
 
 function combineLikeSources(sources) {
   const combined = {};
   sources.forEach((source) => {
-    const { id, title, text, chunkSource = "", score = null } = source;
+    const { name, id, title, text, chunkSource = "", rawLocation = "", score = null } = source;
     if (combined.hasOwnProperty(title)) {
-      combined[title].chunks.push({ id, text, chunkSource, score });
+      combined[title].chunks.push({id, text, chunkSource, score });
+      combined[title].name = name;
+      combined[title].rawLocation = rawLocation;
       combined[title].references += 1;
     } else {
       combined[title] = {
         title,
         chunks: [{ id, text, chunkSource, score }],
         references: 1,
+        name: name,
+        rawLocation: rawLocation,
       };
     }
   });
@@ -41,19 +53,19 @@ export default function Citations({ sources = [] }) {
   const [open, setOpen] = useState(false);
   const [selectedSource, setSelectedSource] = useState(null);
 
+
+
   return (
     <div className="flex flex-col mt-4 justify-left">
       <button
         onClick={() => setOpen(!open)}
-        className={`text-white/50 font-medium italic text-sm text-left ml-14 pt-2 ${
-          open ? "pb-2" : ""
-        } hover:text-white/75 transition-all duration-300`}
+        className={`text-white/50 font-medium italic text-sm text-left ml-14 pt-2 ${open ? "pb-2" : ""
+          } hover:text-white/75 transition-all duration-300`}
       >
         {open ? "Hide Citations" : "Show Citations"}
         <CaretRight
-          className={`w-3.5 h-3.5 inline-block ml-1 transform transition-transform duration-300 ${
-            open ? "rotate-90" : ""
-          }`}
+          className={`w-3.5 h-3.5 inline-block ml-1 transform transition-transform duration-300 ${open ? "rotate-90" : ""
+            }`}
         />
       </button>
       {open && (
@@ -63,6 +75,7 @@ export default function Citations({ sources = [] }) {
               key={v4()}
               source={source}
               onClick={() => setSelectedSource(source)}
+              onDownload={() => downloadLink(source)}
             />
           ))}
         </div>
@@ -77,7 +90,7 @@ export default function Citations({ sources = [] }) {
   );
 }
 
-const Citation = memo(({ source, onClick }) => {
+const Citation = memo(({ source, onClick, onDownload }) => {
   const { title } = source;
   if (!title) return null;
   const chunkSourceInfo = parseChunkSource(source);
@@ -85,14 +98,34 @@ const Citation = memo(({ source, onClick }) => {
   const CitationIcon = ICONS.hasOwnProperty(chunkSourceInfo?.icon)
     ? ICONS[chunkSourceInfo.icon]
     : ICONS.file;
-
+  
   return (
-    <div
-      className="w-fit flex flex-row justify-center items-center cursor-pointer text-sky-400"
-      onClick={onClick}
-    >
-      <CitationIcon className="w-6 h-6" weight="bold" />
-      <p className="text-sm font-medium whitespace-nowrap">{truncatedTitle}</p>
+    <div className="flex flex-row justify-between items-center">
+      <div
+        className="flex flex-row justify-center items-center cursor-pointer text-sky-400"
+        onClick={onClick}
+      >
+        <CitationIcon className="w-6 h-6" weight="bold" />
+        <p className="text-sm font-medium whitespace-nowrap">{truncatedTitle}</p>
+      </div>
+      <div
+        className="flex flex-row justify-center items-center cursor-pointer text-green-400"
+        onClick={onDownload}
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="text-sm font-medium whitespace-nowrap"
+        >
+          <path
+            d="M5.25589 16C3.8899 15.0291 3 13.4422 3 11.6493C3 9.20008 4.8 6.9375 7.5 6.5C8.34694 4.48637 10.3514 3 12.6893 3C15.684 3 18.1317 5.32251 18.3 8.25C19.8893 8.94488 21 10.6503 21 12.4969C21 14.0582 20.206 15.4339 19 16.2417M12 21V11M12 21L9 18M12 21L15 18"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          />
+        </svg>
+      </div>
     </div>
   );
 });
@@ -230,8 +263,8 @@ function parseChunkSource({ title = "", chunks = [] }) {
   try {
     const url = new URL(
       chunks[0].chunkSource.split("link://")[1] ||
-        chunks[0].chunkSource.split("confluence://")[1] ||
-        chunks[0].chunkSource.split("github://")[1]
+      chunks[0].chunkSource.split("confluence://")[1] ||
+      chunks[0].chunkSource.split("github://")[1]
     );
     let text = url.host + url.pathname;
     let icon = "link";
@@ -257,7 +290,7 @@ function parseChunkSource({ title = "", chunks = [] }) {
       text,
       icon,
     };
-  } catch {}
+  } catch { }
   return nullResponse;
 }
 
