@@ -1,9 +1,16 @@
+const fs = require("fs");
+const path = require("path");
 const { v4 } = require("uuid");
 const {
+  WATCH_DIRECTORY,
+  SUPPORTED_FILETYPE_CONVERTERS,
+} = require("../../../utils/constants");
+const {
   createdDate,
+  saveFile,
   trashFile,
-  writeToServerDocuments,
 } = require("../../../utils/files");
+const RESERVED_FILES = ["__HOTDIR__.md"];
 const { tokenizeString } = require("../../../utils/tokenizer");
 const { default: slugify } = require("slugify");
 const PDFLoader = require("./PDFLoader");
@@ -19,8 +26,7 @@ async function asPdf({ fullFilePath = "", filename = "" }) {
 
   for (const doc of docs) {
     console.log(
-      `-- Parsing content from pg ${
-        doc.metadata?.loc?.pageNumber || "unknown"
+      `-- Parsing content from pg ${doc.metadata?.loc?.pageNumber || "unknown"
       } --`
     );
     if (!doc.pageContent || !doc.pageContent.length) continue;
@@ -52,12 +58,17 @@ async function asPdf({ fullFilePath = "", filename = "" }) {
     token_count_estimate: tokenizeString(content).length,
   };
 
-  const document = writeToServerDocuments(
-    data,
-    `${slugify(filename)}-${data.id}`
-  );
-  trashFile(fullFilePath);
-  console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
+  //@DEBUG @ktchan @s3a 
+  //Update saveFile and writeToS3Documents to add fileExtension
+  let document;
+  try {
+    document = saveFile(data, filename);
+    trashFile(fullFilePath);
+    console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
+  } catch (error) {
+    console.error('Upload file failed:', error);
+    return { success: false, reason: error.message, documents: [] };
+  }
   return { success: true, reason: null, documents: [document] };
 }
 

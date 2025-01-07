@@ -6,13 +6,13 @@ const { Document } = require("../../models/documents");
 const { DocumentSyncQueue } = require("../../models/documentSyncQueue");
 const { S3Client, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
-const S3Enabled = true;
-const s3Client = S3Enabled ? new S3Client({
-  endpoint: "http://localhost:9000", // 替换为您的 MinIO 服务 endpoint
-  region: "default",
+const ENABLE_S3 = process.env.ENABLE_S3 ? true : false;
+const s3Client = ENABLE_S3 ? new S3Client({
+  endpoint: process.env.S3_ENDPOINT,
+  region: process.env.S3_REGION,
   credentials: {
-    accessKeyId: "qG4IWW6zBcOfr29zSrj0", // 替换为您的 MinIO access key
-    secretAccessKey: "VmLLAFLWarwfdiNBrcEWK0KBWHf6pWWzy9KFCfc4", // 替换为您的 MinIO secret key
+    accessKeyId: process.env.S3_AK,
+    secretAccessKey: process.env.S3_SK,
   },
   s3ForcePathStyle: true, // MinIO 需要设置为 true
   forcePathStyle: true, // 同上，确保路径风格访问
@@ -145,7 +145,7 @@ async function storeVectorResult(vectorData = [], filename = null) {
 async function getSourceDocument(document = null) {
   if (!document) return;
 
-  if (S3Enabled) {
+  if (ENABLE_S3) {
     return getS3Document(document);
   }
   else {
@@ -155,9 +155,9 @@ async function getSourceDocument(document = null) {
 }
 
 async function getLocalFSDocument(document = null) {
-  if (!document || !document.location) return;
+  if (!document || !document.rawLocation) return;
 
-  const location = document.location;
+  const location = document.rawLocation;
   try {
     // Create a readable stream
     const stream = fs.createReadStream(location, {
@@ -171,9 +171,9 @@ async function getLocalFSDocument(document = null) {
 }
 
 async function getS3Document(document = null) {
-  if (!document || !document.location) return;
+  if (!document || !document.rawLocation) return;
 
-  const objectKey = document.location;
+  const objectKey = document.rawLocation;
 
   const getObjectCommand = new GetObjectCommand({
     Bucket: "default",
@@ -209,19 +209,19 @@ async function moveSourceDocument(from, to) {
     const metadataFile = fs.readFileSync(fromMetaFilePath, 'utf8');
     const metaData = JSON.parse(metadataFile);
 
-    if (S3Enabled) {
-      let fromObjectKey = metaData.location;
+    if (ENABLE_S3) {
+      let fromObjectKey = metaData.rawLocation;
       let destinationObjectKey = path.join(path.dirname(to), path.basename(fromObjectKey)).replaceAll("\\", "/");
-      metaData.location = destinationObjectKey;
+      metaData.rawLocation = destinationObjectKey;
       // Update metadata json file
       const updatedData = JSON.stringify(metaData, null, 2); // Pretty print with 2 spaces
       fs.writeFileSync(toMetaFilePath, updatedData, 'utf8');
       // Update source file
       moveS3Document(fromObjectKey, destinationObjectKey);
     } else {
-      let fromLocation = metaData.location;
+      let fromLocation = metaData.rawLocation;
       let destinationFilePath = path.join(path.dirname(toSourceFilePath), path.basename(fromLocation));
-      metaData.location = destinationFilePath;
+      metaData.rawLocation = destinationFilePath;
       // Update metadata json file
       const updatedData = JSON.stringify(metaData, null, 2); // Pretty print with 2 spaces
       fs.writeFileSync(toMetaFilePath, updatedData, 'utf8');
@@ -287,7 +287,7 @@ async function moveS3Document(fromObjectKey = null, toObjectKey = null) {
 // 5. Move file in s3
 async function purgeSourceDocument(filename = null) {
   if (!filename) return;
-  if (S3Enabled) {
+  if (ENABLE_S3) {
     return purgeS3Document(filename);
   }
   else {
@@ -304,7 +304,7 @@ async function purgeLocalFSDocument(filename = null) {
   try {
     // 将 JSON 字符串解析为 JavaScript 对象
     const metaData = JSON.parse(data);
-    srcFilePath = metaData.location;
+    srcFilePath = metaData.rawLocation;
   } catch (error) {
     console.error("fail to read metadata file", error)
   }
@@ -338,7 +338,7 @@ async function purgeS3Document(filename = null) {
 
       // 根据键获取数据
       const id = metaData.id;
-      const objectKey = metaData.location;
+      const objectKey = metaData.rawLocation;
 
       const deleteObjectCommand = new DeleteObjectCommand({
         Bucket: "default",

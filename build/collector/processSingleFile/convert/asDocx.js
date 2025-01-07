@@ -1,9 +1,11 @@
+const fs = require("fs");
+const path = require('path');
 const { v4 } = require("uuid");
 const { DocxLoader } = require("langchain/document_loaders/fs/docx");
 const {
   createdDate,
+  saveFile,
   trashFile,
-  writeToServerDocuments,
 } = require("../../utils/files");
 const { tokenizeString } = require("../../utils/tokenizer");
 const { default: slugify } = require("slugify");
@@ -45,12 +47,18 @@ async function asDocX({ fullFilePath = "", filename = "" }) {
     token_count_estimate: tokenizeString(content).length,
   };
 
-  const document = writeToServerDocuments(
-    data,
-    `${slugify(filename)}-${data.id}`
-  );
-  trashFile(fullFilePath);
-  console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
+  //@DEBUG @ktchan @s3a 
+  //Update saveFile and writeToS3Documents to add fileExtension
+  let document;
+  try {
+    document = saveFile(data, filename);
+    trashFile(fullFilePath);
+    console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
+  } catch (error) {
+    console.error("Could not save file!", error);
+    return { success: false, reason: error.message, documents: [] };
+  }
+
   return { success: true, reason: null, documents: [document] };
 }
 

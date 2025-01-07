@@ -3,6 +3,7 @@ const { EPubLoader } = require("langchain/document_loaders/fs/epub");
 const { tokenizeString } = require("../../utils/tokenizer");
 const {
   createdDate,
+  saveFile,
   trashFile,
   writeToServerDocuments,
 } = require("../../utils/files");
@@ -43,12 +44,18 @@ async function asEPub({ fullFilePath = "", filename = "" }) {
     token_count_estimate: tokenizeString(content).length,
   };
 
-  const document = writeToServerDocuments(
-    data,
-    `${slugify(filename)}-${data.id}`
-  );
-  trashFile(fullFilePath);
-  console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
+  //@DEBUG @ktchan @s3a 
+  //Update saveFile and writeToS3Documents to add fileExtension
+  let document;
+  try {
+    document = saveFile(data, filename);
+    trashFile(fullFilePath);
+    console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
+  } catch (error) {
+    console.error("Could not save file!", error);
+    return { success: false, reason: error.message, documents: [] };
+  }
+
   return { success: true, reason: null, documents: [document] };
 }
 

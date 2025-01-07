@@ -1,11 +1,8 @@
 async function startServer() {
-  if (process.env.NODE_ENV === "development") {
-    require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
-  } else {
-    require("dotenv").config();
-  }
-
-
+  process.env.NODE_ENV === "development"
+  ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
+  : require("dotenv").config();
+  
   require("./utils/logger")();
   const express = require("express");
   const bodyParser = require("body-parser");
@@ -160,7 +157,7 @@ async function startServer() {
   //     throw new Error("Cannot create JWT as JWT_SECRET is unset.");
   //   return JWT.sign(info, process.env.JWT_SECRET, { expiresIn: expiry });
   // }
-  
+
   async function initializeSSLServer() {
     if (process.env.ENABLE_HTTPS) {
       app.use(passport.initialize());

@@ -1,9 +1,11 @@
+process.env.NODE_ENV === "development"
+  ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
+  : require("dotenv").config();
+
 const { PrismaClient } = require("@prisma/client");
 const execSync = require("child_process").execSync;
 const fs = require("fs");
 const path = require("path");
-require("dotenv").config();
-
 const DATABASE_PATH = process.env.DB_URL || "../../storage/anythingllm.db";
 const BACKUP_PATH = path.join(
   path.dirname(DATABASE_PATH),

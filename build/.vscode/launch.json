@@ -26,7 +26,7 @@
       "name": "Server debug",
       "request": "launch",
       "cwd": "${workspaceFolder}/Server",
-      "envFile": "${workspaceFolder}/server/.env",
+      // "envFile": "${workspaceFolder}/server/.env",
       "runtimeArgs": [
         "--inspect-brk",
         "--nolazy",

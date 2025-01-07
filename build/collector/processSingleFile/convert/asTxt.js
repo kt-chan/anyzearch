@@ -4,11 +4,9 @@ const path = require('path');
 const { tokenizeString } = require("../../utils/tokenizer");
 const {
   createdDate,
+  saveFile,
   trashFile,
-  writeToSourceDocuments,
-  writeToServerDocuments,
 } = require("../../utils/files");
-const { default: slugify } = require("slugify");
 
 async function asTxt({ fullFilePath = "", filename = "" }) {
   let content = "";
@@ -44,28 +42,17 @@ async function asTxt({ fullFilePath = "", filename = "" }) {
   };
 
   //@DEBUG @ktchan @s3a 
-  //Update writeToServerDocuments and writeToS3Documents to add fileExtension
+  //Update saveFile and writeToS3Documents to add fileExtension
   let document;
-  const fileExtension = path.extname(filename);
   try {
-    document = writeToSourceDocuments(
-      data,
-      `${slugify(filename)}-${data.id}`,
-      fileExtension
-    );
-
-    document = writeToServerDocuments(
-      document,
-      `${slugify(filename)}-${data.id}`,
-      fileExtension
-    );
+    document = saveFile(data, filename);
+    trashFile(fullFilePath);
+    console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
   } catch (error) {
-    console.error('Upload file failed:', error);
+    console.error("Could not save file!", error);
     return { success: false, reason: error.message, documents: [] };
   }
 
-  trashFile(fullFilePath);
-  console.log(`[SUCCESS]: ${filename} converted & ready for embedding.\n`);
   return { success: true, reason: null, documents: [document] };
 }
 

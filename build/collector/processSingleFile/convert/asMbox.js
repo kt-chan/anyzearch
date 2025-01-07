@@ -3,8 +3,8 @@ const fs = require("fs");
 const { mboxParser } = require("mbox-parser");
 const {
   createdDate,
+  saveFile,
   trashFile,
-  writeToServerDocuments,
 } = require("../../utils/files");
 const { tokenizeString } = require("../../utils/tokenizer");
 const { default: slugify } = require("slugify");
@@ -31,44 +31,46 @@ async function asMbox({ fullFilePath = "", filename = "" }) {
 
   let item = 1;
   const documents = [];
-  for (const mail of mails) {
-    if (!mail.hasOwnProperty("text")) continue;
+  try {
+    for (const mail of mails) {
+      if (!mail.hasOwnProperty("text")) continue;
 
-    const content = mail.text;
-    if (!content) continue;
-    console.log(
-      `-- Working on message "${mail.subject || "Unknown subject"}" --`
-    );
+      const content = mail.text;
+      if (!content) continue;
+      console.log(
+        `-- Working on message "${mail.subject || "Unknown subject"}" --`
+      );
 
-    const data = {
-      id: v4(),
-      url: "file://" + fullFilePath,
-      title: mail?.subject
-        ? slugify(mail?.subject?.replace(".", "")) + ".mbox"
-        : `msg_${item}-${filename}`,
-      docAuthor: mail?.from?.text,
-      description: "No description found.",
-      docSource: "Mbox message file uploaded by the user.",
-      chunkSource: "",
-      published: createdDate(fullFilePath),
-      wordCount: content.split(" ").length,
-      pageContent: content,
-      token_count_estimate: tokenizeString(content).length,
-    };
+      const data = {
+        id: v4(),
+        url: "file://" + fullFilePath,
+        title: mail?.subject
+          ? slugify(mail?.subject?.replace(".", "")) + ".mbox"
+          : `msg_${item}-${filename}`,
+        docAuthor: mail?.from?.text,
+        description: "No description found.",
+        docSource: "Mbox message file uploaded by the user.",
+        chunkSource: "",
+        published: createdDate(fullFilePath),
+        wordCount: content.split(" ").length,
+        pageContent: content,
+        token_count_estimate: tokenizeString(content).length,
+      };
 
-    item++;
-    const document = writeToServerDocuments(
-      data,
-      `${slugify(filename)}-${data.id}-msg-${item}`
-    );
-    documents.push(document);
+      item++;
+      //@DEBUG @ktchan @s3a 
+      //Update saveFile 
+      const document = saveFile(data, filename);
+      documents.push(document);
+    }
+    trashFile(fullFilePath);
+  } catch (error) {
+    console.error("Could not save file!", error);
+    return { success: false, reason: error.message, documents: [] };
   }
-
-  trashFile(fullFilePath);
-  console.log(
-    `[SUCCESS]: ${filename} messages converted & ready for embedding.\n`
-  );
+  console.log(`[SUCCESS]: ${filename} messages converted & ready for embedding.\n`);
   return { success: true, reason: null, documents };
+
 }
 
 module.exports = asMbox;

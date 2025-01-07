@@ -1,16 +1,20 @@
+process.env.NODE_ENV === "development"
+  ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
+  : require("dotenv").config();
+
 const fs = require("fs");
 const path = require("path");
+const { default: slugify } = require("slugify");
 const { MimeDetector } = require("./mime");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const S3Enabled = true;
-// Create a function to initialize the S3 client
-const s3Client = S3Enabled ? (function () {
+const ENABLE_S3 = process.env.ENABLE_S3;
+const s3Client = ENABLE_S3 ? (function () {
   return new S3Client({
-    endpoint: "http://localhost:9000", // Replace with your MinIO service endpoint
-    region: "default", // You can remove this if not needed
+    endpoint: process.env.S3_ENDPOINT,
+    region: process.env.S3_REGION,
     credentials: {
-      accessKeyId: "qG4IWW6zBcOfr29zSrj0", // Replace with your MinIO access key
-      secretAccessKey: "VmLLAFLWarwfdiNBrcEWK0KBWHf6pWWzy9KFCfc4", // Replace with your MinIO secret key
+      accessKeyId: process.env.S3_AK,
+      secretAccessKey: process.env.S3_SK,
     },
     s3ForcePathStyle: true, // MinIO requires this to be true
     forcePathStyle: true, // Ensures path-style addressing is used
@@ -106,7 +110,7 @@ function createdDate(filepath) {
 // 4. Remove data from s3a
 // 5. Move file in s3
 function writeToSourceDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
-  if (S3Enabled) {
+  if (ENABLE_S3) {
     return writeToS3Documents(data, filename, fileExtension, destinationOverride);
   }
   else {
@@ -141,10 +145,10 @@ function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, dest
   } catch (err) {
     console.error('Error copying file:', err);
   }
-  
+
   return {
     ...data,
-    location: destinationFilePath.split("/").slice(-2).join("/"),
+    rawLocation: destinationFilePath.split("/").slice(-2).join("/"),
   };
 }
 
@@ -173,9 +177,35 @@ function writeToS3Documents(data = {}, filename, fileExtension = null, destinati
 
   return {
     ...data,
-    location: objectKey,
+    rawLocation: objectKey,
   };
 }
+
+//@DEBUG @ktchan @s3a 
+function saveFile(data, filename) {
+
+  //Update writeToServerDocuments and writeToS3Documents to add fileExtension
+  let document;
+  const fileExtension = path.extname(filename);
+  try {
+    document = writeToSourceDocuments(
+      data,
+      `${slugify(filename)}-${data.id}`,
+      fileExtension
+    );
+
+    document = writeToServerDocuments(
+      document,
+      `${slugify(filename)}-${data.id}`,
+      fileExtension
+    );
+  } catch (error) {
+    console.error('Upload file failed:', error);
+    throw new Error("save file failed!");
+  }
+  return document;
+}
+
 
 function writeToServerDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
@@ -252,6 +282,7 @@ function sanitizeFileName(fileName) {
 }
 
 module.exports = {
+  saveFile,
   trashFile,
   isTextType,
   createdDate,

@@ -97,8 +97,8 @@ function documentEndpoints(app) {
             zip.abort(); // Abort the zip process on error
             response.status(500).end(); // Ensure the response is ended
           });
-          zip.append(stream, { name: path.join(path.basename(path.dirname(document.location)), path.basename(document.location)) });
-          // zip.append(stream, { name: document.location });
+          zip.append(stream, { name: path.join(path.basename(path.dirname(document.rawLocation)), path.basename(document.rawLocation)) });
+          // zip.append(stream, { name: document.rawLocation });
         } catch (e) {
           console.error(e.message, e);
           zip.abort(); // Abort the zip process on error
