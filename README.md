@@ -16,7 +16,7 @@ vi ./build/docker/.env.example
 
 ### Build the image
 ```bash
-./build.sh
+sudo ./build.sh
 ```
 
 
