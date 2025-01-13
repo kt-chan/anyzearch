@@ -48,7 +48,9 @@
     "winston": "^3.13.0",
     "youtubei.js": "^9.1.0",
     "axios": "^1.7.2",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "@aws-sdk/client-s3": "^3.717.0",
+    "archiver": "^7.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
