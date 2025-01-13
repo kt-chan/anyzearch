@@ -157,11 +157,10 @@ async function getSourceDocument(document = null) {
 async function getLocalFSDocument(document = null) {
   if (!document || !document.rawLocation) return;
 
-  const location = document.rawLocation;
+  const location = path.join(sourcePath, document.rawLocation);
   try {
     // Create a readable stream
     const stream = fs.createReadStream(location, {
-      encoding: 'utf8', // Specify the encoding (optional)
       highWaterMark: 64 * 1024 // Specify the buffer size (optional, default is 64KB)
     });
     return stream;
@@ -220,7 +219,7 @@ async function moveSourceDocument(from, to) {
       moveS3Document(fromObjectKey, destinationObjectKey);
     } else {
       let fromLocation = metaData.rawLocation;
-      let destinationFilePath = path.join(path.dirname(toSourceFilePath), path.basename(fromLocation));
+      let destinationFilePath = path.join(path.basename(path.dirname(toSourceFilePath)), path.basename(fromLocation));
       metaData.rawLocation = destinationFilePath;
       // Update metadata json file
       const updatedData = JSON.stringify(metaData, null, 2); // Pretty print with 2 spaces
@@ -243,8 +242,10 @@ async function moveSourceDocument(from, to) {
 async function movelocalFSDocument(fromLocation = null, toLocation = null) {
   if (!fromLocation || !toLocation) return;
   try {
-    fs.mkdirSync(path.dirname(toLocation), { recursive: true });;
-    fs.renameSync(fromLocation, toLocation);
+    const fromLocationFullPath = path.join(sourcePath, fromLocation);
+    const toLocationFullPath = path.join(sourcePath, toLocation);
+    fs.mkdirSync(path.dirname(toLocationFullPath), { recursive: true });;
+    fs.renameSync(fromLocationFullPath, toLocationFullPath);
     console.log("completed move file");
     return;
   } catch (error) {
@@ -304,7 +305,7 @@ async function purgeLocalFSDocument(filename = null) {
   try {
     // 将 JSON 字符串解析为 JavaScript 对象
     const metaData = JSON.parse(data);
-    srcFilePath = metaData.rawLocation;
+    srcFilePath = path.join(sourcePath, metaData.rawLocation);
   } catch (error) {
     console.error("fail to read metadata file", error)
   }

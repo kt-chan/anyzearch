@@ -147,8 +147,17 @@ function documentEndpoints(app) {
               zip.abort(); // Abort the zip process on error
               response.status(500).end(); // Ensure the response is ended
             });
+            // Ensure the directory structure is maintained
+            // const directoryPath = path.dirname(document.rawLocation);
+            // const fileName = path.basename(document.rawLocation);
+            // zip.directory(directoryPath, path.basename(directoryPath));
+            // zip.append(stream, { name: fileName });
             zip.append(stream, { name: path.join(path.basename(path.dirname(document.rawLocation)), path.basename(document.rawLocation)) });
-            // zip.append(stream, { name: document.rawLocation });
+
+            // Listen for the 'end' event to ensure the stream is fully processed
+            stream.on('end', () => {
+              console.log(`File ${document.rawLocation} added to ZIP`);
+            });
           } catch (e) {
             console.error(e.message, e);
             zip.abort(); // Abort the zip process on error

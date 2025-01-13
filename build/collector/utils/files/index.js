@@ -146,9 +146,11 @@ function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, dest
     console.error('Error copying file:', err);
   }
 
+  const basedir = path.basename(path.dirname(destinationFilePath));
+  const basename = path.basename(destinationFilePath);
   return {
     ...data,
-    rawLocation: destinationFilePath.split("/").slice(-2).join("/"),
+    rawLocation: path.join(basedir, basename),
   };
 }
 
