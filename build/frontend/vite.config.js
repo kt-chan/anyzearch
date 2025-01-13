@@ -10,9 +10,9 @@ import path from 'path';
 
 // 指定你的证书和私钥文件的路径
 const certPath = path.resolve(__dirname, process.env.NODE_ENV === "development"
-  ? '../certs/win10.local.crt' : '/etc/ssl/certs/anyzearch.local.crt');
+  ? '../certs/anyzearch.local.crt' : '/etc/ssl/certs/anyzearch.local.crt');
 const keyPath = path.resolve(__dirname, process.env.NODE_ENV === "development"
-  ? '../certs/win10.local.key' : '/etc/ssl/certs/anyzearch.local.key');
+  ? '../certs/anyzearch.local.key' : '/etc/ssl/certs/anyzearch.local.key');
 
 // SSH KeyPath for Windows
 // const certPath = path.resolve(__dirname,  '../certs/win10.local.crt');
