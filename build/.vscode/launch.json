@@ -81,12 +81,30 @@
         // ... other overrides as needed
       },
       "preLaunchTask": "wait-for-server" // This task will run before launching Chrome
+    },
+    {
+      "name": "copy-env-files",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "runtimeArgs": [
+        "copy-env-files.js"
+      ],
+      // not using yarn/nodemon because it doesn't work with breakpoints
+      // "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
     }
   ],
   "compounds": [
     {
       "name": "Full Stack Debug",
       "configurations": [
+        "copy-env-files",
         "Frontend debug",
         "Server debug",
         "Collector debug",

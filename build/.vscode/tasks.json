@@ -94,7 +94,10 @@
       "label": "build-frontend",
       "type": "shell",
       "command": "cmd",
-      "args": ["/c", "npm run-script win-prod:frontend"],
+      "args": [
+        "/c",
+        "npm run-script win-prod:frontend"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -112,7 +115,10 @@
       "label": "build-frontend-clean",
       "type": "shell",
       "command": "cmd",
-      "args": ["/c", "npm run-script win-prod:frontend"],
+      "args": [
+        "/c",
+        "npm run-script win-prod:frontend"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -130,7 +136,10 @@
       "label": "win-setup",
       "type": "shell",
       "command": "cmd",
-      "args": ["/c", "npm run-script win-setup"],
+      "args": [
+        "/c",
+        "npm run-script win-setup"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -149,8 +158,9 @@
       "type": "shell",
       "command": "cmd",
       "args": [
-        "/c", "set http_proxy= && set https_proxy= && npm config delete proxy -f && npm config delete https-proxy -f && yarn config delete proxy -f && yarn config delete https-proxy -f"
-       ],
+        "/c",
+        "set http_proxy= && set https_proxy= && npm config delete proxy -f && npm config delete https-proxy -f && yarn config delete proxy -f && yarn config delete https-proxy -f"
+      ],
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -179,7 +189,8 @@
       "type": "shell",
       "command": "cmd",
       "args": [
-        "/c", "${workspaceFolder}\\clean.bat" // Path to the script that waits for the server
+        "/c",
+        "${workspaceFolder}\\clean.bat" // Path to the script that waits for the server
       ],
       "problemMatcher": [],
       "group": {
@@ -192,7 +203,8 @@
       "type": "shell",
       "command": "cmd",
       "args": [
-        "/c", "cd ${workspaceFolder}\\server\\ && npx prisma generate --schema=./prisma/schema.prisma && npx prisma migrate deploy --schema=./prisma/schema.prisma"
+        "/c",
+        "cd ${workspaceFolder}\\server\\ && npx prisma generate --schema=./prisma/schema.prisma && npx prisma migrate deploy --schema=./prisma/schema.prisma"
       ],
       "problemMatcher": [],
       "group": {

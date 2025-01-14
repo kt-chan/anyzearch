@@ -16,6 +16,7 @@ __pycache__
 **/*.env-fe
 **/.env
 **/.env-fe
+**/.env.development
 .env
 .env-fe
 .env-win
@@ -30,3 +31,5 @@ run/
 /build/server/storage
 storage/
 **/storage/documents/
+build/collector/.env.development
+build/.env.development
