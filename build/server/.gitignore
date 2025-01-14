@@ -1,14 +1,15 @@
 .env.production
 .env.development
-storage/assets/*
 !storage/assets/anything-llm.png
+!storage/documents/DOCUMENTS.md
+storage/*
+storage/assets/*
 storage/documents/*
 storage/comkey/*
 storage/tmp/*
 storage/vector-cache/*.json
 storage/exports
 storage/imports
-!storage/documents/DOCUMENTS.md
 logs/server.log
 *.db
 *.db-journal
