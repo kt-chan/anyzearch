@@ -11,3 +11,5 @@ yarn.lock
 *.bak
 .env
 .env-win
+storage/
+storage/documents/

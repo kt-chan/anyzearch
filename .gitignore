@@ -28,3 +28,5 @@ anyzearch.tar.gz
 *.key
 run/
 /build/server/storage
+storage/
+**/storage/documents/
