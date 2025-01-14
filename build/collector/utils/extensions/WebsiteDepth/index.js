@@ -163,7 +163,7 @@ async function bulkScrapePages(links, outFolderPath) {
         token_count_estimate: tokenizeString(content).length,
       };
 
-      writeToServerDocuments(data, data.title, outFolderPath);
+      writeToServerDocuments(data, data.title, ".html", outFolderPath);
       scrapedData.push(data);
 
       console.log(`Successfully scraped ${link}.`);

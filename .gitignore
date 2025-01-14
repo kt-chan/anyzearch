@@ -27,3 +27,4 @@ anyzearch.tar.gz
 /build/certs
 *.key
 run/
+/build/server/storage
