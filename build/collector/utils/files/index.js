@@ -21,6 +21,14 @@ const s3Client = ENABLE_S3 ? (function () {
   });
 })() : null;
 
+const defaultStoragePath =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(
+      __dirname,
+      "../../../server/storage"
+    )
+    : path.resolve(process.env.STORAGE_DIR);
+
 function splitFilePath(filePath) {
   // Normalize the path to handle differences between Windows and Linux
   const normalizedPath = path.normalize(filePath);
@@ -121,10 +129,7 @@ function writeToSourceDocuments(data = {}, filename, fileExtension = null, desti
 function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
     ? path.resolve(destinationOverride)
-    : path.resolve(
-      __dirname,
-      "../../../server/storage/objects/custom-documents"
-    );
+    : path.resolve(defaultStoragePath, "objects/custom-documents");
   if (!fs.existsSync(destination))
     fs.mkdirSync(destination, { recursive: true });
 
@@ -212,10 +217,7 @@ function saveFile(data, filename) {
 function writeToServerDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
     ? path.resolve(destinationOverride)
-    : path.resolve(
-      __dirname,
-      "../../../server/storage/documents/custom-documents"
-    );
+    : path.resolve(defaultStoragePath, "documents/custom-documents");
   if (!fs.existsSync(destination))
     fs.mkdirSync(destination, { recursive: true });
 
