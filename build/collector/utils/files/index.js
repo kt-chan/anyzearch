@@ -21,13 +21,13 @@ const s3Client = ENABLE_S3 ? (function () {
   });
 })() : null;
 
-const defaultStoragePath =
-  process.env.NODE_ENV === "development"
-    ? path.resolve(
-      __dirname,
-      "../../../server/storage"
-    )
-    : path.resolve(process.env.STORAGE_DIR);
+
+const defaultStoragePath = path.resolve(
+  process.env.STORAGE_DIR
+    ? path.resolve(process.env.STORAGE_DIR)
+    : path.resolve(__dirname, "../../../server/storage")
+);
+
 
 function splitFilePath(filePath) {
   // Normalize the path to handle differences between Windows and Linux
@@ -160,12 +160,10 @@ function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, dest
 }
 
 function writeToS3Documents(data = {}, filename, fileExtension = null, destinationOverride = null) {
+
   const destination = destinationOverride
     ? path.resolve(destinationOverride)
-    : path.resolve(
-      __dirname,
-      "../../../server/storage/objects/custom-documents"
-    );
+    : path.resolve(defaultStoragePath, "objects/custom-documents");
 
   // Convert file URL to local path
   let sourceFilePath;
