@@ -5,7 +5,6 @@ const {
   createdDate,
   saveFile,
   trashFile,
-  writeToServerDocuments,
 } = require("../../utils/files");
 const { default: slugify } = require("slugify");
 

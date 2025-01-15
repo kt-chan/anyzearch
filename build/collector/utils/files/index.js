@@ -22,11 +22,9 @@ const s3Client = ENABLE_S3 ? (function () {
 })() : null;
 
 
-const defaultStoragePath = path.resolve(
-  process.env.STORAGE_DIR
-    ? path.resolve(process.env.STORAGE_DIR)
-    : path.resolve(__dirname, "../../../server/storage")
-);
+const defaultStoragePath = process.env.STORAGE_DIR
+  ? path.resolve(process.env.STORAGE_DIR)
+  : path.resolve(__dirname, "../../../server/storage");
 
 
 function splitFilePath(filePath) {
@@ -128,7 +126,7 @@ function writeToSourceDocuments(data = {}, filename, fileExtension = null, desti
 
 function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
-    ? path.resolve(destinationOverride)
+    ? path.resolve(path.resolve(defaultStoragePath, "objects"), destinationOverride)
     : path.resolve(defaultStoragePath, "objects/custom-documents");
   if (!fs.existsSync(destination))
     fs.mkdirSync(destination, { recursive: true });
@@ -142,10 +140,17 @@ function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, dest
     sourceFilePath = data.url;
   }
 
-  const destinationFilePath = path.resolve(destination, filename) + fileExtension;
+  const destinationFilePath = path.resolve(destination, filename) + `${fileExtension ? fileExtension : ""}`;
 
   try {
-    fs.copyFileSync(sourceFilePath, destinationFilePath);
+    if (data.url.startsWith('link://')) {
+      fs.writeFileSync(destinationFilePath, data.htmlContent, {
+        encoding: "utf-8",
+      });
+      delete data.htmlContent;
+    } else {
+      fs.copyFileSync(sourceFilePath, destinationFilePath);
+    }
     console.log('File copied successfully');
   } catch (err) {
     console.error('Error copying file:', err);
@@ -153,6 +158,7 @@ function writeToLocalFSDocuments(data = {}, filename, fileExtension = null, dest
 
   const basedir = path.basename(path.dirname(destinationFilePath));
   const basename = path.basename(destinationFilePath);
+  
   return {
     ...data,
     rawLocation: path.join(basedir, basename),
@@ -214,7 +220,7 @@ function saveFile(data, filename) {
 
 function writeToServerDocuments(data = {}, filename, fileExtension = null, destinationOverride = null) {
   const destination = destinationOverride
-    ? path.resolve(destinationOverride)
+    ? path.resolve(path.resolve(defaultStoragePath, "documents"), destinationOverride)
     : path.resolve(defaultStoragePath, "documents/custom-documents");
   if (!fs.existsSync(destination))
     fs.mkdirSync(destination, { recursive: true });
