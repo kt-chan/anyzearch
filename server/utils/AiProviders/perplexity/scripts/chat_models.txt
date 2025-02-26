@@ -1,0 +1,4 @@
+| Model                               | Parameter Count | Context Length | Model Type      |
+| :---------------------------------- | :-------------- | :------------- | :-------------- |
+| `sonar-pro` | 8B              | 200,000       | Chat Completion |
+| `sonar` | 8B             | 127,072        | Chat Completion |
