@@ -1,0 +1,59 @@
+{
+  "active": true,
+  "name": "intelligent internet searcher",
+  "hubId": "internet-searcher",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "The Internet Search Assistant is a specialized agent designed to support the LLM (Large Language Model) by conducting targeted searches on the internet. Its primary function is to identify and retrieve relevant information that can be used to enrich and accurately answer user queries.",
+  "author": "@ktchan",
+  "author_url": "https://github.com/kt-chan",
+  "license": "MIT",
+  "setup_args": {
+    "LANGFLOW_HOST_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "type": "text",
+        "default": "YOUR_LANGFLOW_HOST_PATH",
+        "placeholder": "http://langflow-host.local/api/",
+        "hint": "The HOST PATH for LANGFLOW Service"
+      },
+      "value": "http://ubuntu22.local:7860/api/v1/run/"
+    },
+    "LANGFLOW_API_KEY": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "type": "text",
+        "default": "YOUR_LANGFLOW_API_KEY",
+        "placeholder": "apikey-1234567890",
+        "hint": "The API key for the open-meteo API"
+      },
+      "value": "sk-99PjK9LraZHMhF-FsD8xYsB5Gmhpro1g6HUUof1031A"
+    }
+  },
+  "examples": [
+    {
+      "prompt": "What is the weather in Tokyo?",
+      "call": "{\"instruction\" : \"Search internet to answer this question: What is the weather in Tokyo?\"}"
+    },
+    {
+      "prompt": "What is the weather in San Francisco?",
+      "call": "{\"instruction\" : \"Search internet to answer this question: What is the weather in San Francisco?\"}"
+    },
+    {
+      "prompt": "What is the weather in London?",
+      "call": "{\"instruction\" : \"Search internet to answer this question: What is the weather in London?\"}"
+    }
+  ],
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "instruction": {
+        "description": "the internet search instruction to find relevant information to answer user questions",
+        "type": "string"
+      }
+    }
+  },
+  "imported": true
+}

@@ -110,7 +110,7 @@ ${JSON.stringify(def.parameters.properties, null, 4)}\n`;
       ["user", "assistant"].includes(msg.role)
     );
     if (history[history.length - 1].role !== "user") return null;
-    const response = await chatCb({
+    const chatPrmptMsg = {
       messages: [
         {
           content: `You are a program which picks the most optimal function and parameters to call.
@@ -119,9 +119,10 @@ ${JSON.stringify(def.parameters.properties, null, 4)}\n`;
       When there is no relevant function to call - return with a regular chat text response.
       Your task is to pick a **single** function that we will use to call, if any seem useful or relevant for the user query.
 
-      All JSON responses should have two keys.
-      'name': this is the name of the function name to call. eg: 'web-scraper', 'rag-memory', etc..
-      'arguments': this is an object with the function properties to invoke the function.
+      All JSON responses must have two keys: 'name' and 'arguments', which
+      'name': this is the name of the function name to call. eg: 'web-scraper', 'rag-memory', etc.., which should located at Function name section.
+      'arguments': this is an object with the function properties to invoke the function, which should located at Function parameters in JSON format section.
+      
       DO NOT INCLUDE ANY OTHER KEYS IN JSON RESPONSES.
 
       Here are the available tools you can use an examples of a query and response so you can understand how each one works.
@@ -132,7 +133,8 @@ ${JSON.stringify(def.parameters.properties, null, 4)}\n`;
         },
         ...history,
       ],
-    });
+    };
+    const response = await chatCb(chatPrmptMsg);
     const call = safeJsonParse(response, null);
     if (call === null) return { toolCall: null, text: response }; // failed to parse, so must be text.
 
