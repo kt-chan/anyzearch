@@ -79,9 +79,9 @@ export default defineConfig({
     ]
   },
   build: {
-    sourcemap: false, // @DEBUG, set to true for debug frontend minification
-    minify: true, // @DEBUG, set to false for debug Avoids minification
-    cssCodeSplit: true, // @DEBUG, set to false for debug Avoids splitting CSS into multiple files
+    sourcemap: false, // set to true for debug frontend minification
+    minify: true, // set to false for debug Avoids minification
+    cssCodeSplit: true, // set to false for debug Avoids splitting CSS into multiple files
     rollupOptions: {
       output: {
         // These settings ensure the primary JS and CSS file references are always index.{js,css}

@@ -5,10 +5,10 @@ const { isWithin, normalizePath } = require("../files");
 const { CollectorApi } = require("../collectorApi");
 // @DEBUG @KTCHAN @AGENT
 // Temporary hack to local directory "../../storage/plugins/agent-skills"
-// const pluginsPath = path.resolve(__dirname, "../../storage/plugins/agent-skills");
-const pluginsPath = process.env.STORAGE_DIR
-  ? path.resolve(process.env.STORAGE_DIR, "plugins", "agent-skills")
-  : path.resolve(__dirname, "../../storage/plugins/agent-skills");
+const pluginsPath = path.resolve(__dirname, "../../storage/plugins/agent-skills");
+// const pluginsPath = process.env.STORAGE_DIR
+//   ? path.resolve(process.env.STORAGE_DIR, "plugins", "agent-skills")
+//   : path.resolve(__dirname, "../../storage/plugins/agent-skills");
 const sharedWebScraper = new CollectorApi();
 
 class ImportedPlugin {

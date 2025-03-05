@@ -163,9 +163,7 @@ var vite_config_default = defineConfig({
       // or sunburst
       open: false,
       gzipSize: true,
-      // @DEBUG, set to false for debug
       brotliSize: true,
-      // @DEBUG, set to false for debug
       filename: "bundleinspector.html"
       // will be saved in project's root
     })
