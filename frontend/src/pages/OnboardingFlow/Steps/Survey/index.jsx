@@ -7,7 +7,7 @@ import { CheckCircle } from "@phosphor-icons/react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const TITLE = "Welcome to AnythingLLM";
+const TITLE = "Welcome to AnyZearch";
 const DESCRIPTION = "Help us make AnythingLLM built for your needs. Optional.";
 
 async function sendQuestionnaire({ email, useCase, comment }) {

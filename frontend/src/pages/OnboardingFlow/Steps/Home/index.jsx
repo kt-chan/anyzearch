@@ -3,7 +3,7 @@ import LGroupImg from "./l_group.png";
 import RGroupImg from "./r_group.png";
 import LGroupImgLight from "./l_group-light.png";
 import RGroupImgLight from "./r_group-light.png";
-import AnythingLLMLogo from "@/media/logo/anyzearch.png";
+import AnyZearchLogo from "@/media/logo/anyzearch.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -42,8 +42,8 @@ export default function OnboardingHome() {
               Welcome to
             </p>
             <img
-              src={AnythingLLMLogo}
-              alt="AnythingLLM"
+              src={AnyZearchLogo}
+              alt="AnyZearch"
               className="md:h-[50px] flex-shrink-0 max-w-[300px] light:invert"
             />
             <button
