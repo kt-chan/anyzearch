@@ -27,7 +27,9 @@ RUN yarn install  --production --network-timeout 1000000 && yarn cache clean
 
 # Compile Llama.cpp bindings for node-llama-cpp for this operating system.
 # Creates appropriate bindings for the OS
-RUN npx --no node-llama-cpp download
+# # RUN npx --no node-llama-cpp download
+# RUN npm install node-llama-cpp
+# RUN npx node-llama-cpp source download --release latest
 WORKDIR /app
 
 #Building produciton image

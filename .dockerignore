@@ -16,5 +16,4 @@
 **/.log
 !docker/.env.example
 !frontend/.env.production
-./certs
 ./devcontainer

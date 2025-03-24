@@ -10,9 +10,8 @@ module.exports.runtime = {
         const langflow_hostpath = this.runtimeArgs["LANGFLOW_HOST_PATH"];
         const langflow_apk_key = this.runtimeArgs["LANGFLOW_API_KEY"];
         const session_id = this._getCurrentDateTime();
-        const basequery = new URL("fd4086c0-3f9e-4d71-b072-1f922f2ab932?stream=false", langflow_hostpath).href;
-        
-
+        const basequery = new URL("8ecb7e3e-b9d0-4a39-9a7b-50d1fad35b58?stream=false", langflow_hostpath).href;
+       
         try {
             this.introspect(
                 `${callerId} called with enquiry:${instruction}...`

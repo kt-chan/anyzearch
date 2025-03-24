@@ -105,6 +105,7 @@ ${JSON.stringify(def.parameters.properties, null, 4)}\n`;
     return { valid: true, reason: null };
   }
 
+  //@agent @ktchan Custom Agent Prompt
   async functionCall(messages, functions, chatCb = null) {
     const history = [...messages].filter((msg) =>
       ["user", "assistant"].includes(msg.role)

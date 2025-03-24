@@ -47,8 +47,8 @@ RUN groupadd -g "$ARG_GID" anythingllm && \
     mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R anythingllm:anythingllm /app
 
 ## since we need to enable https setup, we need to update ssl certificate
-RUN mkdir -p ./certs
-COPY ./certs/openssl.cnf ./certs/openssl.cnf
+RUN mkdir -p /app/certs/
+ADD ./certs/openssl.cnf /app/certs/openssl.cnf
 RUN cd ./certs/
 RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
   -nodes -keyout anyzearch.local.key -out anyzearch.local.crt -subj "/CN=anyzearch.local" \
