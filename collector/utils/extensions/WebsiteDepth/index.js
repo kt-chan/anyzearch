@@ -1,13 +1,33 @@
 const { v4 } = require("uuid");
-const {
-  PuppeteerWebBaseLoader,
-} = require("langchain/document_loaders/web/puppeteer");
+const { PuppeteerWebBaseLoader } = require("langchain/document_loaders/web/puppeteer");
 const { default: slugify } = require("slugify");
 const { parse } = require("node-html-parser");
 const { writeToSourceDocuments, writeToServerDocuments } = require("../../files");
 const { tokenizeString } = require("../../tokenizer");
 const path = require("path");
 const fs = require("fs");
+
+// Function to create a Puppeteer loader with proxy settings
+function createLoader(url, evaluateCallback = null) {
+  const loaderOptions = {
+    launchOptions: {
+      headless: "new",
+      args: [
+        `--proxy-server=${process.env.HTTP_PROXY || process.env.HTTPS_PROXY || ''}`
+      ].filter(Boolean),
+    },
+    gotoOptions: { waitUntil: "networkidle2", timeout: 100000 },
+  };
+
+  if (evaluateCallback) {
+    loaderOptions.async = true;
+    loaderOptions.evaluate = evaluateCallback;
+  }
+
+  return new PuppeteerWebBaseLoader(url, loaderOptions);
+}
+
+
 
 async function discoverLinks(startUrl, maxDepth = 1, maxLinks = 20) {
   const baseUrl = new URL(startUrl);
@@ -46,10 +66,7 @@ async function discoverLinks(startUrl, maxDepth = 1, maxLinks = 20) {
 
 async function getPageLinks(url, baseUrl) {
   try {
-    const loader = new PuppeteerWebBaseLoader(url, {
-      launchOptions: { headless: "new" },
-      gotoOptions: { waitUntil: "networkidle2" },
-    });
+    const loader = createLoader(url);
     const docs = await loader.load();
     const html = docs[0].pageContent;
     const links = extractLinks(html, baseUrl);
@@ -90,19 +107,15 @@ async function bulkScrapePages(links, outFolderPath) {
     console.log(`Scraping ${i + 1}/${links.length}: ${link}`);
 
     try {
-      const loader = new PuppeteerWebBaseLoader(link, {
-        launchOptions: { headless: "new" },
-        gotoOptions: { waitUntil: "networkidle2", timeout: 100000 },
-        async evaluate(page, browser) {
-          const result = await page.evaluate(() => {
-            return JSON.stringify({
-              text: document.body.innerText,
-              html: document.body.innerHTML,
-            });
+      const loader = createLoader(link, async (page, browser) => {
+        const result = await page.evaluate(() => {
+          return JSON.stringify({
+            text: document.body.innerText,
+            html: document.body.innerHTML,
           });
-          await browser.close();
-          return result;
-        },
+        });
+        await browser.close();
+        return result;
       });
 
       const docs = await loader.load();

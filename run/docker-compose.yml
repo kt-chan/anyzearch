@@ -1,34 +1,55 @@
-version: '3.7'
-
 networks:
   net-anyzearch:
     driver: bridge
-    
+    ipam:
+      config:
+        - subnet: 172.101.1.0/24
+          gateway: 172.101.1.1
+
 services:
   anyzearch:
-    image: ktchanhk/anyzearch:0.0.1
-    container_name: anyzearch  
+    image: ktchanhk/anyzearch:0.0.3
+    container_name: anyzearch
     restart: always
     ports:
       - "3001:3001"
     cap_add:
       - SYS_ADMIN
     extra_hosts:
-      host.docker.internal: host-gateway
+      - "host.docker.internal:host-gateway"
     volumes:
       - $HOME/anyzearch/data:/app/server/storage
       - $HOME/anyzearch/run/.env:/app/server/.env
       - $HOME/anyzearch/run/.env-fe:/app/frontend/.env
       - $HOME/anyzearch/run/docker-entrypoint.sh:/usr/local/bin/docker-entrypoint.sh
+      - $HOME/anyzearch/run/certs/anyzearch.local.crt:/temp/certs/anyzearch.local.crt
+      - $HOME/anyzearch/run/certs/anyzearch.local.key:/temp/certs/anyzearch.local.key
     environment:
-      STORAGE_DIR: /app/server/storage
-      NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt
-      NODE_OPTIONS: --use-openssl-ca
-      CURL_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
-      REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
-      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "false"
-      CHROME_PATH: /usr/bin/google-chrome-stable
-      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+      - DATABASE_URL=postgresql://anyzearch:anyzearch@postgres-anyzearch:5432/anyzearch
+      - DATABASE_PROVIDER=postgresql
+      - LLM_PROVIDER=generic-openai
+      - GENERIC_OPEN_AI_BASE_PATH=http://open.bigmodel.cn/api/paas/v4/
+      - GENERIC_OPEN_AI_MODEL_PREF=glm-4-flash
+      - GENERIC_OPEN_AI_MODEL_TOKEN_LIMIT=4098
+      - GENERIC_OPEN_AI_API_KEY=4b15d9ba2b538d2ec27ac951d14327bb.5cjslBvVIKUNmh5v
+      - GENERIC_OPEN_AI_MAX_TOKENS=2048
+      - EMBEDDING_ENGINE=native
+      - VECTOR_DB=lancedb
+      - AUTH_TOKEN=@hwKT1986
+      - JWT_SECRET=677c14ce-49cc-4471-a489-6446f5f6aedb
+      - AGENT_GSE_CTX=c4eab4e63e1f74ec7
+      - AGENT_GSE_KEY=AIzaSyBR9g3cjEFDAuBq0GsDT5DBfPio2olBOY0
+      - STORAGE_DIR=/app/server/storage
+      - SERVER_PORT=3001
+      - SIG_KEY=57becb9cb0ed874b38835cd1e1c1b7a748b2b3eb26d24a25eba7515a8cf47353
+      - SIG_SALT=0f42e6af5af2a65c4a95ff49f9e5b3b5131bd6f6d0c9604e3514e0f9540c95a1
+      - ENABLE_HTTPS=true
+      - HTTPS_CERT_PATH=/temp/certs/anyzearch.local.crt
+      - HTTPS_KEY_PATH=/temp/certs/anyzearch.local.key
+      - HTTP_PROXY=http://172.101.1.1:3128
+      - HTTPS_PROXY=http://172.101.1.1:3128
+      - http_proxy=http://172.101.1.1:3128
+      - https_proxy=http://172.101.1.1:3128
     deploy:
       mode: replicated
       replicas: 1
@@ -37,45 +58,101 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-    networks:
-      - net-anyzearch
-  ollama:
-    image: ollama/ollama:0.3.6-rocm
-    container_name: ollama  
-    restart: always
-    ports:
-      - "11434:11434"
-    extra_hosts:
-      host.docker.internal: host-gateway
-    environment:
-      OLLAMA_HOST: 0.0.0.0
-    healthcheck:
-      test: "bash -c 'cat < /dev/null > /dev/tcp/localhost/11434'"
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - net-anyzearch
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:v0.3.13
-    container_name: open-webui  
-    restart: always
-    ports:
-      - "3002:8080"
-    cap_add:
-      - SYS_ADMIN
-    extra_hosts:
-      host.docker.internal: host-gateway     
-    environment:
-      OLLAMA_BASE_URL: http://ollama:11434
-    volumes:
-      - $HOME/ollama-webui:/app/backend/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    networks:
-      - net-anyzearch
     depends_on:
-          - ollama
+      - postgres-anyzearch
+    networks:
+      - net-anyzearch
+  langflow:
+    image: local/langflow:latest
+      # image: langflowai/langflow:latest
+    ports:
+      - "7860"
+    depends_on:
+      - postgres-langflow
+    environment:
+      - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres-langflow:5432/langflow
+      - LANGFLOW_CONFIG_DIR=/var/lib/langflow
+      - HTTP_PROXY=http://172.101.1.1:3128
+      - HTTPS_PROXY=http://172.101.1.1:3128
+      - http_proxy=http://172.101.1.1:3128
+      - https_proxy=http://172.101.1.1:3128
+    env_file:
+      - .env
+    volumes:
+      - v-langflow-data:/var/lib/langflow
+    networks:
+      - net-anyzearch
+  whisper:
+    image: travisvn/openai-edge-tts:latest
+    ports:
+      - "5050"
+    environment: # optionally define in -e argument when running docker command
+      - TTS_API_KEY=yhDxg71p6qNVXFM6x4nuGDBLCqDr7f0r6omi7HBG8eA
+      - TTS_PORT=5050
+      - DEFAULT_VOICE=en-US-AvaNeural
+      - DEFAULT_RESPONSE_FORMAT=mp3
+      - DEFAULT_SPEED=1.0
+      - DEFAULT_LANGUAGE=en-US
+      - REQUIRE_API_KEY=True
+      - REMOVE_FILTER=False
+      - EXPAND_API=True
+      - HTTP_PROXY=http://172.101.1.1:3128
+      - HTTPS_PROXY=http://172.101.1.1:3128
+      - http_proxy=http://172.101.1.1:3128
+      - https_proxy=http://172.101.1.1:3128
+    networks:
+      - net-anyzearch
+  postgres-langflow:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: langflow
+      POSTGRES_PASSWORD: langflow
+      POSTGRES_DB: langflow
+    ports:
+      - "5432"
+    networks:
+      - net-anyzearch
+    volumes:
+      - v-langflow-postgres:/var/lib/postgresql/data
+  postgres-anyzearch:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: anyzearch
+      POSTGRES_PASSWORD: anyzearch
+      POSTGRES_DB: anyzearch
+    ports:
+      - "5432"
+    networks:
+      - net-anyzearch
+    volumes:
+      - v-anyzearch-postgres:/var/lib/postgresql/data
+  pgadmin4:
+    image: dpage/pgadmin4:9.1.0
+    restart: always
+    ports:
+      - "5050:80"
+    networks:
+      - net-anyzearch
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@iteasoft.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+volumes:
+  v-langflow-postgres:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/data/langflow/db
+      o: bind
+  v-anyzearch-postgres:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/data/anyzearch/db
+      o: bind
+  v-langflow-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/data/langflow/app
+      o: bind
+
