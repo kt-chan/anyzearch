@@ -28,14 +28,14 @@ sudo ./build.sh
 cd ./run
 ```
 
-### update  ./.env.sample | 刷新 ./.env.sample 参数
+### update  ./.env.example | 刷新 ./.env.example 参数
 ```bash
-vi /.env.sampl
+vi /.env.example
 ```
 
-###  copy ./.env.smaple to ./.env | 然后复制 ./.env.smaple 到 ./.env
+###  copy ./.env.example to ./.env | 然后复制 ./.env.example 到 ./.env
 ```bash
-copy -f ./.env.smaple ./.env 
+copy -f ./.env.example ./.env 
 ```
 
 ###  run the program ./start-demo.sh | 执行程序 ./start-demo.sh
