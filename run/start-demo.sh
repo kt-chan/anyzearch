@@ -4,7 +4,7 @@ fi
 export STORAGE_LOCATION=$HOME/anyzearch/data && \
 mkdir -p $STORAGE_LOCATION && \
 touch "$HOME/anyzearch/run/.env" && \
-docker run -d -p 443:3001 \
+docker run -d -p 3001:3001 \
 --name=anyzearch \
 --add-host=host.docker.internal:host-gateway \
 --cap-add SYS_ADMIN \
