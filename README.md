@@ -39,18 +39,27 @@ git clone https://github.com/kt-chan/anyzearch.git
 cd ~/anyzearch/run
 ```
 
-### update  ./.env.example | 刷新 ./.env.example 参数
-```bash
-vi /.env.example
-```
-
 ###  copy ./.env.example to ./.env | 然后复制 ./.env.example 到 ./.env
 ```bash
 cp -f ./.env.example ./.env 
 ```
 
+###  copy ./.env-fe.example to ./.env-fe | 然后复制 ./.env-fe.example 到 ./.env-fe
+```bash
+cp -f ./.env-fe.example ./.env-fe 
+```
+
+
+
+### update  ./.env.example | 刷新 ./.env.example 参数
+```bash
+vi /.env
+```
+
 ###  run the program ./start-demo.sh | 执行程序 ./start-demo.sh
 ```bash
+chmod u+x *.sh
+./env.sh
 ./start-demo.sh
 ```
 
