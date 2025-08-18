@@ -7,6 +7,7 @@ touch "$HOME/anyzearch/run/.env" && \
 docker run -d -p 3001:3001 \
 --name=anyzearch \
 --add-host=host.docker.internal:host-gateway \
+--network=host \
 --cap-add SYS_ADMIN \
 -v ${STORAGE_LOCATION}:/app/server/storage \
 -v $HOME/anyzearch/run/sources.list:/etc/apt/sources.list \
