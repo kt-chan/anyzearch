@@ -24,7 +24,7 @@ docker run -d -p 443:3001 \
 -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=false \
 -e CHROME_PATH="/usr/bin/google-chrome-stable" \
 -e PUPPETEER_EXECUTABLE_PATH="/usr/bin/google-chrome-stable" \
-local/anyzearch:latest
-#ktchanhk/anyzearch:0.0.1
+ktchanhk/anyzearch:0.0.1
+#local/anyzearch:latest
 
 docker logs anyzearch -f
