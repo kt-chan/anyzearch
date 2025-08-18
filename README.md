@@ -33,6 +33,10 @@ cd ~
 git clone https://github.com/kt-chan/anyzearch.git
 ```
 
+### Pull docker images from dockerhub
+```bash
+docker pull ktchanhk/anyzearch:0.0.1
+```
 
 ### Go to run directory
 ```bash
