@@ -40,6 +40,7 @@ services:
     networks:
       - net-anyzearch
   ollama:
+    profiles: [debug]
     image: ollama/ollama:0.3.6-rocm
     container_name: ollama  
     restart: always
@@ -57,6 +58,7 @@ services:
     networks:
       - net-anyzearch
   open-webui:
+    profiles: [debug]
     image: ghcr.io/open-webui/open-webui:v0.3.13
     container_name: open-webui  
     restart: always
