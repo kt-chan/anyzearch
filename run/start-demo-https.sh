@@ -7,6 +7,7 @@ touch "$HOME/anyzearch/run/.env" && \
 docker run -d -p 443:3001 \
 --name=anyzearch \
 --add-host=host.docker.internal:host-gateway \
+--network=host \
 --cap-add SYS_ADMIN \
 --add-host=host.docker.internal:host-gateway \
 -v ${STORAGE_LOCATION}:/app/server/storage \
