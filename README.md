@@ -23,9 +23,20 @@ sudo ./build.sh
 ***
 
 ## Deploy Guide ## 
+### Go to home directory
+```bash
+cd ~
+```
+
+### Clone this repo
+```bash
+git clone https://github.com/kt-chan/anyzearch.git
+```
+
+
 ### Go to run directory
 ```bash
-cd ./run
+cd ~/anyzearch/run
 ```
 
 ### update  ./.env.example | 刷新 ./.env.example 参数
