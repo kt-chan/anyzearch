@@ -25,3 +25,6 @@ dist-ssr
 bundleinspector.html
 .env.production
 flow-typed
+.chrome/*
+.env
+*.env

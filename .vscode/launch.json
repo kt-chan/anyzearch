@@ -9,7 +9,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}/collector",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
       },
       "runtimeArgs": [
         "index.js"
@@ -22,53 +22,88 @@
       "type": "node"
     },
     {
+      "type": "node",
       "name": "Server debug",
       "request": "launch",
-      "cwd": "${workspaceFolder}/server",
-      "env": {
-        "NODE_ENV": "development"
-      },
+      "cwd": "${workspaceFolder}/Server",
+      // "envFile": "${workspaceFolder}/server/.env",
       "runtimeArgs": [
+        "--inspect-brk",
+        "--nolazy",
+        "--trace-warnings",
         "index.js"
       ],
+      "env": {
+        "NODE_ENV": "development",
+      },
       // not using yarn/nodemon because it doesn't work with breakpoints
       // "runtimeExecutable": "yarn",
       "skipFiles": [
         "<node_internals>/**"
-      ],
-      "type": "node"
+      ]
+      // , "preLaunchTask": "setup-database" 
     },
     {
       "name": "Frontend debug",
       "request": "launch",
       "cwd": "${workspaceFolder}/frontend",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [
+        "vite",
+        "--debug",
+        "--host=0.0.0.0",
+        "--port=8080"
+      ],
       "env": {
         "NODE_ENV": "development",
       },
-      "runtimeExecutable": "${workspaceFolder}/frontend/node_modules/.bin/vite",
-      "runtimeArgs": [
-        "--debug",
-        "--host=0.0.0.0"
+      // "runtimeExecutable": "yarn",
+      "skipFiles": [
+        "<node_internals>/**"
       ],
+      // "preLaunchTask":"build-frontend", // comment out this if build frontend is not requried.
+      "type": "node"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/frontend/",
+      "sourceMapPathOverrides": {
+        "file:///*": "${workspaceFolder}/frontend/src/*"
+      },
+      "preLaunchTask": "wait-for-server" // This task will run before launching Chrome
+    },
+    {
+      "name": "copy-env-files",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "runtimeArgs": [
+        "scripts/copy-env-files.js"
+      ],
+      // not using yarn/nodemon because it doesn't work with breakpoints
       // "runtimeExecutable": "yarn",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "type": "node"
-    },
+    }
+  ],
+  "compounds": [
     {
-      "name": "Launch Edge",
-      "request": "launch",
-      "type": "msedge",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "name": "Full Stack Debug",
+      "configurations": [
+        "copy-env-files",
+        "Frontend debug",
+        "Server debug",
+        "Collector debug",
+        "Launch Chrome"
+      ],
+      "stopAll": true
     }
   ]
 }

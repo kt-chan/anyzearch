@@ -7,6 +7,7 @@
     "start": "vite --open",
     "dev": "cross-env NODE_ENV=development vite --debug --host=0.0.0.0",
     "build": "vite build && node scripts/postbuild.js",
+    "win-build": "yarn build && del /F /S /Q ..\\server\\public && xcopy /E /I /Y .\\dist  ..\\server\\public",
     "lint": "yarn prettier --ignore-path ../.prettierignore --write ./src",
     "preview": "vite preview"
   },
