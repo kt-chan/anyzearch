@@ -62,7 +62,7 @@ async function getDiskStorage() {
  * so that we can prioritize the correct model and types for future updates
  * as well as build features in AnyZearch directly for a specific model or capabilities.
  *
- * Disable with  {@link https://github.com/iteasoft/AnyZearch?tab=readme-ov-file#telemetry--privacy|Disable Telemetry}
+ * Disable with  {@link https://github.com/Mintplex-Labs/anythingllm?tab=readme-ov-file#telemetry--privacy|Disable Telemetry}
  * @returns {string} The model tag.
  */
 function getModelTag() {

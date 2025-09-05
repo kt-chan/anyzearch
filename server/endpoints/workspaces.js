@@ -222,14 +222,26 @@ function workspaceEndpoints(app) {
           return;
         }
 
+        const updatedAdds = adds.map(absolutePath => {
+          const relativePath = normalizePath(absolutePath);
+          if (!relativePath) console.error('Failed to compute relative path:', absolutePath);
+          return relativePath;
+        });
+
+        const updatedDeletes = deletes.map(absolutePath => {
+          const relativePath = normalizePath(absolutePath);
+          if (!relativePath) console.error('Failed to compute relative path:', absolutePath);
+          return relativePath;
+        });
+
         await Document.removeDocuments(
           currWorkspace,
-          deletes,
+          updatedDeletes,
           response.locals?.user?.id
         );
         const { failedToEmbed = [], errors = [] } = await Document.addDocuments(
           currWorkspace,
-          adds,
+          updatedAdds,
           response.locals?.user?.id
         );
         const updatedWorkspace = await Workspace.get({ id: currWorkspace.id });
@@ -238,8 +250,8 @@ function workspaceEndpoints(app) {
           message:
             failedToEmbed.length > 0
               ? `${failedToEmbed.length} documents failed to add.\n\n${errors
-                  .map((msg) => `${msg}`)
-                  .join("\n\n")}`
+                .map((msg) => `${msg}`)
+                .join("\n\n")}`
               : null,
         });
       } catch (e) {
@@ -786,11 +798,11 @@ function workspaceEndpoints(app) {
         // and is a valid thread slug.
         const threadId = !!threadSlug
           ? (
-              await WorkspaceThread.get({
-                slug: String(threadSlug),
-                workspace_id: workspace.id,
-              })
-            )?.id ?? null
+            await WorkspaceThread.get({
+              slug: String(threadSlug),
+              workspace_id: workspace.id,
+            })
+          )?.id ?? null
           : null;
         const chatsToFork = await WorkspaceChats.where(
           {

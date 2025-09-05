@@ -126,7 +126,7 @@ function apiDocumentEndpoints(app) {
         if (!!addToWorkspaces)
           await Document.api.uploadToWorkspace(
             addToWorkspaces,
-            documents?.[0].location
+            path.relative(documentsPath, documents?.[0].location)
           );
         response.status(200).json({ success: true, error: null, documents });
       } catch (e) {

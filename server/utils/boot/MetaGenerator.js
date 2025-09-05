@@ -88,7 +88,7 @@ class MetaGenerator {
         props: {
           property: "og:image",
           content:
-            "https://raw.githubusercontent.com/iteasoft/AnyZearch/master/images/promo.png",
+            "https://raw.githubusercontent.com/Mintplex-Labs/anythingllm/master/images/promo.png",
         },
       },
 
@@ -120,7 +120,7 @@ class MetaGenerator {
         props: {
           property: "twitter:image",
           content:
-            "https://raw.githubusercontent.com/iteasoft/AnyZearch/master/images/promo.png",
+            "https://raw.githubusercontent.com/Mintplex-Labs/anythingllm/master/images/promo.png",
         },
       },
 

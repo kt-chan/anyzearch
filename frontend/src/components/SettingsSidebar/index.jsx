@@ -460,7 +460,7 @@ function AppVersion() {
   if (isLoading) return null;
   return (
     <Link
-      to={`https://github.com/iteasoft/AnyZearch/releases/tag/v${version}`}
+      to={`https://github.com/Mintplex-Labs/anythingllm/releases/tag/v${version}`}
       target="_blank"
       rel="noreferrer"
       className="text-theme-text-secondary light:opacity-80 opacity-50 text-xs mx-3"

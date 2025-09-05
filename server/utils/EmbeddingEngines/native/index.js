@@ -174,7 +174,7 @@ class NativeEmbedder {
   // This function will do a single fallback attempt (not recursive on purpose) to try to grab the embedder model on first embed
   // since at time, some clients cannot properly download the model from HF servers due to a number of reasons (IP, VPN, etc).
   // Given this model is critical and nobody reads the GitHub issues before submitting the bug, we get the same bug
-  // report 20 times a day: https://github.com/iteasoft/AnyZearch/issues/821
+  // report 20 times a day: https://github.com/Mintplex-Labs/anythingllm/issues/821
   // So to attempt to monkey-patch this we have a single fallback URL to help alleviate duplicate bug reports.
   async embedderClient() {
     if (!this.modelDownloaded)

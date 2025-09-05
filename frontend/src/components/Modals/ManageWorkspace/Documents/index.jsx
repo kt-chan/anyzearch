@@ -36,6 +36,24 @@ export default function DocumentSettings({ workspace, systemSettings }) {
     const documentsInWorkspace =
       currentWorkspace.documents.map((doc) => doc.docpath) || [];
 
+
+    const normalizePath = (pathString) => {
+      let normalized = pathString.replace(/\\/g, '/');
+      const segments = normalized.split('/');
+      const resolvedSegments = [];
+
+      for (const segment of segments) {
+        if (segment === '.') continue;
+        else if (segment === '..') resolvedSegments.pop();
+        else if (segment) resolvedSegments.push(segment);
+      }
+
+      return resolvedSegments.join('/');
+    };
+
+    // Use this function to normalize your paths
+    const normalizedDocumentsInWorkspace = documentsInWorkspace.map(normalizePath);
+
     // Documents that are not in the workspace
     const availableDocs = {
       ...localFiles,
@@ -46,7 +64,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
             items: folder.items.filter(
               (file) =>
                 file.type === "file" &&
-                !documentsInWorkspace.includes(`${folder.name}/${file.name}`)
+                !normalizedDocumentsInWorkspace.includes(`${folder.name}/${file.name}`)
             ),
           };
         } else {
@@ -65,7 +83,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
             items: folder.items.filter(
               (file) =>
                 file.type === "file" &&
-                documentsInWorkspace.includes(`${folder.name}/${file.name}`)
+                normalizedDocumentsInWorkspace.includes(normalizePath(`${folder.name}/${file.name}`))
             ),
           };
         } else {
@@ -146,7 +164,7 @@ export default function DocumentSettings({ workspace, systemSettings }) {
     if (systemSettings?.EmbeddingEngine === "openai") {
       const COST_PER_TOKEN =
         MODEL_COSTS[
-          systemSettings?.EmbeddingModelPref || "text-embedding-ada-002"
+        systemSettings?.EmbeddingModelPref || "text-embedding-ada-002"
         ];
 
       const dollarAmount = (totalTokenCount / 1000) * COST_PER_TOKEN;

@@ -5,6 +5,7 @@ const { Telemetry } = require("./telemetry");
 const { EventLogs } = require("./eventLogs");
 const { safeJsonParse } = require("../utils/http");
 const { getModelTag } = require("../endpoints/utils");
+const Path = require('path');
 
 const Document = {
   writable: ["pinned", "watched", "lastUpdatedAt"],
@@ -96,7 +97,7 @@ const Document = {
       const { pageContent, ...metadata } = data;
       const newDoc = {
         docId,
-        filename: path.split("/")[1],
+        filename: Path.basename(path),
         docpath: path,
         workspaceId: workspace.id,
         metadata: JSON.stringify(metadata),
