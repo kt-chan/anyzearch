@@ -50,7 +50,7 @@ export default {
     },
   },
   github: () => {
-    return "https://github.com/Mintplex-Labs/anything-llm";
+    return "https://github.com/iteasoft/AnyZearch";
   },
   discord: () => {
     return "https://discord.com/invite/6UyHPeGZAC";
@@ -65,7 +65,7 @@ export default {
     return "mailto:team@mintplexlabs.com";
   },
   hosting: () => {
-    return "https://my.mintplexlabs.com/aio-checkout?product=anythingllm";
+    return "https://my.mintplexlabs.com/aio-checkout?product=AnyZearch";
   },
   workspace: {
     chat: (slug, options = {}) => {

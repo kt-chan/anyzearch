@@ -8,7 +8,7 @@ const TRANSLATIONS = {
     llm: {
       title: "Preferencia de LLM",
       description:
-        "AnythingLLM puede funcionar con muchos proveedores de LLM. Este será el servicio que gestionará el chat.",
+        "AnyZearch puede funcionar con muchos proveedores de LLM. Este será el servicio que gestionará el chat.",
     },
     userSetup: {
       title: "Configuración de usuario",
@@ -37,15 +37,15 @@ const TRANSLATIONS = {
         "Estos ajustes se pueden reconfigurar en cualquier momento en la configuración.",
     },
     survey: {
-      title: "Bienvenido a AnythingLLM",
+      title: "Bienvenido a AnyZearch",
       description:
-        "Ayúdanos a hacer que AnythingLLM se adapte a tus necesidades. Opcional.",
+        "Ayúdanos a hacer que AnyZearch se adapte a tus necesidades. Opcional.",
       email: "¿Cuál es tu correo electrónico?",
-      useCase: "¿Para qué usarás AnythingLLM?",
+      useCase: "¿Para qué usarás AnyZearch?",
       useCaseWork: "Para el trabajo",
       useCasePersonal: "Para uso personal",
       useCaseOther: "Otro",
-      comment: "¿Cómo te enteraste de AnythingLLM?",
+      comment: "¿Cómo te enteraste de AnyZearch?",
       commentPlaceholder:
         "Reddit, Twitter, GitHub, YouTube, etc. - ¡Haznos saber cómo nos encontraste!",
       skip: "Omitir encuesta",
@@ -54,7 +54,7 @@ const TRANSLATIONS = {
     workspace: {
       title: "Crea tu primer espacio de trabajo",
       description:
-        "Crea tu primer espacio de trabajo y comienza a usar AnythingLLM.",
+        "Crea tu primer espacio de trabajo y comienza a usar AnyZearch.",
     },
   },
   common: {
@@ -129,11 +129,11 @@ const TRANSLATIONS = {
   },
   welcomeMessage: {
     part1:
-      "Bienvenido a AnythingLLM, AnythingLLM es una herramienta de IA de código abierto de Mintplex Labs que convierte cualquier cosa en un chatbot entrenado con el que puedes consultar y chatear. AnythingLLM es un software BYOK (trae tus propias claves), por lo que no hay suscripción, tarifa ni cargos por este software fuera de los servicios que deseas utilizar con él.",
+      "Bienvenido a AnyZearch, AnyZearch es una herramienta de IA de código abierto de Mintplex Labs que convierte cualquier cosa en un chatbot entrenado con el que puedes consultar y chatear. AnyZearch es un software BYOK (trae tus propias claves), por lo que no hay suscripción, tarifa ni cargos por este software fuera de los servicios que deseas utilizar con él.",
     part2:
-      "AnythingLLM es la forma más fácil de reunir potentes productos de IA como OpenAI, GPT-4, LangChain, PineconeDB, ChromaDB y otros servicios en un paquete ordenado y sin complicaciones para aumentar tu productividad en 100x.",
+      "AnyZearch es la forma más fácil de reunir potentes productos de IA como OpenAI, GPT-4, LangChain, PineconeDB, ChromaDB y otros servicios en un paquete ordenado y sin complicaciones para aumentar tu productividad en 100x.",
     part3:
-      "AnythingLLM puede ejecutarse totalmente de forma local en tu máquina con pocos recursos, ¡ni siquiera notarás que está ahí! No se necesita GPU. También está disponible la instalación en la nube y en las instalaciones.\nEl ecosistema de herramientas de IA se vuelve más poderoso cada día. AnythingLLM facilita su uso.",
+      "AnyZearch puede ejecutarse totalmente de forma local en tu máquina con pocos recursos, ¡ni siquiera notarás que está ahí! No se necesita GPU. También está disponible la instalación en la nube y en las instalaciones.\nEl ecosistema de herramientas de IA se vuelve más poderoso cada día. AnyZearch facilita su uso.",
     githubIssue: "Crear un issue en GitHub",
     user1: "¡¿Cómo empiezo?!",
     part4:
@@ -142,7 +142,7 @@ const TRANSLATIONS = {
     user2:
       "¿Es esto como un Dropbox con IA o algo así? ¿Y qué hay de chatear? Es un chatbot, ¿no?",
     part5:
-      "AnythingLLM es más que un Dropbox más inteligente.\n\nAnythingLLM ofrece dos formas de hablar con tus datos:\n\n<i>Consulta:</i> Tus chats devolverán datos o inferencias encontradas con los documentos en tu espacio de trabajo a los que tiene acceso. ¡Agregar más documentos al espacio de trabajo lo hace más inteligente!\n\n<i>Conversacional:</i> Tus documentos + tu historial de chat en curso contribuyen al conocimiento del LLM al mismo tiempo. Genial para agregar información basada en texto en tiempo real o correcciones y malentendidos que el LLM pueda tener.\n\nPuedes alternar entre cualquier modo\n<i>¡en medio del chat!</i>",
+      "AnyZearch es más que un Dropbox más inteligente.\n\nAnyZearch ofrece dos formas de hablar con tus datos:\n\n<i>Consulta:</i> Tus chats devolverán datos o inferencias encontradas con los documentos en tu espacio de trabajo a los que tiene acceso. ¡Agregar más documentos al espacio de trabajo lo hace más inteligente!\n\n<i>Conversacional:</i> Tus documentos + tu historial de chat en curso contribuyen al conocimiento del LLM al mismo tiempo. Genial para agregar información basada en texto en tiempo real o correcciones y malentendidos que el LLM pueda tener.\n\nPuedes alternar entre cualquier modo\n<i>¡en medio del chat!</i>",
     user3: "¡Vaya, esto suena increíble, déjame probarlo ya!",
     part6: "¡Diviértete!",
     starOnGitHub: "Marcar con una estrella en GitHub",
@@ -154,8 +154,7 @@ const TRANSLATIONS = {
     checklist: {
       title: "Primeros pasos",
       tasksLeft: "tareas restantes",
-      completed:
-        "¡Estás en camino de convertirte en un experto en AnythingLLM!",
+      completed: "¡Estás en camino de convertirte en un experto en AnyZearch!",
       dismiss: "cerrar",
       tasks: {
         create_workspace: {
@@ -261,7 +260,7 @@ const TRANSLATIONS = {
       add: "Agregar nuevo mensaje",
       save: "Guardar mensajes",
       heading: "Explícame",
-      body: "los beneficios de AnythingLLM",
+      body: "los beneficios de AnyZearch",
     },
     pfp: {
       title: "Imagen de perfil del asistente",
@@ -458,16 +457,15 @@ const TRANSLATIONS = {
     interface: {
       title: "Preferencias de la interfaz de usuario",
       description:
-        "Establece tus preferencias de la interfaz de usuario para AnythingLLM.",
+        "Establece tus preferencias de la interfaz de usuario para AnyZearch.",
     },
     branding: {
       title: "Marca y marca blanca",
-      description:
-        "Personaliza tu instancia de AnythingLLM con tu propia marca.",
+      description: "Personaliza tu instancia de AnyZearch con tu propia marca.",
     },
     chat: {
       title: "Chat",
-      description: "Establece tus preferencias de chat para AnythingLLM.",
+      description: "Establece tus preferencias de chat para AnyZearch.",
       auto_submit: {
         title: "Envío automático de entrada de voz",
         description:
@@ -512,7 +510,7 @@ const TRANSLATIONS = {
       "display-language": {
         title: "Idioma de visualización",
         description:
-          "Selecciona el idioma preferido para renderizar la interfaz de usuario de AnythingLLM, cuando las traducciones estén disponibles.",
+          "Selecciona el idioma preferido para renderizar la interfaz de usuario de AnyZearch, cuando las traducciones estén disponibles.",
       },
       logo: {
         title: "Logotipo de la marca",
@@ -531,7 +529,7 @@ const TRANSLATIONS = {
         system: "sistema",
         user: "usuario",
         message: "mensaje",
-        assistant: "Asistente de chat de AnythingLLM",
+        assistant: "Asistente de chat de AnyZearch",
         "double-click": "Doble clic para editar...",
         save: "Guardar mensajes",
       },
@@ -562,7 +560,7 @@ const TRANSLATIONS = {
   api: {
     title: "Claves de API",
     description:
-      "Las claves de API permiten al titular acceder y administrar programáticamente esta instancia de AnythingLLM.",
+      "Las claves de API permiten al titular acceder y administrar programáticamente esta instancia de AnyZearch.",
     link: "Leer la documentación de la API",
     generate: "Generar nueva clave de API",
     table: {
@@ -574,7 +572,7 @@ const TRANSLATIONS = {
   llm: {
     title: "Preferencia de LLM",
     description:
-      "Estas son las credenciales y la configuración de tu proveedor preferido de chat e incrustación de LLM. Es importante que estas claves estén actualizadas y sean correctas, de lo contrario, AnythingLLM no funcionará correctamente.",
+      "Estas son las credenciales y la configuración de tu proveedor preferido de chat e incrustación de LLM. Es importante que estas claves estén actualizadas y sean correctas, de lo contrario, AnyZearch no funcionará correctamente.",
     provider: "Proveedor de LLM",
     providers: {
       azure_openai: {
@@ -594,7 +592,7 @@ const TRANSLATIONS = {
       "Estas son las credenciales y la configuración de tu proveedor de modelo de transcripción preferido. Es importante que estas claves estén actualizadas y sean correctas, de lo contrario, los archivos multimedia y el audio no se transcribirán.",
     provider: "Proveedor de transcripción",
     "warn-start":
-      "El uso del modelo local de Whisper en máquinas con RAM o CPU limitadas puede detener AnythingLLM al procesar archivos multimedia.",
+      "El uso del modelo local de Whisper en máquinas con RAM o CPU limitadas puede detener AnyZearch al procesar archivos multimedia.",
     "warn-recommend":
       "Recomendamos al menos 2 GB de RAM y subir archivos de menos de 10 MB.",
     "warn-end":
@@ -605,7 +603,7 @@ const TRANSLATIONS = {
     "desc-start":
       "Cuando se utiliza un LLM que no admite de forma nativa un motor de incrustación, es posible que debas especificar credenciales adicionales para la incrustación de texto.",
     "desc-end":
-      "La incrustación es el proceso de convertir texto en vectores. Estas credenciales son necesarias para convertir tus archivos y prompts en un formato que AnythingLLM pueda usar para procesar.",
+      "La incrustación es el proceso de convertir texto en vectores. Estas credenciales son necesarias para convertir tus archivos y prompts en un formato que AnyZearch pueda usar para procesar.",
     provider: {
       title: "Proveedor de incrustación",
     },
@@ -631,7 +629,7 @@ const TRANSLATIONS = {
   vector: {
     title: "Base de datos vectorial",
     description:
-      "Estas son las credenciales y la configuración de cómo funcionará tu instancia de AnythingLLM. Es importante que estas claves estén actualizadas y sean correctas.",
+      "Estas son las credenciales y la configuración de cómo funcionará tu instancia de AnyZearch. Es importante que estas claves estén actualizadas y sean correctas.",
     provider: {
       title: "Proveedor de base de datos vectorial",
       description: "No se necesita configuración para LanceDB.",
@@ -676,7 +674,7 @@ const TRANSLATIONS = {
   privacy: {
     title: "Privacidad y manejo de datos",
     description:
-      "Esta es tu configuración sobre cómo los proveedores de terceros conectados y AnythingLLM manejan tus datos.",
+      "Esta es tu configuración sobre cómo los proveedores de terceros conectados y AnyZearch manejan tus datos.",
     llm: "Selección de LLM",
     embedding: "Preferencia de incrustación",
     vector: "Base de datos vectorial",
@@ -860,22 +858,22 @@ const TRANSLATIONS = {
       fetching: "Obteniendo...",
       "fetch-website": "Obtener sitio web",
       "privacy-notice":
-        "Estos archivos se subirán al procesador de documentos que se ejecuta en esta instancia de AnythingLLM. Estos archivos no se envían ni se comparten con terceros.",
+        "Estos archivos se subirán al procesador de documentos que se ejecuta en esta instancia de AnyZearch. Estos archivos no se envían ni se comparten con terceros.",
     },
     pinning: {
       what_pinning: "¿Qué es fijar documentos?",
       pin_explained_block1:
-        "Cuando <b>fijas</b> un documento en AnythingLLM, inyectaremos todo el contenido del documento en tu ventana de prompt para que tu LLM lo comprenda por completo.",
+        "Cuando <b>fijas</b> un documento en AnyZearch, inyectaremos todo el contenido del documento en tu ventana de prompt para que tu LLM lo comprenda por completo.",
       pin_explained_block2:
         "Esto funciona mejor con <b>modelos de gran contexto</b> o archivos pequeños que son críticos para su base de conocimientos.",
       pin_explained_block3:
-        "Si no obtienes las respuestas que deseas de AnythingLLM por defecto, fijar es una excelente manera de obtener respuestas de mayor calidad con un clic.",
+        "Si no obtienes las respuestas que deseas de AnyZearch por defecto, fijar es una excelente manera de obtener respuestas de mayor calidad con un clic.",
       accept: "Ok, entendido",
     },
     watching: {
       what_watching: "¿Qué hace observar un documento?",
       watch_explained_block1:
-        "Cuando <b>observas</b> un documento en AnythingLLM, sincronizaremos <i>automáticamente</i> el contenido de tu documento desde su fuente original a intervalos regulares. Esto actualizará automáticamente el contenido en cada espacio de trabajo donde se gestione este archivo.",
+        "Cuando <b>observas</b> un documento en AnyZearch, sincronizaremos <i>automáticamente</i> el contenido de tu documento desde su fuente original a intervalos regulares. Esto actualizará automáticamente el contenido en cada espacio de trabajo donde se gestione este archivo.",
       watch_explained_block2:
         "Esta función actualmente admite contenido en línea y no estará disponible para documentos subidos manualmente.",
       watch_explained_block3_start:
@@ -1085,7 +1083,7 @@ const TRANSLATIONS = {
         unauthenticated: {
           title: "Se requiere autenticación",
           description:
-            "Necesitas autenticarte con el Centro de la Comunidad de AnythingLLM antes de publicar elementos.",
+            "Necesitas autenticarte con el Centro de la Comunidad de AnyZearch antes de publicar elementos.",
           button: "Conectar al Centro de la Comunidad",
         },
       },
@@ -1109,7 +1107,7 @@ const TRANSLATIONS = {
     password: {
       title: "Protección con contraseña",
       description:
-        "Protege tu instancia de AnythingLLM con una contraseña. Si la olvidas, no hay método de recuperación, así que asegúrate de guardar esta contraseña.",
+        "Protege tu instancia de AnyZearch con una contraseña. Si la olvidas, no hay método de recuperación, así que asegúrate de guardar esta contraseña.",
       "password-label": "Contraseña de la instancia",
     },
   },

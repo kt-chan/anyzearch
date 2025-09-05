@@ -1,5 +1,5 @@
 {
-  "name": "anything-llm-document-collector",
+  "name": "anyzearch-document-collector",
   "version": "1.8.4",
   "description": "Document collector server endpoints",
   "main": "index.js",

@@ -25,7 +25,7 @@ class PPIOLLM {
       apiKey: process.env.PPIO_API_KEY ?? null,
       defaultHeaders: {
         "HTTP-Referer": "https://anythingllm.com",
-        "X-API-Source": "anythingllm",
+        "X-API-Source": "AnyZearch",
       },
     });
     this.model =

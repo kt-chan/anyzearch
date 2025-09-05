@@ -1,16 +1,16 @@
-# Contributing to AnythingLLM
+# Contributing to AnyZearch
 
-AnythingLLM is an open-source project and we welcome contributions from the community.
+AnyZearch is an open-source project and we welcome contributions from the community.
 
 ## Reporting Issues
 
 If you encounter a bug or have a feature request, please open an issue on the
-[GitHub issue tracker](https://github.com/mintplex-labs/anything-llm).
+[GitHub issue tracker](https://github.com/iteasoft/AnyZearch).
 
 ## Picking an issue
 
 We track issues on the GitHub issue tracker. If you are looking for something to
-work on, check the [good first issue](https://github.com/mintplex-labs/anything-llm/contribute) label. These issues are typically the best described and have the smallest scope. There may be issues that are not labeled as good first issue, but are still a good starting point.
+work on, check the [good first issue](https://github.com/iteasoft/AnyZearch/contribute) label. These issues are typically the best described and have the smallest scope. There may be issues that are not labeled as good first issue, but are still a good starting point.
 
 If there's an issue you are interested in working on, please leave a comment on the issue. This will help us avoid duplicate work. Additionally, if you have questions about the issue, please ask them in the issue comments. We are happy to provide guidance on how to approach the issue.
 
@@ -18,11 +18,11 @@ If there's an issue you are interested in working on, please leave a comment on 
 
 Keep in mind that we are a small team and have limited resources. We will do our best to review and merge your PRs, but please be patient. Ultimately, **we become the maintainer** of your changes. It is our responsibility to make sure that the changes are working as expected and are of high quality as well as being compatible with the rest of the project both for existing users and for future users & features.
 
-Before you start working on an issue, please read the following so that you don't waste time on something that is not a good fit for the project or is more suitable for a personal fork. We would rather answer a comment on an issue than close a PR after you've spent time on it. Your time is valuable and we appreciate your time and effort to make AnythingLLM better.
+Before you start working on an issue, please read the following so that you don't waste time on something that is not a good fit for the project or is more suitable for a personal fork. We would rather answer a comment on an issue than close a PR after you've spent time on it. Your time is valuable and we appreciate your time and effort to make AnyZearch better.
 
 0. (most important) If you are making a PR that does not have a corresponding issue, **it will not be merged.** _The only exception to this is language translations._
 
-1. If you are modifying the permission system for a new role or something custom, you are likely better off forking the project and building your own version since this is a core part of the project and is only to be maintained by the AnythingLLM team.
+1. If you are modifying the permission system for a new role or something custom, you are likely better off forking the project and building your own version since this is a core part of the project and is only to be maintained by the AnyZearch team.
 
 2. Integrations (LLM, Vector DB, etc.) are reviewed at our discretion. We will eventually get to them. Do not expect us to merge your integration PR instantly since there are often many moving parts and we want to make sure we get it right. We will get to it!
 
@@ -35,14 +35,14 @@ Before you start working on an issue, please read the following so that you don'
 First, fork the repository on GitHub, then clone your fork:
 
 ```bash
-git clone https://github.com/<username>/anything-llm.git
-cd anything-llm
+git clone https://github.com/<username>/AnyZearch.git
+cd AnyZearch
 ```
 
 Then add the main repository as a remote:
 
 ```bash
-git remote add upstream https://github.com/mintplex-labs/anything-llm.git
+git remote add upstream https://github.com/iteasoft/AnyZearch.git
 git fetch upstream
 ```
 
@@ -68,7 +68,7 @@ For the best chance of having your pull request accepted, please follow these gu
 
 1. Unit test all bug fixes and new features. Your code will not be merged if it
    doesn't have tests.
-1. If you change the public API, update the documentation in the `anythingllm-docs` repository.
+1. If you change the public API, update the documentation in the `AnyZearch-docs` repository.
 1. Aim to minimize the number of changes in each pull request. Keep to solving
    one problem at a time, when possible.
 1. Before marking a pull request ready-for-review, do a self review of your code.
@@ -84,7 +84,7 @@ For the best chance of having your pull request accepted, please follow these gu
 
 ## Project structure
 
-The core library is written in Node.js. There are additional sub-repositories for the embed widget and browser extension. These are not part of the core AnythingLLM project, but are maintained by the AnythingLLM team.
+The core library is written in Node.js. There are additional sub-repositories for the embed widget and browser extension. These are not part of the core AnyZearch project, but are maintained by the AnyZearch team.
 
 * `server`: Node.js server source code
 * `frontend`: React frontend source code
@@ -92,14 +92,14 @@ The core library is written in Node.js. There are additional sub-repositories fo
 
 ## Release process
 
-Changes to the core AnythingLLM project are released through the `master` branch. When a PR is merged into `master`, a new version of the package is published to Docker and GitHub Container Registry under the `latest` tag.
+Changes to the core AnyZearch project are released through the `master` branch. When a PR is merged into `master`, a new version of the package is published to Docker and GitHub Container Registry under the `latest` tag.
 
 When a new version is released, the following steps are taken a new image is built and pushed to Docker Hub and GitHub Container Registry under the assoicated version tag. Version tags are of the format `v<major>.<minor>.<patch>` and are pinned code, while `latest` is the latest version of the code at any point in time.
 
 ### Desktop propogation
 
-Changes to the desktop app are downstream of the core AnythingLLM project. Releases of the desktop app are published at the same time as the core AnythingLLM project. Code from the core AnythingLLM project is copied into the desktop app into an Electron wrapper. The Electron wrapper that wraps around the core AnythingLLM project is **not** part of the core AnythingLLM project, but is maintained by the AnythingLLM team.
+Changes to the desktop app are downstream of the core AnyZearch project. Releases of the desktop app are published at the same time as the core AnyZearch project. Code from the core AnyZearch project is copied into the desktop app into an Electron wrapper. The Electron wrapper that wraps around the core AnyZearch project is **not** part of the core AnyZearch project, but is maintained by the AnyZearch team.
 
 ## License
 
-By contributing to AnythingLLM (this repository), you agree to license your contributions under the MIT license.
+By contributing to AnyZearch (this repository), you agree to license your contributions under the MIT license.

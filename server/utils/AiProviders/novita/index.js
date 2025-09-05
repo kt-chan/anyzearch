@@ -29,7 +29,7 @@ class NovitaLLM {
       apiKey: process.env.NOVITA_LLM_API_KEY ?? null,
       defaultHeaders: {
         "HTTP-Referer": "https://anythingllm.com",
-        "X-Novita-Source": "anythingllm",
+        "X-Novita-Source": "AnyZearch",
       },
     });
     this.model =

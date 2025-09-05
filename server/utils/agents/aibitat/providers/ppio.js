@@ -18,7 +18,7 @@ class PPIOProvider extends InheritMultiple([Provider, UnTooled]) {
       maxRetries: 3,
       defaultHeaders: {
         "HTTP-Referer": "https://anythingllm.com",
-        "X-API-Source": "anythingllm",
+        "X-API-Source": "AnyZearch",
       },
     });
 

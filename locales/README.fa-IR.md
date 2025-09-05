@@ -1,15 +1,15 @@
 <a name="readme-top"></a>
 
 <p align="center">
-  <a href="https://anythingllm.com"><img src="https://github.com/Mintplex-Labs/anything-llm/blob/master/images/wordmark.png?raw=true" alt="AnythingLLM logo"></a>
+  <a href="https://anythingllm.com"><img src="https://github.com/iteasoft/AnyZearch/blob/master/images/wordmark.png?raw=true" alt="AnyZearch logo"></a>
 </p>
 
 <div align='center'>
-<a href="https://trendshift.io/repositories/2415" target="_blank"><img src="https://trendshift.io/api/badge/repositories/2415" alt="Mintplex-Labs%2Fanything-llm | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/2415" target="_blank"><img src="https://trendshift.io/api/badge/repositories/2415" alt="iteasoft%2FAnyZearch | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 </div>
 
 <p align="center" dir="rtl">
-    <b>AnythingLLM:</b> اپلیکیشن همه‌کاره هوش مصنوعی که دنبالش بودید.<br />
+    <b>AnyZearch:</b> اپلیکیشن همه‌کاره هوش مصنوعی که دنبالش بودید.<br />
     با اسناد خود چت کنید، از عامل‌های هوش مصنوعی استفاده کنید، با قابلیت پیکربندی بالا، چند کاربره، و بدون نیاز به تنظیمات پیچیده.
 </p>
 
@@ -17,13 +17,13 @@
   <a href="https://discord.gg/6UyHPeGZAC" target="_blank">
       <img src="https://img.shields.io/badge/chat-mintplex_labs-blue.svg?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAH1UExURQAAAP////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////r6+ubn5+7u7/3+/v39/enq6urq6/v7+97f39rb26eoqT1BQ0pOT4+Rkuzs7cnKykZKS0NHSHl8fdzd3ejo6UxPUUBDRdzc3RwgIh8jJSAkJm5xcvHx8aanqB4iJFBTVezt7V5hYlJVVuLj43p9fiImKCMnKZKUlaaoqSElJ21wcfT09O3u7uvr6zE0Nr6/wCUpK5qcnf7+/nh7fEdKTHx+f0tPUOTl5aipqiouMGtubz5CRDQ4OsTGxufn515hY7a3uH1/gXBydIOFhlVYWvX29qaoqCQoKs7Pz/Pz87/AwUtOUNfY2dHR0mhrbOvr7E5RUy8zNXR2d/f39+Xl5UZJSx0hIzQ3Odra2/z8/GlsbaGjpERHSezs7L/BwScrLTQ4Odna2zM3Obm7u3x/gKSmp9jZ2T1AQu/v71pdXkVISr2+vygsLiInKTg7PaOlpisvMcXGxzk8PldaXPLy8u7u7rm6u7S1tsDBwvj4+MPExbe4ueXm5s/Q0Kyf7ewAAAAodFJOUwAABClsrNjx/QM2l9/7lhmI6jTB/kA1GgKJN+nea6vy/MLZQYeVKK3rVA5tAAAAAWJLR0QB/wIt3gAAAAd0SU1FB+cKBAAmMZBHjXIAAAISSURBVDjLY2CAAkYmZhZWNnYODnY2VhZmJkYGVMDIycXNw6sBBbw8fFycyEoYGfkFBDVQgKAAPyMjQl5IWEQDDYgIC8FUMDKKsmlgAWyiEBWMjGJY5YEqxMAqGMWFNXAAYXGgAkYJSQ2cQFKCkYFRShq3AmkpRgYJbghbU0tbB0Tr6ukbgGhDI10gySfBwCwDUWBsYmpmDqQtLK2sbTQ0bO3sHYA8GWYGWWj4WTs6Obu4ami4OTm7exhqeHp5+4DCVJZBDmqdr7ufn3+ArkZgkJ+fU3CIRmgYWFiOARYGvo5OQUHhEUAFTkF+kVHRsLBgkIeyYmLjwoOc4hMSk5JTnINS06DC8gwcEEZ6RqZGlpOfc3ZObl5+gZ+TR2ERWFyBQQFMF5eklmqUpQb5+ReU61ZUOvkFVVXXQBSAraitq29o1GiKcfLzc29u0mjxBzq0tQ0kww5xZHtHUGeXhkZhdxBYgZ4d0LI6c4gjwd7siQQraOp1AivQ6CuAKZCDBBRQQQNQgUb/BGf3cqCCiZOcnCe3QQIKHNRTpk6bDgpZjRkzg3pBQTBrdtCcuZCgluAD0vPmL1gIdvSixUuWgqNs2YJ+DUhkEYxuggkGmOQUcckrioPTJCOXEnZ5JS5YslbGnuyVERlDDFvGEUPOWvwqaH6RVkHKeuDMK6SKnHlVhTgx8jeTmqy6Eij7K6nLqiGyPwChsa1MUrnq1wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMy0xMC0wNFQwMDozODo0OSswMDowMB9V0a8AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjMtMTAtMDRUMDA6Mzg6NDkrMDA6MDBuCGkTAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIzLTEwLTA0VDAwOjM4OjQ5KzAwOjAwOR1IzAAAAABJRU5ErkJggg==" alt="Discord">
   </a> |
-  <a href="https://github.com/Mintplex-Labs/anything-llm/blob/master/LICENSE" target="_blank">
+  <a href="https://github.com/iteasoft/AnyZearch/blob/master/LICENSE" target="_blank">
       <img src="https://img.shields.io/static/v1?label=license&message=MIT&color=white" alt="License">
   </a> |
   <a href="https://docs.anythingllm.com" target="_blank">
     Docs
   </a> |
-   <a href="https://my.mintplexlabs.com/aio-checkout?product=anythingllm" target="_blank">
+   <a href="https://my.mintplexlabs.com/aio-checkout?product=AnyZearch" target="_blank">
     Hosted Instance
   </a>
 </p>
@@ -33,14 +33,14 @@
 </p>
 
 <p align="center" dir="rtl">
-👈 AnythingLLM برای دسکتاپ (مک، ویندوز و لینوکس)! <a href="https://anythingllm.com/download" target="_blank">دانلود کنید</a>
+👈 AnyZearch برای دسکتاپ (مک، ویندوز و لینوکس)! <a href="https://anythingllm.com/download" target="_blank">دانلود کنید</a>
 </p>
 
 <div dir="rtl">
 یک اپلیکیشن کامل که به شما امکان می‌دهد هر سند، منبع یا محتوایی را به زمینه‌ای تبدیل کنید که هر LLM می‌تواند در حین گفتگو به عنوان مرجع از آن استفاده کند. این برنامه به شما اجازه می‌دهد LLM یا پایگاه داده برداری مورد نظر خود را انتخاب کنید و همچنین از مدیریت چند کاربره و مجوزها پشتیبانی می‌کند.
 </div>
 
-![Chatting](https://github.com/Mintplex-Labs/anything-llm/assets/16845892/cfc5f47c-bd91-4067-986c-f3f49621a859)
+![Chatting](https://github.com/iteasoft/AnyZearch/assets/16845892/cfc5f47c-bd91-4067-986c-f3f49621a859)
 
 <details>
 <summary><kbd>دموی ویدیویی را تماشا کنید!</kbd></summary>
@@ -52,13 +52,13 @@
 
 ### نمای کلی محصول
 
-AnythingLLM یک اپلیکیشن کامل است که در آن می‌توانید از LLM‌های تجاری آماده یا LLM‌های متن‌باز محبوب و راه‌حل‌های vectorDB برای ساخت یک ChatGPT خصوصی بدون محدودیت استفاده کنید که می‌توانید آن را به صورت محلی اجرا کنید یا از راه دور میزبانی کنید و با هر سندی که به آن ارائه می‌دهید، هوشمندانه گفتگو کنید.
+AnyZearch یک اپلیکیشن کامل است که در آن می‌توانید از LLM‌های تجاری آماده یا LLM‌های متن‌باز محبوب و راه‌حل‌های vectorDB برای ساخت یک ChatGPT خصوصی بدون محدودیت استفاده کنید که می‌توانید آن را به صورت محلی اجرا کنید یا از راه دور میزبانی کنید و با هر سندی که به آن ارائه می‌دهید، هوشمندانه گفتگو کنید.
 
-AnythingLLM اسناد شما را به اشیایی به نام `workspaces` تقسیم می‌کند. یک Workspace مانند یک رشته عمل می‌کند، اما با اضافه شدن کانتینرسازی اسناد شما. Workspaceها می‌توانند اسناد را به اشتراک بگذارند، اما با یکدیگر ارتباط برقرار نمی‌کنند تا بتوانید زمینه هر workspace را تمیز نگه دارید.
+AnyZearch اسناد شما را به اشیایی به نام `workspaces` تقسیم می‌کند. یک Workspace مانند یک رشته عمل می‌کند، اما با اضافه شدن کانتینرسازی اسناد شما. Workspaceها می‌توانند اسناد را به اشتراک بگذارند، اما با یکدیگر ارتباط برقرار نمی‌کنند تا بتوانید زمینه هر workspace را تمیز نگه دارید.
 </div>
 <div dir="rtl">
 
-## ویژگی‌های جذاب AnythingLLM
+## ویژگی‌های جذاب AnyZearch
 
 - 🆕 [**عامل‌های هوش مصنوعی سفارشی**](https://docs.anythingllm.com/agent/custom/introduction)
 - 🖼️ **پشتیبانی از چند مدل (هم LLMهای متن‌باز و هم تجاری!)**
@@ -102,14 +102,14 @@ AnythingLLM اسناد شما را به اشیایی به نام `workspaces` ت
 - [Text Generation Web UI](https://github.com/oobabooga/text-generation-webui)
 - [Apipie](https://apipie.ai/)
 - [xAI](https://x.ai/)
-- [Novita AI (chat models)](https://novita.ai/model-api/product/llm-api?utm_source=github_anything-llm&utm_medium=github_readme&utm_campaign=link)
-- [PPIO](https://ppinfra.com?utm_source=github_anything-llm)
+- [Novita AI (chat models)](https://novita.ai/model-api/product/llm-api?utm_source=github_AnyZearch&utm_medium=github_readme&utm_campaign=link)
+- [PPIO](https://ppinfra.com?utm_source=github_AnyZearch)
 
 <div dir="rtl">
 
 **مدل‌های Embedder:**
 
-- [AnythingLLM Native Embedder](/server/storage/models/README.md) (پیش‌فرض)
+- [AnyZearch Native Embedder](/server/storage/models/README.md) (پیش‌فرض)
 - [OpenAI](https://openai.com)
 - [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
 - [LocalAi (همه)](https://localai.io/)
@@ -119,7 +119,7 @@ AnythingLLM اسناد شما را به اشیایی به نام `workspaces` ت
 
 **مدل‌های رونویسی صوتی:**
 
-- [AnythingLLM Built-in](https://github.com/Mintplex-Labs/anything-llm/tree/master/server/storage/models#audiovideo-transcription) (پیش‌فرض)
+- [AnyZearch Built-in](https://github.com/iteasoft/AnyZearch/tree/master/server/storage/models#audiovideo-transcription) (پیش‌فرض)
 - [OpenAI](https://openai.com/)
 
 **پشتیبانی TTS (تبدیل متن به گفتار):**
@@ -154,8 +154,8 @@ AnythingLLM اسناد شما را به اشیایی به نام `workspaces` ت
 - `server`: یک سرور NodeJS express برای مدیریت تمام تعاملات و انجام مدیریت vectorDB و تعاملات LLM.
 - `collector`: سرور NodeJS express که اسناد را از رابط کاربری پردازش و تجزیه می‌کند.
 - `docker`: دستورالعمل‌های Docker و فرآیند ساخت + اطلاعات برای ساخت از منبع.
-- `embed`: زیرماژول برای تولید و ایجاد [ویجت قابل جاسازی وب](https://github.com/Mintplex-Labs/anythingllm-embed).
-- `browser-extension`: زیرماژول برای [افزونه مرورگر کروم](https://github.com/Mintplex-Labs/anythingllm-extension).
+- `embed`: زیرماژول برای تولید و ایجاد [ویجت قابل جاسازی وب](https://github.com/iteasoft/AnyZearch-embed).
+- `browser-extension`: زیرماژول برای [افزونه مرورگر کروم](https://github.com/iteasoft/AnyZearch-extension).
 
 </div>
 
@@ -163,7 +163,7 @@ AnythingLLM اسناد شما را به اشیایی به نام `workspaces` ت
 
 <div dir="rtl">
 
-Mintplex Labs و جامعه کاربران، روش‌ها، اسکریپت‌ها و قالب‌های متعددی را برای اجرای AnythingLLM به صورت محلی نگهداری می‌کنند. برای مطالعه نحوه استقرار در محیط مورد نظر خود یا استقرار خودکار، به جدول زیر مراجعه کنید.
+Mintplex Labs و جامعه کاربران، روش‌ها، اسکریپت‌ها و قالب‌های متعددی را برای اجرای AnyZearch به صورت محلی نگهداری می‌کنند. برای مطالعه نحوه استقرار در محیط مورد نظر خود یا استقرار خودکار، به جدول زیر مراجعه کنید.
 </div>
 
 | Docker | AWS | GCP | Digital Ocean | Render.com |
@@ -176,7 +176,7 @@ Mintplex Labs و جامعه کاربران، روش‌ها، اسکریپت‌ه
 
 <div dir="rtl">
 
-[یا راه‌اندازی نمونه تولیدی AnythingLLM بدون Docker →](../BARE_METAL.md)
+[یا راه‌اندازی نمونه تولیدی AnyZearch بدون Docker →](../BARE_METAL.md)
 
 ## راه‌اندازی برای توسعه
 
@@ -192,15 +192,15 @@ Mintplex Labs و جامعه کاربران، روش‌ها، اسکریپت‌ه
 
 ## تله‌متری و حریم خصوصی
 
-AnythingLLM توسط Mintplex Labs Inc دارای ویژگی تله‌متری است که اطلاعات استفاده ناشناس را جمع‌آوری می‌کند.
+AnyZearch توسط Mintplex Labs Inc دارای ویژگی تله‌متری است که اطلاعات استفاده ناشناس را جمع‌آوری می‌کند.
 
 <details>
-<summary><kbd>اطلاعات بیشتر درباره تله‌متری و حریم خصوصی AnythingLLM</kbd></summary>
+<summary><kbd>اطلاعات بیشتر درباره تله‌متری و حریم خصوصی AnyZearch</kbd></summary>
 
 ### چرا؟
 
 <div dir="rtl">
-ما از این اطلاعات برای درک نحوه استفاده از AnythingLLM، اولویت‌بندی کار روی ویژگی‌های جدید و رفع اشکالات، و بهبود عملکرد و پایداری AnythingLLM استفاده می‌کنیم.
+ما از این اطلاعات برای درک نحوه استفاده از AnyZearch، اولویت‌بندی کار روی ویژگی‌های جدید و رفع اشکالات، و بهبود عملکرد و پایداری AnyZearch استفاده می‌کنیم.
 </div>
 
 ### غیرفعال کردن
@@ -222,7 +222,7 @@ AnythingLLM توسط Mintplex Labs Inc دارای ویژگی تله‌متری �
 
 می‌توانید این ادعاها را با پیدا کردن تمام مکان‌هایی که `Telemetry.sendTelemetry` فراخوانی می‌شود، تأیید کنید. ارائه‌دهنده تله‌متری [PostHog](https://posthog.com/) است.
 
-[مشاهده همه رویدادهای تله‌متری در کد منبع](https://github.com/search?q=repo%3AMintplex-Labs%2Fanything-llm%20.sendTelemetry\(&type=code)
+[مشاهده همه رویدادهای تله‌متری در کد منبع](https://github.com/search?q=repo%3Aiteasoft%2FAnyZearch%20.sendTelemetry\(&type=code)
 </div>
 
 </details>
@@ -238,9 +238,9 @@ AnythingLLM توسط Mintplex Labs Inc دارای ویژگی تله‌متری �
 
 ## 🌟 مشارکت‌کنندگان
 
-[![مشارکت‌کنندگان anythingllm](https://contrib.rocks/image?repo=mintplex-labs/anything-llm)](https://github.com/mintplex-labs/anything-llm/graphs/contributors)
+[![مشارکت‌کنندگان AnyZearch](https://contrib.rocks/image?repo=iteasoft/AnyZearch)](https://github.com/iteasoft/AnyZearch/graphs/contributors)
 
-[![نمودار تاریخچه ستاره‌ها](https://api.star-history.com/svg?repos=mintplex-labs/anything-llm&type=Timeline)](https://star-history.com/#mintplex-labs/anything-llm&Date)
+[![نمودار تاریخچه ستاره‌ها](https://api.star-history.com/svg?repos=iteasoft/AnyZearch&type=Timeline)](https://star-history.com/#iteasoft/AnyZearch&Date)
 
 ## 🔗 محصولات بیشتر
 
@@ -265,9 +265,9 @@ This project is [MIT](../LICENSE) licensed.
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-222628?style=flat-square
-[profile-link]: https://github.com/mintplex-labs
-[vector-admin]: https://github.com/mintplex-labs/vector-admin
-[assistant-swarm]: https://github.com/Mintplex-Labs/openai-assistant-swarm
+[profile-link]: https://github.com/iteasoft
+[vector-admin]: https://github.com/iteasoft/vector-admin
+[assistant-swarm]: https://github.com/iteasoft/openai-assistant-swarm
 [docker-btn]: ./images/deployBtns/docker.png
 [docker-deploy]: ./docker/HOW_TO_USE_DOCKER.md
 [aws-btn]: ./images/deployBtns/aws.png
@@ -277,12 +277,12 @@ This project is [MIT](../LICENSE) licensed.
 [do-btn]: https://www.deploytodo.com/do-btn-blue.svg
 [do-deploy]: ./cloud-deployments/digitalocean/terraform/DEPLOY.md
 [render-btn]: https://render.com/images/deploy-to-render-button.svg
-[render-deploy]: https://render.com/deploy?repo=https://github.com/Mintplex-Labs/anything-llm&branch=render
+[render-deploy]: https://render.com/deploy?repo=https://github.com/iteasoft/AnyZearch&branch=render
 [render-btn]: https://render.com/images/deploy-to-render-button.svg
-[render-deploy]: https://render.com/deploy?repo=https://github.com/Mintplex-Labs/anything-llm&branch=render
+[render-deploy]: https://render.com/deploy?repo=https://github.com/iteasoft/AnyZearch&branch=render
 [railway-btn]: https://railway.app/button.svg
 [railway-deploy]: https://railway.app/template/HNSCS1?referralCode=WFgJkn
 [repocloud-btn]: https://d16t0pc4846x52.cloudfront.net/deploylobe.svg
 [repocloud-deploy]: https://repocloud.io/details/?app_id=276
 [elestio-btn]: https://elest.io/images/logos/deploy-to-elestio-btn.png
-[elestio-deploy]: https://elest.io/open-source/anythingllm
+[elestio-deploy]: https://elest.io/open-source/AnyZearch

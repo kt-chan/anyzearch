@@ -8,7 +8,7 @@ const TRANSLATIONS = {
     llm: {
       title: "LLMの設定",
       description:
-        "AnythingLLMは多くのLLMプロバイダーと連携できます。これがチャットを処理するサービスになります。",
+        "AnyZearchは多くのLLMプロバイダーと連携できます。これがチャットを処理するサービスになります。",
     },
     userSetup: {
       title: "ユーザー設定",
@@ -36,15 +36,15 @@ const TRANSLATIONS = {
       settingsHint: "これらの設定は、設定画面でいつでも再構成できます。",
     },
     survey: {
-      title: "AnythingLLMへようこそ",
+      title: "AnyZearchへようこそ",
       description:
-        "AnythingLLMをあなたのニーズに合わせて構築するためにご協力ください。任意です。",
+        "AnyZearchをあなたのニーズに合わせて構築するためにご協力ください。任意です。",
       email: "メールアドレスは何ですか？",
-      useCase: "AnythingLLMを何に使用しますか？",
+      useCase: "AnyZearchを何に使用しますか？",
       useCaseWork: "仕事用",
       useCasePersonal: "個人用",
       useCaseOther: "その他",
-      comment: "AnythingLLMをどのように知りましたか？",
+      comment: "AnyZearchをどのように知りましたか？",
       commentPlaceholder:
         "Reddit、Twitter、GitHub、YouTubeなど - どのように見つけたか教えてください！",
       skip: "アンケートをスキップ",
@@ -52,8 +52,7 @@ const TRANSLATIONS = {
     },
     workspace: {
       title: "最初のワークスペースを作成する",
-      description:
-        "最初のワークスペースを作成して、AnythingLLMを始めましょう。",
+      description: "最初のワークスペースを作成して、AnyZearchを始めましょう。",
     },
   },
   common: {
@@ -128,11 +127,11 @@ const TRANSLATIONS = {
   },
   welcomeMessage: {
     part1:
-      "AnythingLLMへようこそ。AnythingLLMはMintplex LabsによるオープンソースのAIツールで、あらゆるものをトレーニングされたチャットボットに変換し、クエリやチャットが可能です。AnythingLLMはBYOK（Bring-Your-Own-Keys）ソフトウェアであり、このソフトウェアを使用するためのサブスクリプション、料金、または費用はありません。",
+      "AnyZearchへようこそ。AnyZearchはMintplex LabsによるオープンソースのAIツールで、あらゆるものをトレーニングされたチャットボットに変換し、クエリやチャットが可能です。AnyZearchはBYOK（Bring-Your-Own-Keys）ソフトウェアであり、このソフトウェアを使用するためのサブスクリプション、料金、または費用はありません。",
     part2:
-      "AnythingLLMは、OpenAi、GPT-4、LangChain、PineconeDB、ChromaDBなどの強力なAI製品を簡単に統合し、手間をかけずに生産性を100倍に向上させる最も簡単な方法です。",
+      "AnyZearchは、OpenAi、GPT-4、LangChain、PineconeDB、ChromaDBなどの強力なAI製品を簡単に統合し、手間をかけずに生産性を100倍に向上させる最も簡単な方法です。",
     part3:
-      "AnythingLLMは、あなたのマシン上で完全にローカルで動作し、ほとんど負荷をかけません。GPUは必要ありません。クラウドおよびオンプレミスでのインストールも可能です。\nAIツールエコシステムは日々強力になっています。AnythingLLMはそれを簡単に利用できるようにします。",
+      "AnyZearchは、あなたのマシン上で完全にローカルで動作し、ほとんど負荷をかけません。GPUは必要ありません。クラウドおよびオンプレミスでのインストールも可能です。\nAIツールエコシステムは日々強力になっています。AnyZearchはそれを簡単に利用できるようにします。",
     githubIssue: "GitHubで問題を作成",
     user1: "どうやって始めればいいの？",
     part4:
@@ -141,7 +140,7 @@ const TRANSLATIONS = {
     user2:
       "これはAI版のDropboxみたいなもの？チャットはどうなの？チャットボットなんでしょ？",
     part5:
-      "AnythingLLMは単なるスマートなDropbox以上のものです。\n\nAnythingLLMはデータと対話する2つの方法を提供します：\n\n<i>クエリ：</i> チャットは、ワークスペース内のドキュメントで見つかったデータや推論を返します。ワークスペースにドキュメントを追加することで、より賢くなります！\n\n<i>会話：</i> ドキュメントと進行中のチャット履歴の両方が同時にLLMの知識に貢献します。リアルタイムのテキストベースの情報や修正を追加するのに最適です。\n\nチャット中にどちらのモードにも切り替えることができます。",
+      "AnyZearchは単なるスマートなDropbox以上のものです。\n\nAnyZearchはデータと対話する2つの方法を提供します：\n\n<i>クエリ：</i> チャットは、ワークスペース内のドキュメントで見つかったデータや推論を返します。ワークスペースにドキュメントを追加することで、より賢くなります！\n\n<i>会話：</i> ドキュメントと進行中のチャット履歴の両方が同時にLLMの知識に貢献します。リアルタイムのテキストベースの情報や修正を追加するのに最適です。\n\nチャット中にどちらのモードにも切り替えることができます。",
     user3: "すごい、試してみたい！",
     part6: "楽しんでください！",
     starOnGitHub: "GitHubでスターを付ける",
@@ -173,7 +172,7 @@ const TRANSLATIONS = {
       add: "新しいメッセージを追加",
       save: "メッセージを保存",
       heading: "説明してください",
-      body: "AnythingLLMの利点",
+      body: "AnyZearchの利点",
     },
     pfp: {
       title: "アシスタントのプロフィール画像",
@@ -361,7 +360,7 @@ const TRANSLATIONS = {
   api: {
     title: "APIキー",
     description:
-      "APIキーにより、プログラム経由でこのAnythingLLMインスタンスにアクセスおよび管理できます。",
+      "APIキーにより、プログラム経由でこのAnyZearchインスタンスにアクセスおよび管理できます。",
     link: "APIドキュメントを読む",
     generate: "新しいAPIキーを生成",
     table: {
@@ -373,7 +372,7 @@ const TRANSLATIONS = {
   llm: {
     title: "LLMの設定",
     description:
-      "これは、お好みのLLMチャットおよび埋め込みプロバイダー用の認証情報と設定です。これらのキーが最新かつ正確でない場合、AnythingLLMは正しく動作しません。",
+      "これは、お好みのLLMチャットおよび埋め込みプロバイダー用の認証情報と設定です。これらのキーが最新かつ正確でない場合、AnyZearchは正しく動作しません。",
     provider: "LLMプロバイダー",
     providers: {
       azure_openai: {
@@ -393,7 +392,7 @@ const TRANSLATIONS = {
       "これは、お好みの文字起こしモデルプロバイダー用の認証情報と設定です。これらのキーが最新かつ正確でない場合、メディアファイルや音声が正しく文字起こしされません。",
     provider: "文字起こしプロバイダー",
     "warn-start":
-      "RAMやCPUが限られたマシンでローカルのWhisperモデルを使用すると、メディアファイルの処理中にAnythingLLMが停止する可能性があります。",
+      "RAMやCPUが限られたマシンでローカルのWhisperモデルを使用すると、メディアファイルの処理中にAnyZearchが停止する可能性があります。",
     "warn-recommend":
       "少なくとも2GBのRAMが推奨され、ファイルサイズは10Mb未満であることをお勧めします。",
     "warn-end": "組み込みモデルは初回使用時に自動的にダウンロードされます。",
@@ -403,7 +402,7 @@ const TRANSLATIONS = {
     "desc-start":
       "LLMがネイティブに埋め込みエンジンをサポートしていない場合、テキストの埋め込み用に追加の認証情報を指定する必要がある場合があります。",
     "desc-end":
-      "埋め込みとは、テキストをベクトルに変換するプロセスです。これらの認証情報は、ファイルやプロンプトをAnythingLLMが処理できるフォーマットに変換するために必要です。",
+      "埋め込みとは、テキストをベクトルに変換するプロセスです。これらの認証情報は、ファイルやプロンプトをAnyZearchが処理できるフォーマットに変換するために必要です。",
     provider: {
       title: "埋め込みプロバイダー",
     },
@@ -427,7 +426,7 @@ const TRANSLATIONS = {
   vector: {
     title: "ベクターデータベース設定",
     description:
-      "これは、AnythingLLMインスタンスの動作方法用の認証情報と設定です。これらのキーが最新で正確であることが重要です。",
+      "これは、AnyZearchインスタンスの動作方法用の認証情報と設定です。これらのキーが最新で正確であることが重要です。",
     provider: {
       title: "ベクターデータベースプロバイダー",
       description: "LanceDBの場合、特に設定は必要ありません。",
@@ -472,7 +471,7 @@ const TRANSLATIONS = {
   privacy: {
     title: "プライバシーとデータ処理",
     description:
-      "これは、接続されているサードパーティプロバイダーとAnythingLLMがデータをどのように処理するかの設定です。",
+      "これは、接続されているサードパーティプロバイダーとAnyZearchがデータをどのように処理するかの設定です。",
     llm: "LLM選択",
     embedding: "埋め込み設定",
     vector: "ベクターデータベース",
@@ -635,12 +634,12 @@ const TRANSLATIONS = {
       fetching: "取得中...",
       "fetch-website": "ウェブサイトを取得",
       "privacy-notice":
-        "これらのファイルは、このAnythingLLMインスタンス上のドキュメント処理機能にアップロードされます。第三者に送信・共有されることはありません。",
+        "これらのファイルは、このAnyZearchインスタンス上のドキュメント処理機能にアップロードされます。第三者に送信・共有されることはありません。",
     },
     pinning: {
       what_pinning: "ドキュメントのピン留めとは？",
       pin_explained_block1:
-        "AnythingLLMでドキュメントを<b>ピン留め</b>すると、その内容全体がプロンプトウィンドウに挿入され、LLMがしっかり理解できるようになります。",
+        "AnyZearchでドキュメントを<b>ピン留め</b>すると、その内容全体がプロンプトウィンドウに挿入され、LLMがしっかり理解できるようになります。",
       pin_explained_block2:
         "<b>大きなコンテキストを持つモデル</b>や、重要な小さなファイルで特に効果的です。",
       pin_explained_block3:
@@ -650,7 +649,7 @@ const TRANSLATIONS = {
     watching: {
       what_watching: "ドキュメントのウォッチとは？",
       watch_explained_block1:
-        "AnythingLLMでドキュメントを<b>ウォッチ</b>すると、元のソースから定期的に内容が<i>自動的に</i>同期されます。管理しているすべてのワークスペースで内容が自動更新されます。",
+        "AnyZearchでドキュメントを<b>ウォッチ</b>すると、元のソースから定期的に内容が<i>自動的に</i>同期されます。管理しているすべてのワークスペースで内容が自動更新されます。",
       watch_explained_block2:
         "この機能は現在オンラインベースのコンテンツのみ対応しており、手動アップロードしたドキュメントには利用できません。",
       watch_explained_block3_start: "ウォッチしているドキュメントの管理は",
@@ -843,7 +842,7 @@ const TRANSLATIONS = {
     checklist: {
       title: "はじめに",
       tasksLeft: "残りのタスク",
-      completed: "AnythingLLMの達人への道を進んでいます！",
+      completed: "AnyZearchの達人への道を進んでいます！",
       dismiss: "閉じる",
       tasks: {
         create_workspace: {
@@ -1036,7 +1035,7 @@ const TRANSLATIONS = {
     password: {
       title: "パスワード保護",
       description:
-        "AnythingLLMインスタンスをパスワードで保護します。これを忘れた場合、回復方法はないため、このパスワードを必ず保存してください。",
+        "AnyZearchインスタンスをパスワードで保護します。これを忘れた場合、回復方法はないため、このパスワードを必ず保存してください。",
       "password-label": "インスタンスパスワード",
     },
   },

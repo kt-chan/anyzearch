@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-const ALIGNMENT_STORAGE_KEY = "anythingllm-chat-message-alignment";
+const ALIGNMENT_STORAGE_KEY = "AnyZearch-chat-message-alignment";
 
 /**
  * Store the message alignment in localStorage as well as provide a function to get the alignment of a message via role.

@@ -78,7 +78,7 @@ export default function PGVectorOptions({ settings }) {
                 store the vectors.
                 <br />
                 <br />
-                By default, the table name is <code>anythingllm_vectors</code>.
+                By default, the table name is <code>AnyZearch_vectors</code>.
                 <br />
                 <br />
                 <b>

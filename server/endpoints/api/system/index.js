@@ -170,11 +170,11 @@ function apiSystemEndpoints(app) {
             example: [
               {
                 "role": "user",
-                "content": "What is AnythinglLM?"
+                "content": "What is AnyZearch?"
               },
               {
                 "role": "assistant",
-                "content": "AnythingLLM is a knowledge graph and vector database management system built using NodeJS express server. It provides an interface for handling all interactions, including vectorDB management and LLM (Language Model) interactions."
+                "content": "AnyZearch is a knowledge graph and vector database management system built using NodeJS express server. It provides an interface for handling all interactions, including vectorDB management and LLM (Language Model) interactions."
               },
             ]
           }

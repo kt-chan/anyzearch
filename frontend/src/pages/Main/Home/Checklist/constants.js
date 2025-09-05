@@ -11,9 +11,9 @@ import { t } from "i18next";
 
 const noop = () => {};
 
-export const CHECKLIST_UPDATED_EVENT = "anythingllm_checklist_updated";
-export const CHECKLIST_STORAGE_KEY = "anythingllm_checklist_completed";
-export const CHECKLIST_HIDDEN = "anythingllm_checklist_dismissed";
+export const CHECKLIST_UPDATED_EVENT = "AnyZearch_checklist_updated";
+export const CHECKLIST_STORAGE_KEY = "AnyZearch_checklist_completed";
+export const CHECKLIST_HIDDEN = "AnyZearch_checklist_dismissed";
 
 /**
  * @typedef {Object} ChecklistItemHandlerParams

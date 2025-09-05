@@ -176,14 +176,12 @@ function SelectedFeatureComponent({ feature, settings, refresh }) {
 }
 
 function FeatureVerification({ children }) {
-  if (
-    !window.localStorage.getItem("anythingllm_tos_experimental_feature_set")
-  ) {
+  if (!window.localStorage.getItem("AnyZearch_tos_experimental_feature_set")) {
     function acceptTos(e) {
       e.preventDefault();
 
       window.localStorage.setItem(
-        "anythingllm_tos_experimental_feature_set",
+        "AnyZearch_tos_experimental_feature_set",
         "accepted"
       );
       showToast(
@@ -212,8 +210,8 @@ function FeatureVerification({ children }) {
               <div className="py-7 px-9 space-y-4 flex-col">
                 <div className="w-full text-white text-md flex flex-col gap-y-4">
                   <p>
-                    Experimental features of AnythingLLM are features that we
-                    are piloting and are <b>opt-in</b>. We proactively will
+                    Experimental features of AnyZearch are features that we are
+                    piloting and are <b>opt-in</b>. We proactively will
                     condition or warn you on any potential concerns should any
                     exist prior to approval of any feature.
                   </p>
@@ -232,7 +230,7 @@ function FeatureVerification({ children }) {
                         Increased cost or use of any connected LLM or embedding
                         provider.
                       </li>
-                      <li>Potential bugs or issues using AnythingLLM.</li>
+                      <li>Potential bugs or issues using AnyZearch.</li>
                     </ul>
                   </div>
 
@@ -246,7 +244,7 @@ function FeatureVerification({ children }) {
                       <li>The feature being used is not currently stable.</li>
                       <li>
                         The feature may not be available in future versions,
-                        configurations, or subscriptions of AnythingLLM.
+                        configurations, or subscriptions of AnyZearch.
                       </li>
                       <li>
                         Your privacy settings <b>will be honored</b> with use of

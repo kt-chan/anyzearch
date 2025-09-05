@@ -34,7 +34,7 @@ export default function SpeechToText({ sendCommand }) {
   function startSTTSession() {
     if (!isMicrophoneAvailable) {
       alert(
-        "AnythingLLM does not have access to microphone. Please enable for this site to use this feature."
+        "AnyZearch does not have access to microphone. Please enable for this site to use this feature."
       );
       return;
     }

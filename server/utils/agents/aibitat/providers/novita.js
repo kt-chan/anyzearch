@@ -18,7 +18,7 @@ class NovitaProvider extends InheritMultiple([Provider, UnTooled]) {
       maxRetries: 3,
       defaultHeaders: {
         "HTTP-Referer": "https://anythingllm.com",
-        "X-Novita-Source": "anythingllm",
+        "X-Novita-Source": "AnyZearch",
       },
     });
 

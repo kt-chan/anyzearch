@@ -45,21 +45,21 @@ class MetaGenerator {
       {
         tag: "title",
         props: null,
-        content: "AnythingLLM | Your personal LLM trained on anything",
+        content: "AnyZearch | Your personal LLM trained on anything",
       },
 
       {
         tag: "meta",
         props: {
           name: "title",
-          content: "AnythingLLM | Your personal LLM trained on anything",
+          content: "AnyZearch | Your personal LLM trained on anything",
         },
       },
       {
         tag: "meta",
         props: {
           description: "title",
-          content: "AnythingLLM | Your personal LLM trained on anything",
+          content: "AnyZearch | Your personal LLM trained on anything",
         },
       },
 
@@ -73,14 +73,14 @@ class MetaGenerator {
         tag: "meta",
         props: {
           property: "og:title",
-          content: "AnythingLLM | Your personal LLM trained on anything",
+          content: "AnyZearch | Your personal LLM trained on anything",
         },
       },
       {
         tag: "meta",
         props: {
           property: "og:description",
-          content: "AnythingLLM | Your personal LLM trained on anything",
+          content: "AnyZearch | Your personal LLM trained on anything",
         },
       },
       {
@@ -88,7 +88,7 @@ class MetaGenerator {
         props: {
           property: "og:image",
           content:
-            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
+            "https://raw.githubusercontent.com/iteasoft/AnyZearch/master/images/promo.png",
         },
       },
 
@@ -105,14 +105,14 @@ class MetaGenerator {
         tag: "meta",
         props: {
           property: "twitter:title",
-          content: "AnythingLLM | Your personal LLM trained on anything",
+          content: "AnyZearch | Your personal LLM trained on anything",
         },
       },
       {
         tag: "meta",
         props: {
           property: "twitter:description",
-          content: "AnythingLLM | Your personal LLM trained on anything",
+          content: "AnyZearch | Your personal LLM trained on anything",
         },
       },
       {
@@ -120,7 +120,7 @@ class MetaGenerator {
         props: {
           property: "twitter:image",
           content:
-            "https://raw.githubusercontent.com/Mintplex-Labs/anything-llm/master/images/promo.png",
+            "https://raw.githubusercontent.com/iteasoft/AnyZearch/master/images/promo.png",
         },
       },
 
@@ -190,8 +190,7 @@ class MetaGenerator {
           tag: "title",
           props: null,
           content:
-            customTitle ??
-            "AnythingLLM | Your personal LLM trained on anything",
+            customTitle ?? "AnyZearch | Your personal LLM trained on anything",
         },
       ];
     }

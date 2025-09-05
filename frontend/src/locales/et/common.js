@@ -8,7 +8,7 @@ const TRANSLATIONS = {
     llm: {
       title: "LLM-i eelistus",
       description:
-        "AnythingLLM töötab paljude LLM-teenusepakkujatega. See teenus haldab vestlust.",
+        "AnyZearch töötab paljude LLM-teenusepakkujatega. See teenus haldab vestlust.",
     },
     userSetup: {
       title: "Kasutaja seadistus",
@@ -36,15 +36,15 @@ const TRANSLATIONS = {
       settingsHint: "Neid sätteid saab igal ajal seadetes muuta.",
     },
     survey: {
-      title: "Tere tulemast AnythingLLM-i",
+      title: "Tere tulemast AnyZearch-i",
       description:
-        "Aita meil AnythingLLM sinu vajadustele vastavaks kujundada. Valikuline.",
+        "Aita meil AnyZearch sinu vajadustele vastavaks kujundada. Valikuline.",
       email: "Mis on su e-post?",
-      useCase: "Milleks kasutad AnythingLLM-i?",
+      useCase: "Milleks kasutad AnyZearch-i?",
       useCaseWork: "Töö jaoks",
       useCasePersonal: "Isiklikuks kasutuseks",
       useCaseOther: "Muu",
-      comment: "Kust kuulsid AnythingLLM-ist?",
+      comment: "Kust kuulsid AnyZearch-ist?",
       commentPlaceholder:
         "Reddit, Twitter, GitHub, YouTube jne – anna meile teada!",
       skip: "Jäta vahele",
@@ -52,7 +52,7 @@ const TRANSLATIONS = {
     },
     workspace: {
       title: "Loo oma esimene tööruum",
-      description: "Loo esimene tööruum ja alusta AnythingLLM-iga.",
+      description: "Loo esimene tööruum ja alusta AnyZearch-iga.",
     },
   },
   common: {
@@ -126,11 +126,11 @@ const TRANSLATIONS = {
   },
   welcomeMessage: {
     part1:
-      "Tere tulemast AnythingLLM-i! See on Mintplex Labsi avatud lähtekoodiga AI-tööriist, mis muudab kõik failid koolitatud juturobotiks, kellega saad vestelda. AnythingLLM on BYOK-tarkvara, seega puudub igasugune tellimus- või litsentsitasu, välja arvatud kasutatavate teenuste kulud.",
+      "Tere tulemast AnyZearch-i! See on Mintplex Labsi avatud lähtekoodiga AI-tööriist, mis muudab kõik failid koolitatud juturobotiks, kellega saad vestelda. AnyZearch on BYOK-tarkvara, seega puudub igasugune tellimus- või litsentsitasu, välja arvatud kasutatavate teenuste kulud.",
     part2:
-      "AnythingLLM on lihtsaim viis kombineerida võimsad AI-teenused nagu OpenAI, GPT-4, LangChain, PineconeDB, ChromaDB jpt ilma vaevata, tõstes sinu produktiivsust kordades.",
+      "AnyZearch on lihtsaim viis kombineerida võimsad AI-teenused nagu OpenAI, GPT-4, LangChain, PineconeDB, ChromaDB jpt ilma vaevata, tõstes sinu produktiivsust kordades.",
     part3:
-      "AnythingLLM võib töötada täielikult lokaalselt sinu masinas minimaalse ressursikasutusega – GPU-d pole vaja. Samuti on saadaval pilve- ja kohapealsed paigaldised.\nAI-ökosüsteem muutub iga päevaga võimekamaks ja AnythingLLM teeb selle kasutamise lihtsaks.",
+      "AnyZearch võib töötada täielikult lokaalselt sinu masinas minimaalse ressursikasutusega – GPU-d pole vaja. Samuti on saadaval pilve- ja kohapealsed paigaldised.\nAI-ökosüsteem muutub iga päevaga võimekamaks ja AnyZearch teeb selle kasutamise lihtsaks.",
     githubIssue: "Loo GitHubis probleem",
     user1: "Kuidas alustada?!",
     part4:
@@ -139,7 +139,7 @@ const TRANSLATIONS = {
     user2:
       "Kas see on nagu AI-Dropbox? Aga vestlus – see peaks ju chatbot olema?",
     part5:
-      "AnythingLLM on enamat kui nutikam Dropbox.\n\nAnythingLLM pakub kahte viisi oma andmetega suhtlemiseks:\n\n<i>Päring:</i> Vestlus tagastab andmed või järeldused olemasolevatest dokumentidest tööruumis. Mida rohkem faile lisad, seda nutikamaks see muutub!\n\n<i>Vestluslik:</i> Sinu dokumendid + käimasolev vestlus mõjutavad vastuseid samaaegselt. Sobib reaalajas info lisamiseks või LLM-i arusaamade parandamiseks.\n\nVõid režiime vahetada <i>keset vestlust!</i>",
+      "AnyZearch on enamat kui nutikam Dropbox.\n\nAnyZearch pakub kahte viisi oma andmetega suhtlemiseks:\n\n<i>Päring:</i> Vestlus tagastab andmed või järeldused olemasolevatest dokumentidest tööruumis. Mida rohkem faile lisad, seda nutikamaks see muutub!\n\n<i>Vestluslik:</i> Sinu dokumendid + käimasolev vestlus mõjutavad vastuseid samaaegselt. Sobib reaalajas info lisamiseks või LLM-i arusaamade parandamiseks.\n\nVõid režiime vahetada <i>keset vestlust!</i>",
     user3: "Võimas! Las ma proovin kohe ära!",
     part6: "Head kasutamist!",
     starOnGitHub: "Tähista GitHubis",
@@ -150,7 +150,7 @@ const TRANSLATIONS = {
     checklist: {
       title: "Alustamine",
       tasksLeft: "ülesannet jäänud",
-      completed: "Oled teel AnythingLLM-i eksperdiks saama!",
+      completed: "Oled teel AnyZearch-i eksperdiks saama!",
       dismiss: "sulge",
       tasks: {
         create_workspace: {
@@ -252,7 +252,7 @@ const TRANSLATIONS = {
       add: "Lisa uus sõnum",
       save: "Salvesta sõnumid",
       heading: "Selgita mulle",
-      body: "AnythingLLM eeliseid",
+      body: "AnyZearch eeliseid",
     },
     pfp: {
       title: "Abilise profiilipilt",
@@ -434,11 +434,11 @@ const TRANSLATIONS = {
   customization: {
     interface: {
       title: "Kasutajaliidese eelistused",
-      description: "Sea AnythingLLM-i UI eelistused.",
+      description: "Sea AnyZearch-i UI eelistused.",
     },
     branding: {
       title: "Bränding ja valgesildistamine",
-      description: "Valgesildista oma AnythingLLM kohandatud brändinguga.",
+      description: "Valgesildista oma AnyZearch kohandatud brändinguga.",
     },
     chat: {
       title: "Vestlus",
@@ -482,7 +482,7 @@ const TRANSLATIONS = {
       "display-language": {
         title: "Kuvakeel",
         description:
-          "Vali keel, milles AnythingLLM UI kuvatakse (kui tõlge on olemas).",
+          "Vali keel, milles AnyZearch UI kuvatakse (kui tõlge on olemas).",
       },
       logo: {
         title: "Brändi logo",
@@ -500,7 +500,7 @@ const TRANSLATIONS = {
         system: "süsteem",
         user: "kasutaja",
         message: "sõnum",
-        assistant: "AnythingLLM vestlusabi",
+        assistant: "AnyZearch vestlusabi",
         "double-click": "Topeltklõps muutmiseks…",
         save: "Salvesta sõnumid",
       },
@@ -528,7 +528,7 @@ const TRANSLATIONS = {
   api: {
     title: "API võtmed",
     description:
-      "API võtmed võimaldavad programmipõhiselt hallata seda AnythingLLM instantsi.",
+      "API võtmed võimaldavad programmipõhiselt hallata seda AnyZearch instantsi.",
     link: "Loe API dokumentatsiooni",
     generate: "Genereeri uus API võti",
     table: {
@@ -540,7 +540,7 @@ const TRANSLATIONS = {
   llm: {
     title: "LLM-i eelistus",
     description:
-      "Siin on sinu valitud LLM-teenusepakkuja võtmed ja seaded. Need peavad olema õiged, vastasel juhul AnythingLLM ei tööta.",
+      "Siin on sinu valitud LLM-teenusepakkuja võtmed ja seaded. Need peavad olema õiged, vastasel juhul AnyZearch ei tööta.",
     provider: "LLM-pakkuja",
     providers: {
       azure_openai: {
@@ -570,7 +570,7 @@ const TRANSLATIONS = {
     "desc-start":
       "Kui kasutad LLM-i, mis ei sisalda embedding-mootorit, tuleb määrata täiendavad võtmed.",
     "desc-end":
-      "Embedding muudab teksti vektoriteks. Need võtmed on vajalikud, et AnythingLLM saaks sinu failid ja päringud töödelda.",
+      "Embedding muudab teksti vektoriteks. Need võtmed on vajalikud, et AnyZearch saaks sinu failid ja päringud töödelda.",
     provider: {
       title: "Embedding-i pakkuja",
     },
@@ -593,7 +593,7 @@ const TRANSLATIONS = {
   vector: {
     title: "Vektoriandmebaas",
     description:
-      "Siin on seaded, kuidas AnythingLLM töötab. Vale seadistus võib põhjustada tõrkeid.",
+      "Siin on seaded, kuidas AnyZearch töötab. Vale seadistus võib põhjustada tõrkeid.",
     provider: {
       title: "Vektoriandmebaasi pakkuja",
       description: "LanceDB puhul seadistust pole vaja.",
@@ -636,7 +636,7 @@ const TRANSLATIONS = {
   privacy: {
     title: "Privaatsus ja andmetöötlus",
     description:
-      "Konfiguratsioon kolmandate osapoolte ja AnythingLLM-i andmekäitluse kohta.",
+      "Konfiguratsioon kolmandate osapoolte ja AnyZearch-i andmekäitluse kohta.",
     llm: "LLM-i valik",
     embedding: "Embedding-i eelistus",
     vector: "Vektoriandmebaas",

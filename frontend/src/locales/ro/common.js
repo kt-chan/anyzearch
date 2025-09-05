@@ -8,7 +8,7 @@ const TRANSLATIONS = {
     llm: {
       title: "Preferința LLM",
       description:
-        "AnythingLLM poate funcționa cu mai mulți furnizori LLM. Acesta va fi serviciul care gestionează conversațiile.",
+        "AnyZearch poate funcționa cu mai mulți furnizori LLM. Acesta va fi serviciul care gestionează conversațiile.",
     },
     userSetup: {
       title: "Configurare Utilizator",
@@ -37,15 +37,15 @@ const TRANSLATIONS = {
         "Aceste setări pot fi reconfigurate oricând în setările aplicației.",
     },
     survey: {
-      title: "Bun venit la AnythingLLM",
+      title: "Bun venit la AnyZearch",
       description:
-        "Ajută-ne să facem AnythingLLM potrivit pentru nevoile tale. Opțional.",
+        "Ajută-ne să facem AnyZearch potrivit pentru nevoile tale. Opțional.",
       email: "Care este adresa ta de email?",
-      useCase: "Pentru ce vei folosi AnythingLLM?",
+      useCase: "Pentru ce vei folosi AnyZearch?",
       useCaseWork: "Pentru muncă",
       useCasePersonal: "Pentru uz personal",
       useCaseOther: "Altele",
-      comment: "De unde ai aflat despre AnythingLLM?",
+      comment: "De unde ai aflat despre AnyZearch?",
       commentPlaceholder:
         "Reddit, Twitter, GitHub, YouTube, etc. - Spune-ne cum ne-ai găsit!",
       skip: "Sari peste sondaj",
@@ -54,7 +54,7 @@ const TRANSLATIONS = {
     workspace: {
       title: "Creează primul tău spațiu de lucru",
       description:
-        "Creează primul tău spațiu de lucru și începe să folosești AnythingLLM.",
+        "Creează primul tău spațiu de lucru și începe să folosești AnyZearch.",
     },
   },
   common: {
@@ -129,11 +129,11 @@ const TRANSLATIONS = {
   },
   welcomeMessage: {
     part1:
-      "Bine ai venit la AnythingLLM, AnythingLLM este un instrument AI open-source creat de Mintplex Labs care transformă orice într-un chatbot antrenat cu care poți interacționa. AnythingLLM este un software BYOK (bring-your-own-keys) fără abonamente sau taxe în afară de serviciile pe care dorești să le folosești.",
+      "Bine ai venit la AnyZearch, AnyZearch este un instrument AI open-source creat de Mintplex Labs care transformă orice într-un chatbot antrenat cu care poți interacționa. AnyZearch este un software BYOK (bring-your-own-keys) fără abonamente sau taxe în afară de serviciile pe care dorești să le folosești.",
     part2:
-      "AnythingLLM este cea mai simplă modalitate de a combina produse AI puternice precum OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB și alte servicii într-un pachet ordonat care îți crește productivitatea de 100x.",
+      "AnyZearch este cea mai simplă modalitate de a combina produse AI puternice precum OpenAi, GPT-4, LangChain, PineconeDB, ChromaDB și alte servicii într-un pachet ordonat care îți crește productivitatea de 100x.",
     part3:
-      "AnythingLLM poate rula complet local pe calculatorul tău cu un consum redus de resurse, pe care nici nu îl vei observa! Nu este necesar GPU. Instalarea în cloud sau local este, de asemenea, disponibilă.\nEcosistemul de unelte AI devine tot mai puternic zilnic. AnythingLLM face aceste tehnologii ușor de folosit.",
+      "AnyZearch poate rula complet local pe calculatorul tău cu un consum redus de resurse, pe care nici nu îl vei observa! Nu este necesar GPU. Instalarea în cloud sau local este, de asemenea, disponibilă.\nEcosistemul de unelte AI devine tot mai puternic zilnic. AnyZearch face aceste tehnologii ușor de folosit.",
     githubIssue: "Creează un tichet de problemă pe GitHub",
     user1: "Cum încep?!",
     part4:
@@ -142,7 +142,7 @@ const TRANSLATIONS = {
     user2:
       "Este ca un Dropbox AI sau ceva de genul? Dar ce fac cu chat-ul? Este un chatbot, nu?",
     part5:
-      "AnythingLLM este mai mult decât un Dropbox mai inteligent.\n\nAnythingLLM oferă două moduri de a discuta cu datele tale:\n\nQuery: Chaturile tale vor returna date sau inferențe găsite în documentele din spațiul de lucru accesat. Adăugarea mai multor documente face sistemul mai inteligent! \n\nConversational: Documentele tale + istoricul conversațiilor contribuie împreună la cunoașterea LLM-ului în timp real. Ideal pentru a adăuga corecții și informații textuale în timp real.\n\nPoți comuta între cele două moduri chiar în timpul conversației!",
+      "AnyZearch este mai mult decât un Dropbox mai inteligent.\n\nAnyZearch oferă două moduri de a discuta cu datele tale:\n\nQuery: Chaturile tale vor returna date sau inferențe găsite în documentele din spațiul de lucru accesat. Adăugarea mai multor documente face sistemul mai inteligent! \n\nConversational: Documentele tale + istoricul conversațiilor contribuie împreună la cunoașterea LLM-ului în timp real. Ideal pentru a adăuga corecții și informații textuale în timp real.\n\nPoți comuta între cele două moduri chiar în timpul conversației!",
     user3: "Wow, sună uimitor, hai să încerc acum!",
     part6: "Distracție plăcută!",
     starOnGitHub: "Dă stea pe GitHub",
@@ -154,7 +154,7 @@ const TRANSLATIONS = {
     checklist: {
       title: "Început rapid",
       tasksLeft: "sarcini rămase",
-      completed: "Ești pe drumul să devii expert AnythingLLM!",
+      completed: "Ești pe drumul să devii expert AnyZearch!",
       dismiss: "închide",
       tasks: {
         create_workspace: {
@@ -260,7 +260,7 @@ const TRANSLATIONS = {
       add: "Adaugă mesaj nou",
       save: "Salvează mesajele",
       heading: "Explică-mi",
-      body: "beneficiile AnythingLLM",
+      body: "beneficiile AnyZearch",
     },
     pfp: {
       title: "Imagine profil asistent",
@@ -355,7 +355,7 @@ const TRANSLATIONS = {
   vector: {
     title: "Baza de date vectorială",
     description:
-      "Acestea sunt credențialele și setările pentru modul în care funcționează instanța ta AnythingLLM. Este important să fie corecte și actuale.",
+      "Acestea sunt credențialele și setările pentru modul în care funcționează instanța ta AnyZearch. Este important să fie corecte și actuale.",
     provider: {
       title: "Furnizor baza de date vectorială",
       description: "Nu este necesară configurarea pentru LanceDB.",
@@ -400,7 +400,7 @@ const TRANSLATIONS = {
   privacy: {
     title: "Confidențialitate & Gestionarea datelor",
     description:
-      "Aceasta este configurația ta pentru modul în care furnizorii terți conectați și AnythingLLM gestionează datele tale.",
+      "Aceasta este configurația ta pentru modul în care furnizorii terți conectați și AnyZearch gestionează datele tale.",
     llm: "Selecția LLM",
     embedding: "Preferința embedding",
     vector: "Baza de date vectorială",
@@ -583,22 +583,22 @@ const TRANSLATIONS = {
       fetching: "Se preia...",
       "fetch-website": "Preluare site web",
       "privacy-notice":
-        "Aceste fișiere vor fi încărcate în procesorul de documente care rulează pe această instanță AnythingLLM. Aceste fișiere nu sunt trimise sau partajate cu o terță parte.",
+        "Aceste fișiere vor fi încărcate în procesorul de documente care rulează pe această instanță AnyZearch. Aceste fișiere nu sunt trimise sau partajate cu o terță parte.",
     },
     pinning: {
       what_pinning: "Ce este fixarea documentelor?",
       pin_explained_block1:
-        "Când **fixezi** un document în AnythingLLM, vom injecta întregul conținut al documentului în fereastra de prompt pentru ca LLM-ul tău să-l înțeleagă pe deplin.",
+        "Când **fixezi** un document în AnyZearch, vom injecta întregul conținut al documentului în fereastra de prompt pentru ca LLM-ul tău să-l înțeleagă pe deplin.",
       pin_explained_block2:
         "Acest lucru funcționează cel mai bine cu **modele cu context mare** sau fișiere mici care sunt critice pentru baza sa de cunoștințe.",
       pin_explained_block3:
-        "Dacă nu obții răspunsurile dorite de la AnythingLLM în mod implicit, atunci fixarea este o modalitate excelentă de a obține răspunsuri de calitate superioară dintr-un clic.",
+        "Dacă nu obții răspunsurile dorite de la AnyZearch în mod implicit, atunci fixarea este o modalitate excelentă de a obține răspunsuri de calitate superioară dintr-un clic.",
       accept: "Ok, am înțeles",
     },
     watching: {
       what_watching: "Ce face vizualizarea unui document?",
       watch_explained_block1:
-        "Când **urmărești** un document în AnythingLLM, vom sincroniza *automat* conținutul documentului tău din sursa originală la intervale regulate. Acest lucru va actualiza automat conținutul în fiecare spațiu de lucru unde acest fișier este gestionat.",
+        "Când **urmărești** un document în AnyZearch, vom sincroniza *automat* conținutul documentului tău din sursa originală la intervale regulate. Acest lucru va actualiza automat conținutul în fiecare spațiu de lucru unde acest fișier este gestionat.",
       watch_explained_block2:
         "Această funcție suportă în prezent conținutul online și nu va fi disponibilă pentru documentele încărcate manual.",
       watch_explained_block3_start:
@@ -793,7 +793,7 @@ const TRANSLATIONS = {
         unauthenticated: {
           title: "Autentificare necesară",
           description:
-            "Trebuie să te autentifici cu AnythingLLM Community Hub înainte de a publica elemente.",
+            "Trebuie să te autentifici cu AnyZearch Community Hub înainte de a publica elemente.",
           button: "Conectează-te la Community Hub",
         },
       },
@@ -900,16 +900,16 @@ const TRANSLATIONS = {
   customization: {
     interface: {
       title: "Preferințe UI",
-      description: "Setează preferințele UI pentru AnythingLLM.",
+      description: "Setează preferințele UI pentru AnyZearch.",
     },
     branding: {
       title: "Branding & White-labeling",
       description:
-        "Personalizează-ți instanța AnythingLLM cu branding personalizat.",
+        "Personalizează-ți instanța AnyZearch cu branding personalizat.",
     },
     chat: {
       title: "Chat",
-      description: "Setează preferințele de chat pentru AnythingLLM.",
+      description: "Setează preferințele de chat pentru AnyZearch.",
       auto_submit: {
         title: "Trimite automat intrarea vocală",
         description:
@@ -953,7 +953,7 @@ const TRANSLATIONS = {
       "display-language": {
         title: "Limba de afișare",
         description:
-          "Selectează limba preferată pentru a reda interfața AnythingLLM - atunci când traducerile sunt disponibile.",
+          "Selectează limba preferată pentru a reda interfața AnyZearch - atunci când traducerile sunt disponibile.",
       },
       logo: {
         title: "Logo brand",
@@ -972,7 +972,7 @@ const TRANSLATIONS = {
         system: "sistem",
         user: "utilizator",
         message: "mesaj",
-        assistant: "Asistent Chat AnythingLLM",
+        assistant: "Asistent Chat AnyZearch",
         "double-click": "Dublu clic pentru a edita...",
         save: "Salvează mesajele",
       },
@@ -1003,7 +1003,7 @@ const TRANSLATIONS = {
   api: {
     title: "Chei API",
     description:
-      "Cheile API permit deținătorului să acceseze și să gestioneze programatic această instanță AnythingLLM.",
+      "Cheile API permit deținătorului să acceseze și să gestioneze programatic această instanță AnyZearch.",
     link: "Citește documentația API",
     generate: "Generează o nouă cheie API",
     table: {
@@ -1015,7 +1015,7 @@ const TRANSLATIONS = {
   llm: {
     title: "Preferința LLM",
     description:
-      "Acestea sunt credențialele și setările pentru furnizorul tău preferat de chat și embedding LLM. Este important ca aceste chei să fie actuale și corecte, altfel AnythingLLM nu va funcționa corect.",
+      "Acestea sunt credențialele și setările pentru furnizorul tău preferat de chat și embedding LLM. Este important ca aceste chei să fie actuale și corecte, altfel AnyZearch nu va funcționa corect.",
     provider: "Furnizor LLM",
     providers: {
       azure_openai: {
@@ -1035,7 +1035,7 @@ const TRANSLATIONS = {
       "Acestea sunt credențialele și setările pentru furnizorul tău preferat de model de transcriere. Este important ca aceste chei să fie actuale și corecte, altfel fișierele media și audio nu vor fi transcrise.",
     provider: "Furnizor transcriere",
     "warn-start":
-      "Utilizarea modelului local Whisper pe mașini cu RAM sau CPU limitat poate bloca AnythingLLM la procesarea fișierelor media.",
+      "Utilizarea modelului local Whisper pe mașini cu RAM sau CPU limitat poate bloca AnyZearch la procesarea fișierelor media.",
     "warn-recommend":
       "Recomandăm cel puțin 2GB de RAM și încărcarea fișierelor <10Mb.",
     "warn-end": "Modelul încorporat se va descărca automat la prima utilizare.",
@@ -1045,7 +1045,7 @@ const TRANSLATIONS = {
     "desc-start":
       "Atunci când utilizați un LLM care nu suportă nativ un motor de embedding - s-ar putea să fie necesar să specificați credențiale suplimentare pentru embedding text.",
     "desc-end":
-      "Embedding-ul este procesul de transformare a textului în vectori. Aceste credențiale sunt necesare pentru a transforma fișierele și prompturile dvs. într-un format pe care AnythingLLM îl poate utiliza pentru procesare.",
+      "Embedding-ul este procesul de transformare a textului în vectori. Aceste credențiale sunt necesare pentru a transforma fișierele și prompturile dvs. într-un format pe care AnyZearch îl poate utiliza pentru procesare.",
     provider: {
       title: "Furnizor embedding",
     },
@@ -1086,7 +1086,7 @@ const TRANSLATIONS = {
     password: {
       title: "Protecție prin parolă",
       description:
-        "Protejează instanța AnythingLLM cu o parolă. Dacă o uiți, nu există metode de recuperare, deci asigură-te că o salvezi.",
+        "Protejează instanța AnyZearch cu o parolă. Dacă o uiți, nu există metode de recuperare, deci asigură-te că o salvezi.",
       "password-label": "Parola instanței",
     },
   },

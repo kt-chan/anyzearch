@@ -22,7 +22,7 @@ const Zilliz = {
   normalize: function (inputString) {
     let normalized = inputString.replace(/[^a-zA-Z0-9_]/g, "_");
     if (new RegExp(/^[a-zA-Z_]/).test(normalized.slice(0, 1)))
-      normalized = `anythingllm_${normalized}`;
+      normalized = `AnyZearch_${normalized}`;
     return normalized;
   },
   connect: async function () {

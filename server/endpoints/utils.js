@@ -60,9 +60,9 @@ async function getDiskStorage() {
  * Returns the model tag based on the provider set in the environment.
  * This information is used to identify the parent model for the system
  * so that we can prioritize the correct model and types for future updates
- * as well as build features in AnythingLLM directly for a specific model or capabilities.
+ * as well as build features in AnyZearch directly for a specific model or capabilities.
  *
- * Disable with  {@link https://github.com/Mintplex-Labs/anything-llm?tab=readme-ov-file#telemetry--privacy|Disable Telemetry}
+ * Disable with  {@link https://github.com/iteasoft/AnyZearch?tab=readme-ov-file#telemetry--privacy|Disable Telemetry}
  * @returns {string} The model tag.
  */
 function getModelTag() {

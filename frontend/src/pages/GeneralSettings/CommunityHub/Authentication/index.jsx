@@ -55,7 +55,7 @@ function useCommunityHubAuthentication() {
       if (!response.success)
         return showToast("Failed to disconnect from hub", "error");
       setHasChanges(false);
-      showToast("Disconnected from AnythingLLM Community Hub", "success");
+      showToast("Disconnected from AnyZearch Community Hub", "success");
       setOriginalConnectionKey("");
       setConnectionKey("");
     } catch (error) {
@@ -122,13 +122,13 @@ export default function CommunityHubAuthentication() {
           <div className="w-full flex flex-col gap-y-1 pb-6 border-white light:border-theme-sidebar-border border-b-2 border-opacity-10">
             <div className="items-center">
               <p className="text-lg leading-6 font-bold text-theme-text-primary">
-                Your AnythingLLM Community Hub Account
+                Your AnyZearch Community Hub Account
               </p>
             </div>
             <p className="text-xs leading-[18px] font-base text-theme-text-secondary">
-              Connecting your AnythingLLM Community Hub account allows you to
-              access your <b>private</b> AnythingLLM Community Hub items as well
-              as upload your own items to the AnythingLLM Community Hub.
+              Connecting your AnyZearch Community Hub account allows you to
+              access your <b>private</b> AnyZearch Community Hub items as well
+              as upload your own items to the AnyZearch Community Hub.
             </p>
           </div>
 
@@ -138,20 +138,20 @@ export default function CommunityHubAuthentication() {
                 <div className="gap-x-2 flex items-center">
                   <Info size={25} />
                   <h1 className="text-lg font-semibold">
-                    Why connect my AnythingLLM Community Hub account?
+                    Why connect my AnyZearch Community Hub account?
                   </h1>
                 </div>
                 <p className="text-sm text-theme-text-secondary">
-                  Connecting your AnythingLLM Community Hub account allows you
-                  to pull in your <b>private</b> items from the AnythingLLM
-                  Community Hub as well as upload your own items to the
-                  AnythingLLM Community Hub.
+                  Connecting your AnyZearch Community Hub account allows you to
+                  pull in your <b>private</b> items from the AnyZearch Community
+                  Hub as well as upload your own items to the AnyZearch
+                  Community Hub.
                   <br />
                   <br />
                   <i>
-                    You do not need to connect your AnythingLLM Community Hub
-                    account to pull in public items from the AnythingLLM
-                    Community Hub.
+                    You do not need to connect your AnyZearch Community Hub
+                    account to pull in public items from the AnyZearch Community
+                    Hub.
                   </i>
                 </p>
               </div>
@@ -162,14 +162,14 @@ export default function CommunityHubAuthentication() {
           <div className="mt-6 mb-12">
             <div className="flex flex-col w-full max-w-[400px]">
               <label className="text-theme-text-primary text-sm font-semibold block mb-2">
-                AnythingLLM Hub API Key
+                AnyZearch Hub API Key
               </label>
               <input
                 type="password"
                 value={connectionKey || ""}
                 onChange={onConnectionKeyChange}
                 className="border-none bg-theme-settings-input-bg text-theme-text-primary placeholder:text-theme-settings-input-placeholder text-sm rounded-lg focus:outline-primary-button active:outline-primary-button outline-none block w-full p-2.5"
-                placeholder="Enter your AnythingLLM Hub API key"
+                placeholder="Enter your AnyZearch Hub API key"
               />
               <div className="flex items-center justify-between mt-2">
                 <p className="text-theme-text-secondary text-xs">
@@ -178,7 +178,7 @@ export default function CommunityHubAuthentication() {
                     href={paths.communityHub.profile()}
                     className="underline text-primary-button"
                   >
-                    AnythingLLM Community Hub profile page
+                    AnyZearch Community Hub profile page
                   </a>
                   .
                 </p>
