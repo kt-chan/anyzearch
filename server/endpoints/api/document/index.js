@@ -263,12 +263,12 @@ function apiDocumentEndpoints(app) {
           const currentFolder = path.dirname(doc.location);
           if (currentFolder !== folder) {
             const sourcePath = path.join(
-              documentsPath,
-              normalizePath(doc.location)
+              currentFolder,
+              normalizePath(path.basename(doc.location))
             );
             const destinationPath = path.join(
               targetFolderPath,
-              path.basename(doc.location)
+              normalizePath(path.basename(doc.location))
             );
 
             if (

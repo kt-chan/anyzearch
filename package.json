@@ -13,7 +13,7 @@
     "test": "jest",
     "lint": "cd server && yarn lint && cd ../frontend && yarn lint && cd ../collector && yarn lint",
     "build-windows": "cd server && yarn && cd ../collector && yarn && cd ../frontend && yarn && cd .. && yarn win-setup:envs && yarn prisma:setup ",
-    "win-setup:envs": "copy /y .\\frontend\\.env.example .\\frontend\\.env && copy /y .\\.env .\\server\\.env && copy /y .\\collector\\.env.example .\\collector\\.env && copy /y .\\.env .\\docker\\.env && echo \"All ENV files copied!\"",
+    "win-setup:envs": "copy /y .\\frontend\\.env.example .\\frontend\\.env && IF EXIST .\\server\\public (rmdir /s /q .\\server\\public) && mkdir .\\server\\public && xcopy /s /e /y .\\frontend\\dist .\\server\\public && copy /y .\\.env .\\server\\.env && copy /y .\\collector\\.env.example .\\collector\\.env && copy /y .\\.env .\\docker\\.env && echo \"All ENV files copied!\"",
     "win-prod:collector": "cd collector && yarn start",
     "win-prod:server": "cd server && yarn start",
     "win-prod:frontend": "cd frontend && yarn build",
