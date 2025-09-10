@@ -6,7 +6,7 @@ ARG ARG_UID=1000
 ARG ARG_GID=1000
 
 FROM base AS build-arm64
-RUN echo "Preparing build of AnyZearch image for arm64 architecture"
+RUN echo "Preparing build of anyzearch image for arm64 architecture"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -38,20 +38,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a group and user with specific UID and GID
-RUN groupadd -g "$ARG_GID" AnyZearch && \
-    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g AnyZearch AnyZearch && \
-    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R AnyZearch:AnyZearch /app
+RUN groupadd -g "$ARG_GID" anyzearch && \
+    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g anyzearch anyzearch && \
+    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R anyzearch:anyzearch /app
 
 # Copy docker helper scripts
 COPY ./docker/docker-entrypoint.sh /usr/local/bin/
 COPY ./docker/docker-healthcheck.sh /usr/local/bin/
-COPY --chown=AnyZearch:AnyZearch ./docker/.env.example /app/server/.env
+COPY --chown=anyzearch:anyzearch ./docker/.env.example /app/server/.env
 
 # Ensure the scripts are executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-healthcheck.sh
 
-USER AnyZearch
+USER anyzearch
 WORKDIR /app
 
 # Puppeteer does not ship with an ARM86 compatible build for Chromium
@@ -72,7 +72,7 @@ RUN echo "Done running arm64 specific installation steps"
 
 # amd64-specific stage
 FROM base AS build-amd64
-RUN echo "Preparing build of AnyZearch image for non-ARM architecture"
+RUN echo "Preparing build of anyzearch image for non-ARM architecture"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -104,14 +104,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a group and user with specific UID and GID
-RUN groupadd -g "$ARG_GID" AnyZearch && \
-    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g AnyZearch AnyZearch && \
-    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R AnyZearch:AnyZearch /app
+RUN groupadd -g "$ARG_GID" anyzearch && \
+    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g anyzearch anyzearch && \
+    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R anyzearch:anyzearch /app
 
 # Copy docker helper scripts
 COPY ./docker/docker-entrypoint.sh /usr/local/bin/
 COPY ./docker/docker-healthcheck.sh /usr/local/bin/
-COPY --chown=AnyZearch:AnyZearch ./docker/.env.example /app/server/.env
+COPY --chown=anyzearch:anyzearch ./docker/.env.example /app/server/.env
 
 # Ensure the scripts are executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
@@ -123,14 +123,14 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
 
 # hadolint ignore=DL3006
 FROM build-${TARGETARCH} AS build
-RUN echo "Running common build flow of AnyZearch image for all architectures"
+RUN echo "Running common build flow of anyzearch image for all architectures"
 
-USER AnyZearch
+USER anyzearch
 WORKDIR /app
 
 # Install & Build frontend layer
 FROM build AS frontend-build
-COPY --chown=AnyZearch:AnyZearch ./frontend /app/frontend/
+COPY --chown=anyzearch:anyzearch ./frontend /app/frontend/
 WORKDIR /app/frontend
 RUN yarn install --network-timeout 100000 && yarn cache clean
 RUN yarn build && \
@@ -143,28 +143,28 @@ WORKDIR /app
 # Install server layer
 # Also pull and build collector deps (chromium issues prevent bad bindings)
 FROM build AS backend-build
-COPY --chown=AnyZearch:AnyZearch ./server /app/server/
+COPY --chown=anyzearch:anyzearch ./server /app/server/
 WORKDIR /app/server
 RUN yarn install --production --network-timeout 100000 && yarn cache clean
 WORKDIR /app
 
 # Install collector dependencies
-COPY --chown=AnyZearch:AnyZearch ./collector/ ./collector/
+COPY --chown=anyzearch:anyzearch ./collector/ ./collector/
 WORKDIR /app/collector
 ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public
 RUN yarn install --production --network-timeout 100000 && yarn cache clean
 
 WORKDIR /app
-USER AnyZearch
+USER anyzearch
 
 # Since we are building from backend-build we just need to move built frontend into server/public
 FROM backend-build AS production-build
 WORKDIR /app
-COPY --chown=AnyZearch:AnyZearch --from=frontend-build /app/frontend/dist /app/server/public
+COPY --chown=anyzearch:anyzearch --from=frontend-build /app/frontend/dist /app/server/public
 USER root
-RUN chown -R AnyZearch:AnyZearch /app/server && \
-    chown -R AnyZearch:AnyZearch /app/collector
-USER AnyZearch
+RUN chown -R anyzearch:anyzearch /app/server && \
+    chown -R anyzearch:anyzearch /app/collector
+USER anyzearch
 
 # Setup the environment
 ENV NODE_ENV=production

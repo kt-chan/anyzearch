@@ -1,12 +1,12 @@
-name: AnyZearch
+name: anyzearch
 
 networks:
-  AnyZearch:
+  anyzearch:
     driver: bridge
 
 services:
-  AnyZearch:
-    container_name: AnyZearch
+  anyzearch:
+    container_name: anyzearch
     build:
       context: ../.
       dockerfile: ./docker/Dockerfile
@@ -26,6 +26,6 @@ services:
     env_file:
       - .env
     networks:
-      - AnyZearch
+      - anyzearch
     extra_hosts:
       - "host.docker.internal:host-gateway"
