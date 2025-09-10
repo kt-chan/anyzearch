@@ -263,7 +263,7 @@ function apiDocumentEndpoints(app) {
           const currentFolder = path.dirname(doc.location);
           const resolvedCurrentFolder = path.isAbsolute(currentFolder)
             ? currentFolder
-            : path.join(documentsPath, doc.location);
+            : path.join(documentsPath, currentFolder);
 
           if (currentFolder !== folder) {
             const sourcePath = path.join(
