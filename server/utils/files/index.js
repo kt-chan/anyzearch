@@ -247,6 +247,9 @@ async function findDocumentInDocuments(documentName = null) {
  * @returns {boolean} - Returns true if the inner path is within the outer path, false otherwise.
  */
 function isWithin(outer, inner) {
+  outer = normalizePath(outer);
+  inner = normalizePath(inner);
+
   if (outer === inner) return false;
   const rel = path.relative(outer, inner);
   return !rel.startsWith("../") && rel !== "..";
@@ -270,7 +273,7 @@ function hasVectorCachedFiles() {
       fs.readdirSync(vectorCachePath)?.filter((name) => name.endsWith(".json"))
         .length !== 0
     );
-  } catch {}
+  } catch { }
   return false;
 }
 
