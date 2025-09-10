@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
-import AnyZearch from "./media/logo/AnyZearch.png";
-import AnyZearchDark from "./media/logo/AnyZearch-dark.png";
+import AnyZearch from "./media/logo/anyzearch.png";
+import AnyZearchDark from "./media/logo/anyzearch-dark.png";
 import DefaultLoginLogoLight from "./media/illustrations/login-logo.svg";
 import DefaultLoginLogoDark from "./media/illustrations/login-logo-light.svg";
 import System from "./models/system";
