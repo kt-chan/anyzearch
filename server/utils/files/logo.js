@@ -4,8 +4,8 @@ const { getType } = require("mime");
 const { v4 } = require("uuid");
 const { SystemSettings } = require("../../models/systemSettings");
 const { normalizePath, isWithin } = require(".");
-const LOGO_FILENAME = "AnyZearch.png";
-const LOGO_FILENAME_DARK = "AnyZearch-dark.png";
+const LOGO_FILENAME = "anyzearch.png";
+const LOGO_FILENAME_DARK = "anyzearch-dark.png";
 
 /**
  * Checks if the filename is the default logo filename for dark or light mode.

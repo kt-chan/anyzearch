@@ -4,7 +4,7 @@ import showToast from "@/utils/toast";
 import LLMItem from "@/components/LLMSelection/LLMItem";
 import { CaretUpDown, MagnifyingGlass, X } from "@phosphor-icons/react";
 import CTAButton from "@/components/lib/CTAButton";
-import AnyZearchIcon from "@/media/logo/AnyZearch-icon.png";
+import AnyZearchIcon from "@/media/logo/anyzearch-icon.png";
 import BrowserNative from "@/components/SpeechToText/BrowserNative";
 
 const PROVIDERS = [

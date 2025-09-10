@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import AnyZearchIcon from "@/media/logo/AnyZearch-icon.png";
+import AnyZearchIcon from "@/media/logo/anyzearch-icon.png";
 import AgentLLMItem from "./AgentLLMItem";
 import { AVAILABLE_LLM_PROVIDERS } from "@/pages/GeneralSettings/LLMPreference";
 import { CaretUpDown, Gauge, MagnifyingGlass, X } from "@phosphor-icons/react";
