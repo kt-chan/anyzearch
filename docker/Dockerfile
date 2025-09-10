@@ -19,15 +19,18 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libx11-6 libx11-xcb1 libxcb1 \
         libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 \
         libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release \
-        xdg-utils git build-essential ffmpeg && \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    # echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/setup_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+        xdg-utils git build-essential ffmpeg 
+# Ensure curl is installed,      
+# Download and run the Nodesource setup script for Node.js 22.x
+RUN apt-get install -yq curl && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh && \
+    chmod +x nodesource_setup.sh && \
+    ./nodesource_setup.sh && \
+    # Install Node.js 22.x
     apt-get update && \
-    # Install node and yarn
-    apt-get install -yq --no-install-recommends nodejs && \
-    curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn_1.22.22_all.deb \
+    apt-get install -yq --no-install-recommends nodejs
+
+RUN curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn_1.22.22_all.deb \
         && dpkg -i yarn_1.22.22_all.deb \
         && rm yarn_1.22.22_all.deb && \
     # Install uvx (pinned to 0.6.10) for MCP support
@@ -86,15 +89,19 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libx11-6 libx11-xcb1 libxcb1 \
         libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 \
         libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release \
-        xdg-utils git build-essential ffmpeg && \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    # echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/setup_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+        xdg-utils git build-essential ffmpeg 
+        
+# Ensure curl is installed,      
+# Download and run the Nodesource setup script for Node.js 22.x
+RUN apt-get install -yq curl && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh && \
+    chmod +x nodesource_setup.sh && \
+    ./nodesource_setup.sh && \
+    # Install Node.js 22.x
     apt-get update && \
-    # Install node and yarn
-    apt-get install -yq --no-install-recommends nodejs && \
-    curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn_1.22.22_all.deb \
+    apt-get install -yq --no-install-recommends nodejs
+
+RUN curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn_1.22.22_all.deb \
         && dpkg -i yarn_1.22.22_all.deb \
         && rm yarn_1.22.22_all.deb && \
     # Install uvx (pinned to 0.6.10) for MCP support
