@@ -275,7 +275,9 @@ function apiDocumentEndpoints(app) {
               !isWithin(documentsPath, sourcePath) ||
               !isWithin(documentsPath, destinationPath)
             )
-              throw new Error("Invalid file location");
+              throw new Error(
+                `Invalid file location, documentsPath: ${documentsPath}, sourcePath: ${sourcePath}, destinationPath: ${destinationPath} `
+              );
 
             fs.renameSync(sourcePath, destinationPath);
             doc.location = path.join(folder, path.basename(doc.location));
