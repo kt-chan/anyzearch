@@ -27,9 +27,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get update && \
     # Install node and yarn
     apt-get install -yq --no-install-recommends nodejs && \
-    curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn_1.22.19_all.deb \
-        && dpkg -i yarn_1.22.19_all.deb \
-        && rm yarn_1.22.19_all.deb && \
+    curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn_1.22.22_all.deb \
+        && dpkg -i yarn_1.22.22_all.deb \
+        && rm yarn_1.22.22_all.deb && \
     # Install uvx (pinned to 0.6.10) for MCP support
     curl -LsSf https://astral.sh/uv/0.6.10/install.sh | sh && \
         mv /root/.local/bin/uv /usr/local/bin/uv && \
@@ -94,9 +94,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get update && \
     # Install node and yarn
     apt-get install -yq --no-install-recommends nodejs && \
-    curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.19/yarn_1.22.19_all.deb \
-        && dpkg -i yarn_1.22.19_all.deb \
-        && rm yarn_1.22.19_all.deb && \
+    curl -LO https://github.com/yarnpkg/yarn/releases/download/v1.22.22/yarn_1.22.22_all.deb \
+        && dpkg -i yarn_1.22.22_all.deb \
+        && rm yarn_1.22.22_all.deb && \
     # Install uvx (pinned to 0.6.10) for MCP support
     curl -LsSf https://astral.sh/uv/0.6.10/install.sh | sh && \
         mv /root/.local/bin/uv /usr/local/bin/uv && \
