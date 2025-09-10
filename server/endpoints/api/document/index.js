@@ -261,9 +261,13 @@ function apiDocumentEndpoints(app) {
         // If not, move it using similar logic as in the move-files endpoint.
         for (const doc of documents) {
           const currentFolder = path.dirname(doc.location);
+          const resolvedCurrentFolder = path.isAbsolute(currentFolder)
+            ? currentFolder
+            : path.join(documentsPath, doc.location);
+
           if (currentFolder !== folder) {
             const sourcePath = path.join(
-              currentFolder,
+              resolvedCurrentFolder,
               normalizePath(path.basename(doc.location))
             );
             const destinationPath = path.join(
