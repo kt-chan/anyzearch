@@ -20,6 +20,8 @@ services:
       - "../server/storage:/app/server/storage"
       - "../collector/hotdir/:/app/collector/hotdir"
       - "../collector/outputs/:/app/collector/outputs"
+      - "../certs/anyzearch.local.crt:/temp/certs/anyzearch.local.crt"
+      - "../certs/anyzearch.local.key:/temp/certs/anyzearch.local.key"
     user: "${UID:-1000}:${GID:-1000}"
     ports:
       - "3001:3001"

@@ -591,7 +591,7 @@ function workspaceEndpoints(app) {
 
         const document = await Document.get({
           workspaceId: workspace.id,
-          docpath: docPath,
+          docpath: normalizePath(docPath),
         });
         if (!document) return response.sendStatus(404).end();
 
