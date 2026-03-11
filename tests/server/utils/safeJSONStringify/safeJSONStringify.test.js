@@ -1,5 +1,5 @@
 /* eslint-env jest */
-const { safeJSONStringify } = require("../../../utils/helpers/chat/responses");
+const { safeJSONStringify } = require("../../../../server/utils/helpers/chat/responses");
 
 describe("safeJSONStringify", () => {
   test("handles regular objects without BigInt", () => {

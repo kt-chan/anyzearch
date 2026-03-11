@@ -1,13 +1,13 @@
 /* eslint-env jest, node */
-const { OpenAICompatibleChat } = require('../../../utils/chats/openaiCompatible');
-const { WorkspaceChats } = require('../../../models/workspaceChats');
-const { getVectorDbClass, getLLMProvider } = require('../../../utils/helpers');
-const { extractTextContent, extractAttachments } = require('../../../endpoints/api/openai/helpers');
+const { OpenAICompatibleChat } = require('../../../../server/utils/chats/openaiCompatible');
+const { WorkspaceChats } = require('../../../../server/models/workspaceChats');
+const { getVectorDbClass, getLLMProvider } = require('../../../../server/utils/helpers');
+const { extractTextContent, extractAttachments } = require('../../../../server/endpoints/api/openai/helpers');
 
 // Mock dependencies
-jest.mock('../../../models/workspaceChats');
-jest.mock('../../../utils/helpers');
-jest.mock('../../../utils/DocumentManager', () => ({
+jest.mock('../../../../server/models/workspaceChats');
+jest.mock('../../../../server/utils/helpers');
+jest.mock('../../../../server/utils/DocumentManager', () => ({
   DocumentManager: class {
     constructor() {
       this.pinnedDocs = jest.fn().mockResolvedValue([]);

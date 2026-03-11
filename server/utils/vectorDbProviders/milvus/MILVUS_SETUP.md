@@ -9,7 +9,6 @@
 Choose one of the following
 
 - Cloud
-
   - [Cloud account](https://cloud.zilliz.com/)
 
 - Local
@@ -19,7 +18,6 @@ Choose one of the following
 **Instructions**
 
 - Cloud
-
   - Create a Cluster on your cloud account
   - Get connect Public Endpoint and Token
   - Set .env.development variable in server

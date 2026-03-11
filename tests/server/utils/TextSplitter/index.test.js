@@ -1,4 +1,4 @@
-const { TextSplitter } = require("../../../utils/TextSplitter");
+const { TextSplitter } = require("../../../../server/utils/TextSplitter");
 const _ = require("lodash");
 
 describe("TextSplitter", () => {

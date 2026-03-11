@@ -1,4 +1,4 @@
-const UnTooled = require("../../../../../../utils/agents/aibitat/providers/helpers/untooled");
+const UnTooled = require("../../../../../../../server/utils/agents/aibitat/providers/helpers/untooled");
 
 describe("UnTooled: validFuncCall", () => {
   const untooled = new UnTooled();

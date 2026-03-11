@@ -1,6 +1,10 @@
-process.env.NODE_ENV === "development"
-  ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
-  : require("dotenv").config();
+require("dotenv").config();
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}`,
+    override: true,
+  });
+}
 
 function reqBody(request) {
   return typeof request.body === "string"

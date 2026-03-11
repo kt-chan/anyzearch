@@ -1,4 +1,4 @@
-const { FlowExecutor } = require("../../../utils/agentFlows/executor");
+const { FlowExecutor } = require("../../../../server/utils/agentFlows/executor");
 
 describe("FlowExecutor: getValueFromPath", () => {
   const executor = new FlowExecutor();

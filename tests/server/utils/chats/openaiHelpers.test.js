@@ -1,5 +1,5 @@
 /* eslint-env jest, node */
-const { extractTextContent, extractAttachments } = require('../../../endpoints/api/openai/helpers');
+const { extractTextContent, extractAttachments } = require('../../../../server/endpoints/api/openai/helpers');
 
 describe('OpenAI Helper Functions', () => {
   describe('extractTextContent', () => {

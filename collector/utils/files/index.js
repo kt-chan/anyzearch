@@ -8,8 +8,16 @@ const { MimeDetector } = require("./mime");
  */
 const documentsFolder =
   process.env.NODE_ENV === "development"
-    ? path.resolve(__dirname, `../../../server/storage/documents`)
-    : path.resolve(process.env.STORAGE_DIR, `documents`);
+    ? path.resolve(__dirname, "../../../server/storage/documents")
+    : path.resolve(process.env.STORAGE_DIR, "documents");
+
+/**
+ * The folder where assets are stored.
+ */
+const assetsFolder =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(__dirname, "../../../server/storage/assets")
+    : path.resolve(process.env.STORAGE_DIR, "assets");
 
 /**
  * The folder where direct uploads are stored to be stored when
@@ -18,8 +26,8 @@ const documentsFolder =
  */
 const directUploadsFolder =
   process.env.NODE_ENV === "development"
-    ? path.resolve(__dirname, `../../../server/storage/direct-uploads`)
-    : path.resolve(process.env.STORAGE_DIR, `direct-uploads`);
+    ? path.resolve(__dirname, "../../../server/storage/direct-uploads")
+    : path.resolve(process.env.STORAGE_DIR, "direct-uploads");
 
 /**
  * Checks if a file is text by checking the mime type and then falling back to buffer inspection.
@@ -92,7 +100,11 @@ function trashFile(filepath) {
     return;
   }
 
-  fs.rmSync(filepath);
+  try {
+    fs.rmSync(filepath);
+  } catch (e) {
+    console.error(`[trashFile] Could not delete ${filepath}: ${e.message}`);
+  }
   return;
 }
 
@@ -224,5 +236,6 @@ module.exports = {
   isWithin,
   sanitizeFileName,
   documentsFolder,
+  assetsFolder,
   directUploadsFolder,
 };

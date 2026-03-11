@@ -5,7 +5,7 @@ const { Telemetry } = require("./telemetry");
 const { EventLogs } = require("./eventLogs");
 const { safeJsonParse } = require("../utils/http");
 const { getModelTag } = require("../endpoints/utils");
-const Path = require('path');
+const Path = require("path");
 
 const Document = {
   writable: ["pinned", "watched", "lastUpdatedAt"],

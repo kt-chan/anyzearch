@@ -1,6 +1,10 @@
-process.env.NODE_ENV === "development"
-  ? require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` })
-  : require("dotenv").config();
+require("dotenv").config();
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config({
+    path: `.env.${process.env.NODE_ENV}`,
+    override: true,
+  });
+}
 const { viewLocalFiles, normalizePath, isWithin } = require("../utils/files");
 const { purgeDocument, purgeFolder } = require("../utils/files/purgeDocument");
 const { getVectorDbClass } = require("../utils/helpers");
@@ -19,6 +23,7 @@ const { User } = require("../models/user");
 const { validatedRequest } = require("../utils/middleware/validatedRequest");
 const fs = require("fs");
 const path = require("path");
+const mime = require("mime");
 const {
   getDefaultFilename,
   determineLogoFilepath,
@@ -1413,6 +1418,37 @@ function systemEndpoints(app) {
           success: false,
           error: `Unable to connect to ${engine}. Please verify your connection details.`,
         });
+      }
+    }
+  );
+
+  app.get(
+    "/system/doc-content/:docId/:imageName(*)",
+    [validatedRequest, flexUserRoleValid([ROLES.all])],
+    async function (request, response) {
+      try {
+        const { docId, imageName } = request.params;
+        const storagePath = path.join(
+          __dirname,
+          "../storage/assets/doc-content",
+          docId
+        );
+        const imagePath = path.join(storagePath, normalizePath(imageName));
+
+        if (!isWithin(path.resolve(storagePath), path.resolve(imagePath)))
+          return response.sendStatus(404).end();
+
+        if (!fs.existsSync(imagePath)) return response.sendStatus(404).end();
+
+        response.writeHead(200, {
+          "Content-Type": mime.getType(imagePath) || "application/octet-stream",
+          "Content-Disposition": `inline; filename=${path.basename(imagePath)}`,
+          "Content-Length": fs.statSync(imagePath).size,
+        });
+        fs.createReadStream(imagePath).pipe(response);
+      } catch (error) {
+        console.error("Error serving document content:", error);
+        response.status(500).json({ message: "Internal server error" });
       }
     }
   );

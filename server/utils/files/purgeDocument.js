@@ -10,11 +10,32 @@ const {
 const { Document } = require("../../models/documents");
 const { Workspace } = require("../../models/workspace");
 
+const assetsPath =
+  process.env.NODE_ENV === "development"
+    ? path.resolve(__dirname, "../../storage/assets")
+    : path.resolve(process.env.STORAGE_DIR, "assets");
+
+async function purgeDocImages(filename = null) {
+  if (!filename) return;
+  // filename is like "custom-documents/my-file-uuid.json"
+  // docId is the uuid part before .json
+  const match = filename.match(/-([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\.json$/i);
+  if (!match) return;
+
+  const docId = match[1];
+  const contentDir = path.join(assetsPath, "doc-content", docId);
+  if (fs.existsSync(contentDir) && isWithin(assetsPath, contentDir)) {
+    console.log(`Purging doc-content of ${filename}.`);
+    fs.rmSync(contentDir, { recursive: true, force: true });
+  }
+}
+
 async function purgeDocument(filename = null) {
   if (!filename || !normalizePath(filename)) return;
 
   await purgeVectorCache(filename);
   await purgeSourceDocument(filename);
+  await purgeDocImages(filename);
   const workspaces = await Workspace.where();
   for (const workspace of workspaces) {
     await Document.removeDocuments(workspace, [filename]);
@@ -68,6 +89,12 @@ async function purgeFolder(folderName = null) {
         purgeVectorCache(filename).then(() => resolve(true))
       );
     purgePromises.push(rmVectorCache);
+
+    const rmDocImages = () =>
+      new Promise((resolve) =>
+        purgeDocImages(filename).then(() => resolve(true))
+      );
+    purgePromises.push(rmDocImages);
   }
 
   // Remove workspace document associations
